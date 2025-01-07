@@ -4,16 +4,8 @@ from square.client import Client
 from db_lib import add_square_id, add_dep_ide, add_dep_source, get_renter_profile
 import random
 import string
-import logging
 
 
-logging.basicConfig(filename='slog.log',
-                        filemode='a',
-                        format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                        datefmt='%H:%M:%S',
-                        level=logging.DEBUG)
-
-logger = logging.getLogger(__name__)
 
 client = Client(
   access_token=os.environ['SQUARE_ACCESS_TOKEN'],
@@ -96,8 +88,6 @@ def get_cc(cust_id):
     )
 
     if result.is_success():
-        logger.debug(cust_id)
-        logger.debug(result.body)
         return result.body
 
     elif result.is_error():
@@ -111,8 +101,6 @@ def get_reservation_deposit(cust_id):
     )
 
     if result.is_success():
-        logger.debug(cust_id)
-        logger.debug(result.body)
         return result.body
 
     elif result.is_error():
