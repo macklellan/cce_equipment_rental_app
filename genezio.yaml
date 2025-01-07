@@ -1,6 +1,6 @@
 backend:
     functions:
-        - entry: index.py
+        - entry: app.py
           handler: app
           name: flask-function
           path: ./
