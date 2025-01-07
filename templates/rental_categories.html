@@ -1,0 +1,88 @@
+{% extends "template.html" %}
+{% block content %}
+
+<div class="row padd2" style="background-color:black;">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6">
+        <h3 style="text-align:center; color: #ccc;" class="align-middle title3">Rental Equipment Categories</h3>
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+
+<div class="row dash-card" >
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-10">
+      <h6 class=" title3" >Please select a category below to view rental equipment.</h6>
+    </div>
+    <div class="col-sm-1">
+    </div>
+</div>
+
+
+<!-- DISPLAY CATEGORIES 3 PER ROW -->
+{% for cat in cat_list %}
+
+<div class ="padd">
+
+  <div class="row">
+    <div class="col-lg-3">
+      <a class="link-dark" href="./rentals/{{ cat[0] }}">
+        <div class="dash-card">
+          <div class="card rentals-card">
+            <img class="card-img-top embed-responsive-item" src = "/static/img/{{ cat_dict[cat[0]]['img'] }}" />
+            <br>
+            <h2 class="font-weight-bold title3">{{ cat[0] }}<h2>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    {% if cat[1] %}
+    <div class="col-lg-3">
+      <a class="link-dark" href="./rentals/{{ cat[1] }}">
+        <div class="dash-card">
+          <div class="card rentals-card">
+            <img class="card-img-top embed-responsive-item" src = "/static/img/{{ cat_dict[cat[1]]['img'] }}" />
+            <br>
+            <h2 class="font-weight-bold title3">{{ cat[1] }}<h2>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endif %}
+
+    {% if cat[2] %}
+    <div class="col-lg-3">
+      <a class="link-dark" href="./rentals/{{ cat[2] }}">
+        <div class="dash-card">
+          <div class="card rentals-card">
+            <img class="card-img-top embed-responsive-item" src = "/static/img/{{ cat_dict[cat[2]]['img'] }}" />
+            <br>
+            <h2 class="font-weight-bold title3">{{ cat[2] }}<h2>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endif %}
+
+    {% if cat[3] %}
+    <div class="col-lg-3">
+      <a class="link-dark" href="./rentals/{{ cat[3] }}">
+        <div class="dash-card">
+          <div class="card rentals-card">
+            <img class="card-img-top embed-responsive-item" src = "/static/img/{{ cat_dict[cat[3]]['img'] }}" />
+            <br>
+            <h2 class="font-weight-bold title3">{{ cat[3] }}<h2>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endif %}
+
+</div>
+{% endfor %}
+
+{% endblock %}

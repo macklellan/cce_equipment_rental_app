@@ -1,0 +1,96 @@
+{% extends "template.html" %}
+{% block content %}
+<br><br>
+<div class="row">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-8">
+    <div class="submit-card card">
+      <h4>
+        Renter Profile
+      </h4>
+        <br>
+        {% if not current_user.profile_complete() %}
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+          <div>
+            Please input your contact information and upload picture of your id to complete your renter profile.
+          </div>
+        </div>
+        {% endif %}
+
+        <form action="{{ url_for('profile') }}" method="post">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" class="form-control form-control-lg" name="fname" id="fname" placeholder="" value="{{ pro['fname']}}">
+          <br>
+          <label for="lname">Last Name</label>
+          <input type="text" class="form-control form-control-lg" name="lname" id="lname" placeholder="" value="{{ pro['lname']}}">
+          <br>
+          <label for="phone">Phone Number</label>
+          <input type="text" class="form-control form-control-lg" name="phone" id="phone" placeholder="555-555-5555" value="{{ pro['phone']}}">
+          <br>
+          <label for="email">Email address (For Invoicing)</label>
+          <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="name@example.com" value="{{ pro['email']}}">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="contractor">Are you a contractor or subcontractor?</label>
+          <select class="form-control form-control-lg" name="contractor" id="contractor" value="{{ pro['contractor']}}">
+            <option value=1>Yes</option>
+            <option value=0>No</option>
+          </select>
+        </div>
+        <br>
+        {% if not current_user.renter_profile %}
+         <button type="submit" name="pbutton" class="btn btn-primary btn-lg">Submit Contact Info</button>
+        {% else %}
+         <button type="submit" name="ubutton" class="btn btn-primary btn-lg">Update Profile</button>
+         <button type="submit" name="dbutton" class="btn btn-danger btn-lg">Delete Profile</button>
+        {% endif %}
+        </form>
+
+        <form action="{{ url_for('profile') }}" method="post" enctype="multipart/form-data">
+        <br>
+        <div class="form-group">
+          <label for="license">Please upload a picture of the front of your drivers license or ID.</label>
+          <input type="file" class="form-control-file form-control-file-lg" name="file" id="license">
+        </div>
+        <br>
+        {% if not current_user.renter_profile['license'] %}
+        {% if current_user.renter_profile %}
+         <button type="submit" name="lbutton" class="btn btn-primary btn-lg">Upload ID</button>
+         {% else %}
+         <button type="submit" name="lbutton" class="btn btn-primary btn-lg" disabled>Upload ID</button>
+         {% endif %}
+        {% else %}
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <button type="submit" name="lbutton" class="btn btn-primary btn-lg" disabled>Update ID</button>
+          </div>
+          <div class="col-md-6 mb-3">
+            <img class="card-img-top embed-responsive-item" src = "{{ url_for('view_profile_pic') }}" />
+          </div>
+        </div>
+        {% endif %}
+        <br>
+        <br>
+        <div class="form-group">
+          <label for="insur">Please upload a picture or scan of your insurance.</label>
+          <input type="file" class="form-control-file form-control-file-lg" name="file" id="insur">
+        </div>
+        <br>
+        {% if not current_user.renter_profile %}
+         <button type="submit" name="ibutton" class="btn btn-primary btn-lg" disabled>Upload Insurance</button>
+        {% else %}
+         <button type="submit" name="ibutton" class="btn btn-primary btn-lg">Upload Insurance</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+  <div class="col-sm-2">
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,264 @@
+{% extends "template.html" %}
+{% block content %}
+
+
+<div class="row">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-8">
+    <div class="submit-card card">
+      <h4>
+        Book your reservation for: {{ equip }}
+      </h4>
+      <br>
+      <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
+        <div>
+          <a href="#" data-toggle="modal" data-target="#termsmodal"><b>Please read the terms and conditions of the reservation agreement before proceeding. Click Here</b></a>
+        </div>
+      </div>
+
+      <br>
+      <form action="{{ url_for('reserve', equipment=equip) }}" method="post">
+
+        <div class="row">
+          <div class="form-group col-xl-6">
+            <label for="start">Start Date</label>
+            <input type="date" class="form-control form-control-lg" name="start" id="start" value="{{ start }}" readonly disabled>
+            <input type="date" class="form-control form-control-lg" name="start" id="start" value="{{ start }}" hidden>
+            <label for="ndays">Rental Days</label>
+            <input type="number" class="form-control form-control-lg" name="ndays" id="ndays" value="{{ n_days }}" readonly disabled>
+            <input type="number" class="form-control form-control-lg" name="ndays" id="ndays" value="{{ n_days }}" hidden>
+            <label for="end">End Date</label>
+            <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ end }}" readonly disabled>
+            <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ end }}" hidden>
+          </div>
+          <div class="form-group col-xl-6">
+            <div class="submit-card card">
+            {% if start %}
+            <h4>Estimate Total: <b>{{ (rate * n_days) + (ifee * n_days) + dfee }}$</b></h4>
+            <h5><b>{{ rate * n_days }}$</b> ({{ rate }}$ Rental Fee per day) x{{ n_days }} </h5>
+            <h5><b>{{ ifee * n_days }}$</b> ({{ ifee }}$ Insurance Fee per day) x{{ n_days }}</h5>
+            <h5><b>{{ dfee }}$</b> Delivery Fee (within 25 Miles, subject to change)</h5>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        <!-- <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="ndays">Rental Days</label>
+            <input type="number" class="form-control form-control-lg" name="ndays" id="ndays" value="{{ n_days }}" disabled>
+          </div>
+        </div>
+        <br>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="end">End Date</label>
+            <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ end }}" disabled>
+          </div>
+        </div> -->
+        <br>
+        <div class="form-group">
+          <label for="trans">Transportation</label>
+          <select class="form-control form-control-lg" name="trans" id="trans" required>
+            <option value="C&E Provided">Delivery & Pickup Provided by Carolina C&E</option>
+            <option value="Customer Provided">Customer Pickup and Delivery (Must provide proof of insurace, and capability to transport safely and legally)</option>
+          </select>
+        </div>
+        <br>
+        <hr class="hr" />
+        <br>
+        <h4 style="text-align:center;">
+          Contact Info
+        </h4>
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" class="form-control form-control-lg" name="fname" id="fname" placeholder="" value="{{ pro['fname']}}" required>
+          <br>
+          <label for="lname">Last Name</label>
+          <input type="text" class="form-control form-control-lg" name="lname" id="lname" placeholder="" value="{{ pro['lname']}}" required>
+          <br>
+          <label for="comp">Company</label>
+          <input type="text" class="form-control form-control-lg" name="comp" id="comp" placeholder="" value="">
+          <br>
+          <label for="phone">Phone Number</label>
+          <input type="text" class="form-control form-control-lg" name="phone" id="phone" placeholder="555-555-5555" value="{{ pro['phone']}}" required>
+          <br>
+          <label for="email">Email address (For Invoicing)</label>
+          <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="name@example.com" value="{{ pro['email']}}" required>
+        </div>
+
+        <br>
+        <hr class="hr" />
+        <br>
+        <h4 style="text-align:center;">
+          Job Info
+        </h4>
+        <!-- <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputEmail4">Email</label>
+            <input type="text" class="form-control" id="inputEmail4" placeholder="Email">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputPassword4">Password</label>
+            <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label for="job_desc">Type of Job</label>
+          <input type="text" class="form-control form-control-lg" name="job_desc" id="job_desc" placeholder="Trenching, Demo, Landscaping, etc" required>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="exp_level">Operator's Experience Level</label>
+          <select class="form-control form-control-lg" name="exp_level" id="exp_level" required>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Expert</option>
+          </select>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label for="inputAddress">Address of Job Site</label>
+          <input type="text" class="form-control form-control-lg" name="inputAddress" id="inputAddress" placeholder="1234 Main St" required>
+        </div>
+        <div class="form-group">
+          <label for="inputAddress2">Address 2</label>
+          <input type="text" class="form-control form-control-lg" name="inputAddress2" id="inputAddress2" placeholder="">
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputCity">City</label>
+            <input type="text" class="form-control form-control-lg" name="inputCity" id="inputCity" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputState">State</label>
+            <select name="inputState" id="inputState" class="form-control form-control-lg" required>
+              <option selected>North Carolina</option>
+              <option>Virgina</option>
+              <option>South Carolina</option>
+              <option>Tennessee</option>
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="inputZip">Zip</label>
+            <input type="text" class="form-control form-control-lg" name="inputZip" id="inputZip" required>
+          </div>
+        </div>
+        <!-- <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+              Check me out
+            </label>
+          </div>
+        </div> -->
+        <br>
+        <div class="form-group">
+          <label for="residential">Residential or Commercial Property</label>
+          <select class="form-control form-control-lg" name="residential" id="residential" required>
+            <option>Residential</option>
+            <option>Commercial</option>
+          </select>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="inputInsurance">Proof of Insurance</label>
+          <input type="text" class="form-control form-control-lg" id="inputInsurance" placeholder="">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="notes">Additional info or notes</label>
+          <input type="text" class="form-control form-control-lg" id="notes" name="notes" placeholder="">
+        </div>
+        <br><br>
+        <button type="submit" name="rbutton" class="btn btn-primary btn-lg">Submit</button>
+      </form>
+    </div>
+
+
+  </div>
+  <div class="col-sm-2">
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="termsmodal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Online Booking Reservation Terms</h5>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body">
+
+
+        <h2>Terms and Conditions for Online Equipment Rental Reservations</h2>
+        <br>
+        <h3>1. Acceptance of Terms</h3>
+        <p>By making a reservation on our website, you agree to these Terms and Conditions. If you do not agree, please do not proceed with your reservation.</p>
+
+        <h3>2. Rental Agreement</h3>
+        <p>All online reservations are subject to our standard rental agreement, which must be signed before equipment delivery. The terms outlined in the rental agreement take precedence in case of any conflicts.</p>
+
+        <h3>3. Reservation and Deposit</h3>
+        <ul>
+            <li>A valid credit card is required to secure your reservation. You authorize <b>Caolina C&E, Inc</b> to charge your credit card
+                     for agreed upon purchases. You understand that your information will be saved to file for future
+                     transactions on your account.<br>
+                   <b><i>All billing information is stored securely on <a href="https://squareup.com/us/en/payments/secure">Square Payment Processing System</a>. No billing information is stored on this website.</i></b>
+            </li>
+            <li>A deposit of $100 will be charged to your card at the time of booking.</li>
+            <li>The remaining balance will be due upon equipment delivery.</li>
+            <li>In the event your booking is involuntarily canceled, whether due to violation of terms or any other reason, deposit will be refunded.</li>
+        </ul>
+        <h3>4. Cancellations and Changes</h3>
+        <ul>
+            <li>Cancellations made <b>3 Days</b> (72 hours) prior to the rental date will receive a full refund of the deposit.</li>
+            <li>Cancellations made within <b>3 Days</b> will forfeit the deposit.</li>
+            <li>Changes to reservations may incur additional fees and must be made <b>7 Days</b> prior to the rental date</li>
+        </ul>
+
+        <h3>5. Equipment Use</h3>
+        <ul>
+            <li>Renters are responsible for the equipment during the rental period.</li>
+            <li>The equipment must be used according to the manufacturer’s guidelines and local regulations.</li>
+            <li>Renters are liable for any damage or loss during the rental period.</li>
+        </ul>
+
+        <h3>6. Liability</h3>
+        <p>The renter agrees to indemnify and hold harmless <b>Caolina C&E, Inc</b> from any claims, damages, or liabilities arising from the use of the equipment. <b>Caolina C&E, Inc</b> is not responsible for any personal injury or property damage resulting from the rental equipment.</p>
+
+        <h3>7. Payment</h3>
+        <p>Renters will receive an itemized invoice via email once their reservation is approved. Payment is due upon equipment delivery. By providing your credit card information, you authorize us to charge your card for the deposit and any applicable fees. All transactions are processed se curely.</p>
+
+        <h3>8. Privacy Policy</h3>
+        <p>Your personal information will be used in accordance with our Privacy Policy. Please review our Privacy Policy <a href="{{ url_for('terms') }}">here</a> for details on how we collect, use, and protect your information.</p>
+
+        <h3>9. Governing Law</h3>
+        <p>These Terms and Conditions are governed by the laws of North Carolina.</p>
+
+        <h3>10. Amendments</h3>
+        <p>We reserve the right to amend these Terms and Conditions at any time. Changes will be posted on our website, and your continued use of the site constitutes acceptance of the new terms.</p>
+
+        <h3>Contact Information</h3>
+        <p>For any questions regarding these Terms and Conditions, please contact us at <b>westerncarolinarentals@gmail.com</b>.</p>
+
+
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Sign In</button> -->
+        <button type="button" class="btn btn-secondary close2 btn-lg" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+{% endblock %}

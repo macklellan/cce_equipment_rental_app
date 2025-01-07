@@ -1,0 +1,12 @@
+
+CREATE TABLE `user` (`id` VARCHAR(50) NOT NULL, `name` VARCHAR(50) NOT NULL, `email` VARCHAR(50) NOT NULL, `profile_pic` VARCHAR(99) NOT NULL, PRIMARY KEY (id)) ;
+
+CREATE TABLE `renter` (`id2` VARCHAR(50) NOT NULL, `fname` VARCHAR(25) NOT NULL, `lname` VARCHAR(25) NOT NULL, `phone` VARCHAR(10) NOT NULL, `email` VARCHAR(50) NOT NULL, `contractor` BOOLEAN NOT NULL, `license` VARCHAR(99), `insurance` VARCHAR(99),
+`completed` BOOLEAN NOT NULL, `squareid` VARCHAR(50), PRIMARY KEY (id2));
+
+CREATE TABLE `reservations` (`id` INT NOT NULL AUTO_INCREMENT, `renter_id` VARCHAR(50) NOT NULL , `equipment` VARCHAR(50) NOT NULL, `start` DATETIME NOT NULL, `end` DATETIME NOT NULL, `n_days` INT NOT NULL, `n_weeks` INT NOT NULL, `n_months` INT NOT NULL, `transport` VARCHAR(50) NOT NULL,
+`renter_name` VARCHAR(50) NOT NULL, `company` VARCHAR(50), `phone` VARCHAR(10) NOT NULL, `invoice_email` VARCHAR(50) NOT NULL, `job_desc` VARCHAR(50) NOT NULL, `exp_level` VARCHAR(25) NOT NULL, `address1` VARCHAR(50) NOT NULL, `address2` VARCHAR(50) DEFAULT NULL,
+`city` VARCHAR(25) NOT NULL, `state` VARCHAR(25) NOT NULL, `zip` VARCHAR(5) NOT NULL, `commerical_prop` BOOLEAN NOT NULL, `note` VARCHAR(200) DEFAULT NULL, `event_id` INT NOT NULL, `era_signed_date` DATETIME DEFAULT NULL, `era_signed_name` VARCHAR(50), `status` INT NOT NULL,
+`deposit_source_id` VARCHAR(29), `deposit_idempotency` VARCHAR(10), PRIMARY KEY (id), FOREIGN KEY (renter_id) REFERENCES renter(id2));
+
+CREATE TABLE `events` (`id` INT NOT NULL AUTO_INCREMENT, `start` DATETIME NOT NULL, `end` DATETIME NOT NULL, `text` VARCHAR(50) NOT NULL, `color` VARCHAR(10) NOT NULL, `bg` VARCHAR(10) NOT NULL, `eq` VARCHAR(50) NOT NULL, PRIMARY KEY (id));

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- TITLE, DESC, CHARSET, VIEWPORT -->
+    <title>Online Booking Calendar</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Offline Javascript Calendar App">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+
+    <!-- STYLESHEET + JAVASCRIPT -->
+
+  {% if pro['completed'] == 1 %}
+    <script>
+    var profile = "True";
+    var equip = "{{ equip }}";
+    console.log(profile)
+    function comPro() {
+      window.location.href = "{{ url_for('profile') }}";
+    }
+    </script>
+
+  {% else %}
+
+    <script>
+    var profile = null;
+    console.log(profile)
+    function comPro() {
+      window.location.href = "{{ url_for('profile') }}";
+    }
+    </script>
+  {% endif %}
+
+    <script defer src="{{ url_for('static', filename='S4B_calendar.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='S4C_calendar.css') }}">
+  </head>
+  <body>
+
+
+    <!-- (A) PERIOD SELECTOR -->
+    <div id="calHead" class="row">
+      <div id="calPeriod" class="col-xl-6">
+        <input id="calToday" type="button" value="&#9733;" hidden>
+        <input id="calBack" type="button" value="&lt;">
+        <select id="calMonth"></select>
+        <input id="calYear" type="number" disabled>
+        <input id="calNext" type="button" value="&gt;">
+      </div>
+      <div class="col-xl-6">
+
+        <!-- Hidden CalAdd in js as well -->
+        <!-- <input id="calAdd" type="button" value="+"> -->
+
+        <h1 style="color:white;">Booking Calendar for: {{ equip }}</h1>
+
+        {% if pro['completed'] != 1 %}
+          <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
+          <a class="" href="{{ url_for('profile') }}"><h2>You must complete your profile before viewing </h2></a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- (B) CALENDAR WRAPPER -->
+    <div id="calWrap">
+      <div id="calDays"></div>
+      <div id="calBody"></div>
+    </div>
+
+
+
+    <!-- (C) EVENT FORM -->
+    <dialog id="calForm"><form action="{{ url_for('reserve', equipment=equip) }}" method="post">
+      <div id="evtCX">X</div>
+      <h2 class="evt100">Get Estimate For: {{ equip }}</h2>
+      <h2 class="evt100">{{ note }}</h2>
+      <div class="row">
+        <div class="evt50 col-xl-4">
+          <label>Start Date:</label>
+          <input name="evtStart" id="evtStart" type="date" style="font-size:20pt;"  required>
+        </div>
+        <div class="evt50 col-xl-4">
+          <label>Number of Days</label>
+          <input name="evtDays" id="evtDays" type="number" style="font-size:20pt;" required>
+        </div>
+        <div class="evt50 col-xl-4">
+          <label>Number of Weeks</label>
+          <input name="evtWeeks" id="evtWeeks" type="number" style="font-size:20pt;" required>
+        </div>
+
+        <div class="evt50" hidden disabled>
+          <label>End</label>
+          <input id="evtEnd" type="date" value="10-1-24" required>
+        </div>
+        <div class="evt50" hidden disabled>
+          <label>Text Color</label>
+          <input id="evtColor" type="color" value="#000000" required>
+        </div>
+        <div class="evt50" hidden disabled>
+          <label>Background Color</label>
+          <input id="evtBG" type="color" value="#ffdbdb" required>
+        </div>
+        <div class="evt100" hidden disabled>
+          <label>Event</label>
+          <input id="evtTxt" type="text" value="Rental Reservation for {{ equip }}" required>
+        </div>
+
+        <div class="evt100">
+          <input type="hidden" id="evtID">
+          <input type="button" id="evtDel" name="evtDel" value="Delete">
+          <!-- <input type="submit" id="evtSave" value="Reserve"> -->
+          <input type="submit" name="evtSave2" id="evtSave2" value="View Estimate & Begin Reservation">
+        </div>
+      </div>
+
+    </form></dialog>
+  </body>
+</html>

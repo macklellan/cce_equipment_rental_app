@@ -1,1 +1,9 @@
-Flask==3.0.3
+Flask
+Flask-Login
+oauthlib
+requests
+mysql-connector-python
+pypdf
+reportlab
+squareup
+azure-storage-file-share

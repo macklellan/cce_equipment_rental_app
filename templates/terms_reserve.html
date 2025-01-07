@@ -1,0 +1,68 @@
+{% extends "template.html" %}
+{% block content %}
+<br><br>
+<div class="row">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-8">
+    <div class="terms-card card">
+        <br><div id="placeholders">
+
+          <h2>Terms and Conditions for Online Equipment Rental Reservations</h2>
+          <br>
+          <h3>1. Acceptance of Terms</h3>
+          <p>By making a reservation on our website, you agree to these Terms and Conditions. If you do not agree, please do not proceed with your reservation.</p>
+
+          <h3>2. Rental Agreement</h3>
+          <p>All online reservations are subject to our standard rental agreement, which must be signed before equipment delivery. The terms outlined in the rental agreement take precedence in case of any conflicts.</p>
+
+          <h3>3. Reservation and Deposit</h3>
+          <ul>
+              <li>A valid credit card is required to secure your reservation. You authorize <b>Carolina C&E, Inc</b> to charge your credit card
+                       for agreed upon purchases. You understand that your information will be saved to file for future
+                       transactions on your account.<br>
+                     <b><i>All billing information is stored securely on <a href="https://squareup.com/us/en/payments/secure">Square Payment Processing System</a>. No billing information is stored on this website.</i></b>
+              </li>
+              <li>A deposit of $100 will be charged to your card at the time of booking.</li>
+              <li>The remaining balance will be due upon equipment delivery.</li>
+              <li>In the event your booking is involuntarily canceled, whether due to violation of terms or any other reason, deposit will be refunded.</li>
+          </ul>
+          <h3>4. Cancellations and Changes</h3>
+          <ul>
+              <li>Cancellations made <b>3 Days</b> (72 hours) prior to the rental date will receive a full refund of the deposit.</li>
+              <li>Cancellations made within <b>3 Days</b> will forfeit the deposit.</li>
+              <li>Changes to reservations may incur additional fees and must be made <b>7 Days</b> prior to the rental date</li>
+          </ul>
+
+          <h3>5. Equipment Use</h3>
+          <ul>
+              <li>Renters are responsible for the equipment during the rental period.</li>
+              <li>The equipment must be used according to the manufacturer’s guidelines and local regulations.</li>
+              <li>Renters are liable for any damage or loss during the rental period.</li>
+          </ul>
+
+          <h3>6. Liability</h3>
+          <p>The renter agrees to indemnify and hold harmless <b>Carolina C&E, Inc</b> from any claims, damages, or liabilities arising from the use of the equipment. <b>Carolina C&E, Inc</b> is not responsible for any personal injury or property damage resulting from the rental equipment.</p>
+
+          <h3>7. Payment</h3>
+          <p>Renters will receive an itemized invoice via email once their reservation is approved. Payment is due upon equipment delivery. By providing your credit card information, you authorize us to charge your card for the deposit and any applicable fees. All transactions are processed securely through <a href="https://squareup.com/us/en/payments/secure">Square Payment Processing System</a>.</p>
+
+          <h3>8. Privacy Policy</h3>
+          <p>Your personal information will be used in accordance with our Privacy Policy. Please review our Privacy Policy <a href="{{ url_for('terms') }}">here</a> for details on how we collect, use, and protect your information.</p>
+
+          <h3>9. Governing Law</h3>
+          <p>These Terms and Conditions are governed by the laws of North Carolina.</p>
+
+          <h3>10. Amendments</h3>
+          <p>We reserve the right to amend these Terms and Conditions at any time. Changes will be posted on our website, and your continued use of the site constitutes acceptance of the new terms.</p>
+
+          <h3>Contact Information</h3>
+          <p>For any questions regarding these Terms and Conditions, please contact us at <b>westerncarolinarentals@gmail.com</b>.</p>
+
+    </div>
+    </div>
+  </div>
+  <div class="col-sm-2">
+  </div>
+</div>
+{% endblock %}

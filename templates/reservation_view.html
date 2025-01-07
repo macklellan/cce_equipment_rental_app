@@ -1,0 +1,363 @@
+{% extends "template.html" %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-8 dash-card" style="background-color:white;">
+      <h6 class="title3">
+
+        <a href="{{ url_for('terms_reserve') }}">Please read the terms and conditions of the reservation agreement. CLICK HERE</a>
+      </h6>
+    </div>
+    <div class="col-sm-2">
+    </div>
+
+<div class="row">
+  <div class="col-xl-1">
+  </div>
+  <div class="col-xl-5">
+    <div class="submit-card card">
+      <h4>
+        Reservation for: {{ res['equipment'] }}
+      </h4><hr class="hr"/><h4>
+        Reservation ID: {{ res['res_id'] }}
+      </h4><hr class="hr"/><h4>
+
+        Reservation Status:
+
+        {% if esig and depo %}
+        {% if res['status'] == 0 %}
+        <span class="badge bg-secondary">In Progress</span>
+        </h4>
+        <br>
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+          <div>
+            Thank you for completing the reservation. You will be contacted within 24 hours!  Contact us via email address <b>westerncarolinarentals@gmail.com</b> for immediate assistance. <br> <b>Carolina C&E, Inc</b> reserves the right to cancel or not accept this reservation.
+          </div>
+        </div>
+        {% elif res['status'] == 1 %}
+        <span class="badge bg-success">Complete</span>
+        {% elif res['status'] <= -1 %}
+        <span class="badge bg-danger">Cancelled</span>
+        {% endif %}
+        {% else %}
+        <span class="badge bg-danger">Incomplete Reservation</span>
+        </h4>
+        <br>
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+          <div>
+            Incomplete Reservations are automatically cancelled after 24 hours!
+          </div>
+        </div>
+        {% endif %}
+      </h4>
+      <br>
+      <hr class="hr"/><h4>
+
+        Rental Agreement:
+        {% if not esig and res['status'] >= 0 %}
+        <span class="badge bg-warning text-dark">Not Signed</span>
+        <a href="#" data-toggle="modal" data-target="#eramodal" class="btn btn-success btn-lg float-end" role="button">View & Sign</a>
+        {% else %}
+        <span class="badge bg-success">Signed</span>
+        <a href="#" data-toggle="modal" data-target="#eramodal" class="btn btn-secondary btn-lg float-end" role="button">View</a>
+        {% endif %}
+
+      </h4><hr class="hr"/><h4>
+
+        Billing Info:
+        {% if billing_c == True %}
+        <span class="badge bg-success">Complete</span> <a href="{{ url_for('delete_billing') }}" class="btn btn-danger btn-lg float-end" role="button" onclick="return confirm('By clicking OK, You are removing the billing information associated with this account.')">Remove Billing Info</a>
+        {% elif billing_c == False %}
+        <span class="badge bg-warning text-dark">Incomplete</span> <a href="#bstart" class="btn btn-success btn-lg float-end" role="button">Add Billing Address</a>
+        {% endif %}
+
+      </h4><hr class="hr"/><h4>
+
+        Deposit:
+        {% if not depo %}
+          {% if billing_cc and res['status'] >= 0%}
+          <span class="badge bg-warning text-dark">Incomplete</span> <span class="badge bg-success">Card on File x{{ last_4 }}</span> <a href="{{ url_for('start_deposit', res_id=res['res_id']) }}" class="btn btn-primary btn-lg float-end" role="button" onclick="return confirm('By clicking OK, $100 will be temporariliy charged to your card as a deposit on this reservation. Are you sure?')">Submit Deposit</a>
+          {% else %}
+          <span class="badge bg-warning text-dark">Incomplete</span>
+          {% if billing_c %}
+          <a href="#pstart" class="btn btn-success btn-lg float-end" role="button">Add Payment Info</a>
+          {% endif %}
+          {% endif %}
+        {% else %}
+        <span class="badge bg-success">Deposit Initiated</span>
+        {% endif %}
+
+      </h4>
+      <br>
+      <br>
+    </div>
+    <div class="submit-card card">
+    <h4>Estimate Total: <b>{{ (ppd[res['equipment']]['ppd'] * res['n_days']) + (ppd[res['equipment']]['ifee'] * res['n_days']) + (ppd[res['equipment']]['dfee'] * res['transport2']) }}$</b></h4>
+    <h5><b>{{ ppd[res['equipment']]['ppd'] * res['n_days'] }}$</b> ({{ ppd[res['equipment']]['ppd'] }}$ Rental Fee per day) x{{ res['n_days'] }} </h5>
+    <h5><b>{{ ppd[res['equipment']]['ifee'] * res['n_days'] }}$</b> ({{ ppd[res['equipment']]['ifee'] }}$ Insurance Fee per day) x{{ res['n_days'] }}</h5>
+    {% if res['transport2'] == 1 %}
+    <h5><b> {{ ppd[res['equipment']]['dfee'] }} $</b> Delivery Fee (within 25 Miles, subject to change)</h5>
+    {% endif %}
+    </div>
+    <h5 class="title2">
+      <br>
+      <a href="{{ url_for('terms_reserve') }}">Please read the terms and conditions of the reservation agreement.</a>
+      <br>
+    </h5>
+
+  </div>
+  <div class="col-xl-5 align-items-center">
+    <div class="submit-card card">
+      <div class="form-group col-sm-6">
+        <label for="start">Start Date</label>
+        <input type="date" class="form-control form-control-lg" name="start" id="start" value="{{ res['start'] }}" readonly disabled>
+        <label for="ndays">Rental Days</label>
+        <input type="number" class="form-control form-control-lg" name="ndays" id="ndays" value="{{ res['n_days'] }}" readonly disabled>
+        <label for="end">End Date</label>
+        <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ res['end'] }}" readonly disabled>
+      </div>
+    </div>
+    <div class="submit-card card">
+      <div class="form-group">
+        <label for="inputAddress">Company Name</label>
+        <input type="text" class="form-control form-control-lg" name="inputAddress" id="inputAddress" value="{{ res['company'] }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="transport">Equipment Transportation</label>
+        <input type="text" class="form-control form-control-lg" name="transport" id="transport" value="{{ res['transport'] }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress">Address of Job Site</label>
+        <input type="text" class="form-control form-control-lg" name="inputAddress" id="inputAddress" value="{{ res['address1'] }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2">Address 2</label>
+        <input type="text" class="form-control form-control-lg" name="inputAddress2" id="inputAddress2" value="{{ res['address2'] }}" readonly>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputCity">City</label>
+          <input type="text" class="form-control form-control-lg" name="inputCity" id="inputCity" value="{{ res['city'] }}" readonly>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputState">State</label>
+          <input type="text" class="form-control form-control-lg" name="inputState" id="inputState" value="{{ res['state'] }}" readonly>
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputZip">Zip</label>
+          <input type="text" class="form-control form-control-lg" name="inputZip" id="inputZip" value="{{ res['zip'] }}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="residential">Residential or Commercial Property</label>
+        <input type="text" class="form-control form-control-lg" name="residential" id="residential" value="{{ res['commerical_prop'] }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="notes">Additional Notes</label>
+        <input type="text" class="form-control form-control-lg" name="notes" id="notes" value="{{ res['note'] }}" readonly>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-1">
+  </div>
+</div>
+
+<!-- INPUT SECTION -->
+
+<div class="row">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-8">
+
+      <br>
+
+      {% if not billing_c %}
+
+      <form action="{{ url_for('billing_profile') }}" method="post" id="bstart">
+
+        <hr class="hr"/>
+        <br>
+        <h4 style="text-align:center;">
+          Billing Info
+        </h4>
+        <div class="col-md-12 order-md-1">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="fname">First name</label>
+            <input type="text" class="form-control form-control-lg" name="fname" id="fname" placeholder="" value="" required="">
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lname">Last name</label>
+            <input type="text" class="form-control form-control-lg" name="lname" id="lname" placeholder="" value="" required="">
+            <div class="invalid-feedback">
+              Valid last name is required.
+            </div>
+          </div>
+        </div>
+
+
+        <div class="mb-3">
+          <label for="address">Address</label>
+          <input type="text" class="form-control form-control-lg" name="address" id="address" placeholder="1234 Main St" required="">
+          <div class="invalid-feedback">
+            Please enter your shipping address.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+          <input type="text" class="form-control form-control-lg" name="address2" id="address2" placeholder="Apartment or suite">
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label for="country">Country</label>
+            <select class="custom-select d-block w-100" name="country", id="country" required="">
+              <option value="">Choose...</option>
+              <option>United States</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid country.
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="state">State</label>
+            <select class="custom-select d-block w-100" name="state" id="state" required="">
+              <option value="">Choose...</option>
+              <option>North Carolina</option>
+              <option>South Carolina</option>
+              <option>Tennessee</option>
+              <option>Virginia</option>
+            </select>
+            <div class="invalid-feedback">
+              Please provide a valid state.
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="city">City</label>
+            <input type="text" class="form-control form-control-lg" name="city" id="city" placeholder="" required="">
+            <div class="invalid-feedback">
+              City/Town required.
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="zip">Zip</label>
+            <input type="text" class="form-control form-control-lg" name="zip" id="zip" placeholder="" required="">
+            <div class="invalid-feedback">
+              Zip code required.
+            </div>
+          </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+      </form>
+        <hr class="mb-4">
+
+        {% endif %}
+
+
+        {% if billing_c %}
+        {% if not billing_cc %}
+      <form action="" method="post" id="pstart">
+        <h4 style="text-align:center;" id="pstart">
+          Payment Info
+        </h4>
+
+        <div id="payment-form">
+          <div id="payment-status-container"></div>
+          <div id="card-container"></div>
+          <button id="card-button" type="button" type="submit" name="rbutton">Attach Card to Reservation</button>
+        </div>
+        </form>
+        <hr class="mb-4">
+        {% endif %}
+        {% endif %}
+    </div>
+        <br>
+    </div>
+
+
+  <div class="col-sm-2">
+  </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="eramodal">
+  <div class="modal-dialog modal-fullscreen" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header" style="justify-content: right;">
+        <h5 class="modal-title">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </h5>
+      </div>
+
+      <embed src="{{ url_for('vera', res_id=res['res_id']) }}" frameborder="0" width="100%" height="80%">
+      <br>
+
+
+      <div class="modal-footer" style="justify-content: center;">
+
+        <a class="btn btn-info btn-lg" href="{{ url_for('vera', res_id=res['res_id']) }}" role="button">CLICK HERE IF UNABLE TO VIEW</a>
+        {% if not esig %}
+        <a class="btn btn-success btn-lg" href="{{ url_for('sera', res_id=res['res_id']) }}" role="button" onclick="return confirm('By clicking yes you are electronically signing this document. Are you sure?')">SIGN DOCUMENT BY CLICKING THIS BUTTON</a>
+        {% endif %}
+        <!-- <button type="button" class="btn btn-primary">Sign In</button> -->
+        <button type="button" class="btn btn-lg btn-secondary close2" data-dismiss="modal">Exit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script type="module">
+
+    const payments = Square.payments('sandbox-sq0idb-2FQo-Ofey_cs7TtECiMRAA', 'TC4Z3ZEBKRXRH');
+    const card = await payments.card();
+    await card.attach('#card-container');
+
+    const cardButton = document.getElementById('card-button');
+
+    cardButton.addEventListener('click', async () => {
+      const statusContainer = document.getElementById('payment-status-container');
+
+      try {
+
+        const result = await card.tokenize();
+        if (result.status === 'OK') {
+
+          console.log(`Payment token is ${result.token}`);
+          statusContainer.innerHTML = "Successfully attached card.";
+          post("{{ url_for('card_update', res_id=res['res_id']) }}",result.token)
+        } else {
+          let errorMessage = `Tokenization failed with status: ${result.status}`;
+          if (result.errors) {
+            errorMessage += ` and errors: ${JSON.stringify(
+              result.errors
+            )}`;
+          }
+
+          throw new Error(errorMessage);
+        }
+      } catch (e) {
+        console.error(e);
+        statusContainer.innerHTML = "Payment Failed";
+      }
+    });
+</script>
+
+{% endblock %}
