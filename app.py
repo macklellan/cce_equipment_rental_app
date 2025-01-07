@@ -9,7 +9,7 @@ try:
     import os
     import requests
     import json
-    import logging
+    # import logging
     import sys
     import calendar_lib as evt
 
@@ -25,13 +25,13 @@ try:
     BASEDIR = os.path.abspath(os.path.dirname(__file__))
     os.chdir(BASEDIR)
 
-    logging.basicConfig(filename='log.log',
-                            filemode='a',
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%H:%M:%S',
-                            level=logging.DEBUG)
-
-    logger = logging.getLogger(__name__)
+    # logging.basicConfig(filename='log.log',
+    #                         filemode='a',
+    #                         format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+    #                         datefmt='%H:%M:%S',
+    #                         level=logging.DEBUG)
+    #
+    # logger = logging.getLogger(__name__)
 
     # app config
     app = Flask(__name__)
@@ -73,8 +73,8 @@ try:
     def admin_required(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            logger.debug(request)
-            logger.info("request: {}  from: {}".format(request.path, str(request.remote_addr)))
+            # logger.debug(request)
+            # logger.info("request: {}  from: {}".format(request.path, str(request.remote_addr)))
             admin_list = ['ryanmcclellan2@gmail.com']
             if current_user.email not in admin_list:
                 return abort(401)
