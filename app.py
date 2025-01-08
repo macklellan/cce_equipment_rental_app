@@ -63,7 +63,7 @@ try:
         return requests.get(GOOGLE_DISCOVERY_URL).json()
 
     def get_google_cl_id():
-        return os.getenv("GOOGLE_CLIENT_ID")
+        return os.environ['GOOGLE_CLIENT_ID']
 
     # admin endpoint wrapper
     # @login_required
