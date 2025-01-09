@@ -623,8 +623,7 @@ try:
             redirect_uri=request.base_url + "/callback",
             scope=["email"],
         )
-        print(GOOGLE_CLIENT_ID)
-        print(request_uri)
+
         return redirect(request_uri)
 
 
@@ -751,10 +750,11 @@ try:
     #         return str(e)
 
 
-    if __name__ == "__main__":
-        # app.run(host='0.0.0.0', ssl_context="adhoc")
-        #app.run(ssl_context="adhoc", debug=True, port=5000)
-        app.run(host='0.0.0.0', port=5000, ssl_context='adhoc', debug=True)
+
+    # if __name__ == "__main__":
+    #     # app.run(host='0.0.0.0', ssl_context="adhoc")
+    #     #app.run(ssl_context="adhoc", debug=True, port=5000)
+    #     app.run(host='0.0.0.0', port=5000, ssl_context='adhoc', debug=True)
 
 
 except Exception as e:
