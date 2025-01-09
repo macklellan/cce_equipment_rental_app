@@ -616,14 +616,11 @@ try:
         google_provider_cfg = get_google_provider_cfg()
         authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
-        print('TEST')
-        print(request.base_url + "/callback")
-
         # Use library to construct the request for Google login and provide
         # scopes that let you retrieve user's profile from Google
         request_uri = client.prepare_request_uri(
             authorization_endpoint,
-            redirect_uri=request.base_url + "/callback",
+            redirect_uri="https://f00bdad5-a63a-407a-a695-bb85092d8379.us-east-1.cloud.genez.io/login/callback",
             scope=["email"],
         )
 
