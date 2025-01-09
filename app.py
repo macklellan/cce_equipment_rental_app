@@ -616,11 +616,17 @@ try:
         google_provider_cfg = get_google_provider_cfg()
         authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
+        redirect_uri = request.base_url + "/callback"
+
+        print(" REDIR URI: " + redirect_uri)
+
+        redirect_uri = redirect_uri.replace('https', 'http').replace('http', 'https')
+
         # Use library to construct the request for Google login and provide
         # scopes that let you retrieve user's profile from Google
         request_uri = client.prepare_request_uri(
             authorization_endpoint,
-            redirect_uri="https://f00bdad5-a63a-407a-a695-bb85092d8379.us-east-1.cloud.genez.io/login/callback",
+            redirect_uri=redirect_uri,
             scope=["email"],
         )
 
@@ -637,11 +643,15 @@ try:
         google_provider_cfg = get_google_provider_cfg()
         token_endpoint = google_provider_cfg["token_endpoint"]
 
+        auth_resp = request.url.replace('https', 'http').replace('http', 'https')
+
+        redir_uri = request.base_url.replace('https', 'http').replace('http', 'https')
+
         # Prepare and send a request to get tokens! Yay tokens!
         token_url, headers, body = client.prepare_token_request(
             token_endpoint,
-            authorization_response=request.url,
-            redirect_url=request.base_url,
+            authorization_response=auth_resp,
+            redirect_url=redir_uri,
             code=code
         )
         token_response = requests.post(
