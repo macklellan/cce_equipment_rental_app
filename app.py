@@ -616,6 +616,9 @@ try:
         google_provider_cfg = get_google_provider_cfg()
         authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
+        print('TEST')
+        print(request.base_url + "/callback")
+
         # Use library to construct the request for Google login and provide
         # scopes that let you retrieve user's profile from Google
         request_uri = client.prepare_request_uri(
@@ -750,11 +753,10 @@ try:
     #         return str(e)
 
 
-
-    # if __name__ == "__main__":
-    #     # app.run(host='0.0.0.0', ssl_context="adhoc")
-    #     #app.run(ssl_context="adhoc", debug=True, port=5000)
-    #     app.run(host='0.0.0.0', port=5000, ssl_context='adhoc', debug=True)
+    if __name__ == "__main__":
+        # app.run(host='0.0.0.0', ssl_context="adhoc")
+        #app.run(ssl_context="adhoc", debug=True, port=5000)
+        app.run(host='0.0.0.0', port=5000, ssl_context='adhoc', debug=True)
 
 
 except Exception as e:
