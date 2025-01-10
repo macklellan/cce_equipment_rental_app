@@ -688,7 +688,7 @@ try:
 
         userinfo_response = requests.get(uri, headers=headers, data=body)
 
-        print("userinfo response: " + userinfo_response.json())
+        print("userinfo response: " + str(userinfo_response.json()))
 
         # You want to make sure their email is verified.
         # The user authenticated with Google, authorized your
