@@ -227,8 +227,9 @@ try:
                 files.upload_image(f, fname)
                 db_lib.add_id(current_user.id, fname)
 
-                if current_user.profile():
+                if current_user.renter_profile is None:
                     db_lib.set_complete_renter(current_user.id)
+                    
                 return render_template('profile.html', success="Added ID Photo/Scan, Created Renter Profile! Admin will review for any issues.", pro=profile_dict)
 
     # Update Profile Data
@@ -776,15 +777,6 @@ try:
     def permission_error(e):
         return render_template('404.html'), 401
 
-    # # returns text file used for ownership validation for SSL Certificate. (zerossl.com)
-    # @app.route('/.well-known/pki-validation/<a>')
-    # def test(a=None):
-    #     logger.info(request)
-    #     try:
-    #         return send_from_directory('/opt/app/wearable/authorization-handler', '313733BD8EF952D0573BBC536E990A4D.txt')
-    #     except Exception as e:
-    #         logger.error("[DASHBOARD] error registering operator\n{}".format(e))
-    #         return str(e)
 
 
     if __name__ == "__main__":
