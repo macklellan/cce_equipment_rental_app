@@ -622,6 +622,8 @@ try:
 
         redirect_uri = redirect_uri.replace('https', 'http').replace('http', 'https')
 
+        print(" FIXED REDIR URI: " + redirect_uri)
+
         # Use library to construct the request for Google login and provide
         # scopes that let you retrieve user's profile from Google
         request_uri = client.prepare_request_uri(
@@ -629,6 +631,8 @@ try:
             redirect_uri=redirect_uri,
             scope=["email"],
         )
+
+        print("REDIR REQUEST URI: " + request_uri)
 
         return redirect(request_uri)
 
@@ -643,9 +647,15 @@ try:
         google_provider_cfg = get_google_provider_cfg()
         token_endpoint = google_provider_cfg["token_endpoint"]
 
+        print("Token endpoint: " + token_endpoint)
+
         auth_resp = request.url.replace('https', 'http').replace('http', 'https')
 
+        print("Callback auth_resp URI: " + auth_resp)
+
         redir_uri = request.base_url.replace('https', 'http').replace('http', 'https')
+
+        print("Callback REDIR URI: " + redir_uri)
 
         # Prepare and send a request to get tokens! Yay tokens!
         token_url, headers, body = client.prepare_token_request(
@@ -654,6 +664,9 @@ try:
             redirect_url=redir_uri,
             code=code
         )
+
+        print("Token URL: " + token_url)
+
         token_response = requests.post(
             token_url,
             headers=headers,
@@ -669,6 +682,9 @@ try:
         # including their Google profile image and email
         userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
         uri, headers, body = client.add_token(userinfo_endpoint)
+
+        print("userinfo endpoint: " + userinfo_endpoint)
+
         userinfo_response = requests.get(uri, headers=headers, data=body)
 
         # You want to make sure their email is verified.
