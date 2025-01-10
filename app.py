@@ -177,6 +177,7 @@ try:
         if category == None:
             return render_template('rental_categories.html', gcid=gcid, cat_list=tuples(cat_list,4), cat_dict=category_dict)
         else:
+            category = category.replace('%20', ' ')
             session['url'] = url_for('rentals', category=category)
             res = {key : val for key, val in equipment_dict.items()
                    if val['category'] == category}
