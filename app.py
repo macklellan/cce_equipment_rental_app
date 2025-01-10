@@ -716,7 +716,8 @@ try:
         if not User.get(unique_id):
             User.create(unique_id, users_name, users_email, picture)
             print("Created new user")
-
+        else:
+            print("Existing User")
         # Begin user session by logging the user in
         login_user(user)
         print("Logged in!!")
