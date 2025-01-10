@@ -688,6 +688,8 @@ try:
 
         userinfo_response = requests.get(uri, headers=headers, data=body)
 
+        print("userinfo response: " + userinfo_response.json())
+
         # You want to make sure their email is verified.
         # The user authenticated with Google, authorized your
         # app, and now you've verified their email through Google!
@@ -706,20 +708,27 @@ try:
             id_=unique_id, name=users_name, email=users_email, profile_pic=picture
         )
 
+        print("user id: " + user.id)
+
         # Doesn't exist? Add it to the database.
         if not User.get(unique_id):
             User.create(unique_id, users_name, users_email, picture)
+            print("Created new user")
 
         # Begin user session by logging the user in
         login_user(user)
+        print("Logged in!!")
 
         # Send user back to previous page
         try:
             if session['url']:
+                print("Session Redirect")
                 return redirect(session['url'])
         except Exception as e:
+            print("index redirect - missing session url")
             return redirect(url_for("index"))
 
+        print("index Redirect")
         return redirect(url_for("index"))
 
 
