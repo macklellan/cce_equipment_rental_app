@@ -227,9 +227,9 @@ try:
                 files.upload_image(f, fname)
                 db_lib.add_id(current_user.id, fname)
 
-                if current_user.renter_profile is None:
+                if not current_user.profile_complete():
                     db_lib.set_complete_renter(current_user.id)
-                    
+
                 return render_template('profile.html', success="Added ID Photo/Scan, Created Renter Profile! Admin will review for any issues.", pro=profile_dict)
 
     # Update Profile Data
