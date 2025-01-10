@@ -684,6 +684,7 @@ try:
         uri, headers, body = client.add_token(userinfo_endpoint)
 
         print("userinfo endpoint: " + userinfo_endpoint)
+        print("userinfo uri: " + uri)
 
         userinfo_response = requests.get(uri, headers=headers, data=body)
 
