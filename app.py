@@ -41,6 +41,10 @@ try:
 
     app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
 
+    app.config['SESSION_COOKIE_SECURE'] = True
+
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+
     # User session management setup
     # https://flask-login.readthedocs.io/en/latest
     login_manager = LoginManager()
