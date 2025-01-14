@@ -12,3 +12,9 @@ backend:
 name: cce-rentals
 region: us-east-1
 yamlVersion: 2
+
+frontend:
+  redirects:
+    - from: /old-path
+      to: /new-path
+      status: 302
