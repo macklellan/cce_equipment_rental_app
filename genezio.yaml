@@ -15,7 +15,6 @@ yamlVersion: 2
 
 frontend:
     path: .
-    publish: dist
     redirects:
       - from: /old-path
         to: /new-path
