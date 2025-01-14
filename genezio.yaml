@@ -14,7 +14,8 @@ region: us-east-1
 yamlVersion: 2
 
 frontend:
-  redirects:
-    - from: /old-path
-      to: /new-path
-      status: 302
+    path: .
+    redirects:
+        from: /old-path
+        to: /new-path
+        status: 302
