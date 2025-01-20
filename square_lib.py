@@ -9,7 +9,7 @@ import string
 
 client = Client(
   access_token=os.environ['SQUARE_ACCESS_TOKEN'],
-  environment="sandbox"
+  environment=os.environ['SQUARE_ENV']
 )
 
 
@@ -131,7 +131,6 @@ def start_deposit(res_id, square_id, source_id):
     )
 
     if result.is_success():
-        result
         add_dep_source(res_id, result.body['payment']['id'])
         print(result.body)
     elif result.is_error():
