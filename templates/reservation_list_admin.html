@@ -58,7 +58,7 @@
                      {% if res['status'] <= 1 %}
                      <span class="badge bg-secondary">Not Started</span>
                      {% elif res['status'] == 2 %}
-                     <span class="badge bg-secondary">In Progress</span>
+                     <span class="badge bg-warning">In Progress</span>
                      {% elif res['status'] >= 3 %}
                      <span class="badge bg-success"> Complete</span>
                      {% endif %}
@@ -73,6 +73,7 @@
                        </a>
 
                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                         <a class="dropdown-item" href="{{ url_for('reservation_list_admin', pend=res['res_id']) }}" onclick="return confirm('Are you sure you want to reset this reservation to pending?')">Set to Pending</a>
                          <a class="dropdown-item" href="{{ url_for('reservation_list_admin', approve=res['res_id']) }}" onclick="return confirm('Are you sure you want to approve this reservation?')">Approve Reservation</a>
                          <a class="dropdown-item" href="{{ url_for('reservation_list_admin', deny=res['res_id']) }}" onclick="return confirm('Are you sure you want to deny this reservation?')">Deny Reservation</a>
                          <a class="dropdown-item" href="{{ url_for('reservation_list_admin', start=res['res_id']) }}" onclick="return confirm('Are you sure?')">Start Fufillment</a>

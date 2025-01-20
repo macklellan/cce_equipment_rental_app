@@ -223,6 +223,16 @@ def deny_reservation(res_id):
     db.close()
     return True
 
+def update_reservation_status(res_id, status_int):
+    db = get_db()
+    curs = db.cursor()
+    curs.execute(
+        "UPDATE `reservations` SET status = %s WHERE id = %s;", (status_int, res_id)
+    )
+    db.commit()
+    curs.close()
+    db.close()
+    return True
 
 def add_dep_source(res_id, source_id):
     db = get_db()
@@ -252,7 +262,7 @@ def show_cal_event(event_id):
     db = get_db()
     curs = db.cursor()
     curs.execute(
-        "UPDATE `events` SET bg='#FF5656' WHERE id = %s and id != %s;", (int(event_id), 'None')
+        "UPDATE `events` SET bg='#FF5656' WHERE id = %s and id != %s;", (int(event_id), 0)
     )
     db.commit()
     curs.close()

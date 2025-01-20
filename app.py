@@ -578,9 +578,12 @@ try:
     @app.route('/admin2', methods=["GET"])
     @app.route('/admin2/approve_reservation/<approve>', methods=["GET"])
     @app.route('/admin2/deny_reservation/<deny>', methods=["GET"])
+    @app.route('/admin2/start_fuf/<start>', methods=["GET"])
+    @app.route('/admin2/complete_fuf/<complete>', methods=["GET"])
+    @app.route('/admin2/pend_fuf/<pend>', methods=["GET"])
     @login_required
     @admin_required
-    def reservation_list_admin(approve=None, deny=None):
+    def reservation_list_admin(approve=None, deny=None, start=None, complete=None, pend=None):
 
         if approve is not None:
             res_info = db_lib.get_res_info(approve)
@@ -594,9 +597,29 @@ try:
             db_lib.hide_cal_event(res_info['event_id'])
             return redirect(url_for("reservation_list_admin"))
 
-        profile_dict = get_renter_profile(current_user.id, True)
+        if pend is not None:
+            res_info = db_lib.get_res_info(pend)
+            db_lib.update_reservation_status(pend, 0)
+            return redirect(url_for("reservation_list_admin"))
+
+        if start is not None:
+            res_info = db_lib.get_res_info(start)
+            if res_info['status'] < 1:
+                return render_template('reservation_list_admin.html', error="Can't start fufillment on un-approved reservations!")
+            else:
+                db_lib.update_reservation_status(start, 2)
+                return redirect(url_for("reservation_list_admin"))
+
+        if complete is not None:
+            res_info = db_lib.get_res_info(complete)
+            if res_info['status'] < 1:
+                return render_template('reservation_list_admin.html', error="Can't complete fufillmnent on un-approved reservations!")
+            else:
+                db_lib.update_reservation_status(complete, 3)
+                return redirect(url_for("reservation_list_admin"))
+
         res_list = current_user.reservations(allrecords=True)
-        return render_template('reservation_list_admin.html', res_list=res_list, pro=profile_dict)
+        return render_template('reservation_list_admin.html', res_list=res_list)
 
 
     # View list of users/renters
