@@ -89,26 +89,26 @@ def last_booking_id():
     db = get_db()
     curs = db.cursor()
     curs.execute(
-        "SELECT last_insert_id() 'reservations';"
+        "SELECT MAX(ID) FROM reservations;"
     )
     last_id = curs.fetchone()
     curs.close()
     db.close()
 
-    return last_id[0] + 1
+    return last_id[0]
 
 
 def last_event_id():
     db = get_db()
     curs = db.cursor()
     curs.execute(
-        "select last_insert_id() 'events';"
+        "SELECT MAX(ID) FROM events;"
     )
     last_id = curs.fetchone()
     curs.close()
     db.close()
 
-    return last_id[0] + 1
+    return last_id[0]
 
 
 def all_renter_profiles():
@@ -240,7 +240,7 @@ def hide_cal_event(event_id):
     db = get_db()
     curs = db.cursor()
     curs.execute(
-        "UPDATE `events` SET bg = %s WHERE id = %s;", ('', int(event_id))
+        "UPDATE `events` SET bg = %s WHERE id = %s;", (' ', int(event_id))
     )
     db.commit()
     curs.close()
