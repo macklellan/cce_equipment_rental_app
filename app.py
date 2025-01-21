@@ -263,7 +263,7 @@ try:
 
         try:
             filename = profile_dict['license']
-            file_path = os.path.join(ID_PIC_FOLDER, filename)
+            file_path = TMP_DIR / filename
             tries = 2
 
             for x in range(tries):
@@ -557,7 +557,7 @@ try:
         profile_dict = get_renter_profile(user_id, True)
         try:
             filename = profile_dict['license']
-            file_path = os.path.join(ID_PIC_FOLDER, filename)
+            file_path = TMP_DIR / filename
             if os.path.isfile(file_path):
                 return send_file(file_path)
             else:
