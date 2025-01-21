@@ -15,6 +15,7 @@ try:
     # import logging
     import sys
     import calendar_lib as evt
+    from pathlib import Path
 
     # local
     from pdfer import gen, esign
@@ -25,8 +26,9 @@ try:
     import files
 
     # fix working directory so hard links work correctly
-    BASEDIR = os.path.abspath(os.path.dirname(__file__))
-    os.chdir(BASEDIR)
+    # BASEDIR = os.path.abspath(os.path.dirname(__file__))
+    TMP_DIR = Path("/tmp")
+    # os.chdir(BASEDIR)
 
     # logging.basicConfig(filename='log.log',
     #                         filemode='a',
@@ -454,7 +456,7 @@ try:
 
 
 
-    PDF_FOLDER = 'tmp/'
+    PDF_FOLDER = TMP_DIR
     ID_PIC_FOLDER = 'tmp/'
 
 
@@ -474,7 +476,10 @@ try:
         try:
 
             filename = res_id + '.pdf'  # Sanitize the filename
-            file_path = os.path.join(PDF_FOLDER, filename)
+            file_path = TMP_DIR / filename
+
+            print("path: ")
+            print(file_path)
 
             # retry download/send/generate/send flow 3 times
             for x in range(2):
@@ -483,8 +488,9 @@ try:
                 if not os.path.isfile(file_path) and (res_info['era_signed_date'] is not None):
                     # attempt download
                     try:
-                        files.download_pdf(filename)
+                        files.download_pdf(file_path, filename)
                     except Exception as e:
+                        raise e
                         print('Whoops')
 
                 if os.path.isfile(file_path):
@@ -502,6 +508,8 @@ try:
                     gen(res_id, res_info['renter_name'], equipment_dict)
                     if os.path.isfile(file_path):
                         return send_file(file_path)
+
+            return make_response("Error: Unable to generate at this time...", 404)
 
         except Exception as e:
             raise e
@@ -533,8 +541,9 @@ try:
         # this def needs to be here
         db_lib.add_esign(res_id, res_info['renter_name'], datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
+        fname = res_id + ".pdf"
         # upload to cloud
-        files.upload_pdf("tmp/" + res_id + ".pdf", res_id + ".pdf")
+        files.upload_pdf(TMP_DIR / fname, res_id + ".pdf")
 
         return redirect(url_for("reservation", id=res_id))
 

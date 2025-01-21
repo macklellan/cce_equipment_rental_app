@@ -1,6 +1,10 @@
 
 from azure.storage.fileshare import ShareServiceClient, ShareFileClient, ShareDirectoryClient
 import os
+from pathlib import Path
+
+
+TMP_DIR = Path("/tmp")
 
 connection_string = os.environ['AZURE_CONN_STR']
 # service = ShareServiceClient.from_connection_string(conn_str=connection_string)
@@ -21,7 +25,8 @@ def upload_image(source_file, fname):
 def download_image(fname):
     service = ShareServiceClient.from_connection_string(conn_str=connection_string)
     file_client = ShareFileClient.from_connection_string(conn_str=connection_string, share_name="cceimages", file_path="images/" + fname)
-    with open("tmp/" + fname, "wb") as file_handle:
+    p = TMP_DIR / fname
+    with open(p, "wb") as file_handle:
         data = file_client.download_file()
         data.readinto(file_handle)
 
@@ -33,9 +38,9 @@ def upload_pdf(path, fname):
         file_client.upload_file(source_file)
 
 
-def download_pdf(fname):
+def download_pdf(file_path, fname):
     service = ShareServiceClient.from_connection_string(conn_str=connection_string)
     file_client = ShareFileClient.from_connection_string(conn_str=connection_string, share_name="cceimages", file_path="pdfs/" + fname)
-    with open("tmp/" + fname, "wb") as file_handle:
+    with open(file_path, "wb") as file_handle:
         data = file_client.download_file()
         data.readinto(file_handle)

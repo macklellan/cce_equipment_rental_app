@@ -4,7 +4,10 @@ from datetime import datetime
 from reportlab.pdfgen.canvas import Canvas
 import os, io
 from db_lib import get_res_info
+from pathlib import Path
 
+
+TMP_DIR = Path("/tmp")
 
 # Credit to Author of following class
 # https://medium.com/@sarumathyprabakaran
@@ -107,7 +110,9 @@ def gen(id, renter_name, eq_dict, signed=False):
 
     gen.merge()
 
-    gen.generate("tmp/" + id + ".pdf")
+    fname = id + ".pdf"
+
+    gen.generate(TMP_DIR / fname)
     append_content(id)
 
 
@@ -115,8 +120,10 @@ def gen(id, renter_name, eq_dict, signed=False):
 def append_content(id):
     merger = PdfWriter()
 
-    for pdf in [ "tmp/" + id + ".pdf", "pdf_templates/ERA-1.0-TEMPLATE_CONTENT.pdf"]:
+    fname = id + ".pdf"
+
+    for pdf in [ TMP_DIR / fname, "pdf_templates/ERA-1.0-TEMPLATE_CONTENT.pdf"]:
         merger.append(pdf)
 
-    merger.write("tmp/" + id + ".pdf")
+    merger.write(TMP_DIR / fname)
     merger.close()
