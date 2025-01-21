@@ -21,7 +21,7 @@ def upload_image(source_file, fname):
 def download_image(fname):
     service = ShareServiceClient.from_connection_string(conn_str=connection_string)
     file_client = ShareFileClient.from_connection_string(conn_str=connection_string, share_name="cceimages", file_path="images/" + fname)
-    with open("temp/" + fname, "wb") as file_handle:
+    with open(fname, "wb") as file_handle:
         data = file_client.download_file()
         data.readinto(file_handle)
 
@@ -36,6 +36,6 @@ def upload_pdf(path, fname):
 def download_pdf(fname):
     service = ShareServiceClient.from_connection_string(conn_str=connection_string)
     file_client = ShareFileClient.from_connection_string(conn_str=connection_string, share_name="cceimages", file_path="pdfs/" + fname)
-    with open("temp/" + fname, "wb") as file_handle:
+    with open(fname, "wb") as file_handle:
         data = file_client.download_file()
         data.readinto(file_handle)
