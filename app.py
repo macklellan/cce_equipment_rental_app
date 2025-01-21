@@ -307,13 +307,14 @@ try:
         if 'evtSave2' in request.form:
             start_date = request.form['evtStart']
             sd = datetime.strptime(start_date, '%Y-%m-%d').date()
+            sd2 = sd.strftime('%Y-%m-%d')
 
             if datetime.strptime(start_date, '%Y-%m-%d') <= datetime.today():
                 return redirect(session['url'])
 
             n_days = int(request.form['evtDays'])
             end = (sd + timedelta(days=n_days-1)).strftime('%Y-%m-%d')
-            return render_template('reservation_create.html', equip=equipment, pro=profile_dict, start=start_date, end=end, n_days=n_days, rate=eq_d[equipment]['ppd'], dfee=eq_d[equipment]['dfee'], ifee=eq_d[equipment]['ifee'])
+            return render_template('reservation_create.html', equip=equipment, pro=profile_dict, start=sd2, end=end, n_days=n_days, rate=eq_d[equipment]['ppd'], dfee=eq_d[equipment]['dfee'], ifee=eq_d[equipment]['ifee'])
 
         if 'rbutton' in request.form:
             start = request.form['start']
@@ -347,7 +348,7 @@ try:
         res_info = db_lib.get_res_info(id)
 
         # validate user / view
-        # must be admin or match reservation to view
+        # must be admin or match reservation id to view
         if current_user.id != res_info['renter_id'] and not current_user.is_admin():
             return abort(403)
 
@@ -359,12 +360,13 @@ try:
         billing_cc = square_lib.square_billing_cc(res_info['renter_id'])
         last_4 = square_lib.square_billing_cc_last4(res_info['renter_id'])
 
-        print(billing_cc)
-
         if res_info['transport'] == 'C&E Provided':
             res_info['transport2'] = 1
         else:
             res_info['transport2'] = 0
+
+        res_info['start'] = res_info['start'].strftime('%Y-%m-%d')
+        res_info['end'] = res_info['end'].strftime('%Y-%m-%d')
 
         esig = res_info['era_signed_date']
 
