@@ -107,7 +107,7 @@ def gen(id, renter_name, eq_dict, signed=False):
 
     gen.merge()
 
-    gen.generate(id + ".pdf")
+    gen.generate("tmp/" + id + ".pdf")
     append_content(id)
 
 
@@ -115,8 +115,8 @@ def gen(id, renter_name, eq_dict, signed=False):
 def append_content(id):
     merger = PdfWriter()
 
-    for pdf in [ id + ".pdf", "pdf_templates/ERA-1.0-TEMPLATE_CONTENT.pdf"]:
+    for pdf in [ "tmp/" + id + ".pdf", "pdf_templates/ERA-1.0-TEMPLATE_CONTENT.pdf"]:
         merger.append(pdf)
 
-    merger.write(id + ".pdf")
+    merger.write("tmp/" + id + ".pdf")
     merger.close()

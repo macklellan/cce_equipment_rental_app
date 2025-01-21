@@ -454,8 +454,8 @@ try:
 
 
 
-    PDF_FOLDER = ''
-    ID_PIC_FOLDER = ''
+    PDF_FOLDER = 'tmp/'
+    ID_PIC_FOLDER = 'tmp/'
 
 
     # view rental agreement
@@ -534,7 +534,7 @@ try:
         db_lib.add_esign(res_id, res_info['renter_name'], datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         # upload to cloud
-        files.upload_pdf(res_id + ".pdf", res_id + ".pdf")
+        files.upload_pdf("tmp/" + res_id + ".pdf", res_id + ".pdf")
 
         return redirect(url_for("reservation", id=res_id))
 
