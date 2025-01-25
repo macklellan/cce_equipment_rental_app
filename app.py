@@ -478,8 +478,8 @@ try:
             filename = res_id + '.pdf'  # Sanitize the filename
             file_path = TMP_DIR / filename
 
-            print("path: ")
-            print(file_path)
+            #print("path: ")
+            #print(file_path)
 
             # retry download/send/generate/send flow 3 times
             for x in range(2):
@@ -491,7 +491,7 @@ try:
                         files.download_pdf(file_path, filename)
                     except Exception as e:
                         raise e
-                        print('Whoops')
+                        #print('Whoops')
 
                 if os.path.isfile(file_path):
                     return send_file(file_path)
@@ -589,7 +589,7 @@ try:
     def get():
           data = dict(request.form)
           events = evt.get(int(data["month"]), int(data["year"]), str(data['equipment']))
-          print(data)
+          #print(data)
           return "{}" if events is None else events
 
 
@@ -675,11 +675,11 @@ try:
 
         redirect_uri = request.base_url + "/callback"
 
-        print(" REDIR URI: " + redirect_uri)
+        #print(" REDIR URI: " + redirect_uri)
 
         redirect_uri = redirect_uri.replace('https', 'http').replace('http', 'https')
 
-        print(" FIXED REDIR URI: " + redirect_uri)
+        #print(" FIXED REDIR URI: " + redirect_uri)
 
         # Use library to construct the request for Google login and provide
         # scopes that let you retrieve user's profile from Google
@@ -689,7 +689,7 @@ try:
             scope=["email"],
         )
 
-        print("REDIR REQUEST URI: " + request_uri)
+        #print("REDIR REQUEST URI: " + request_uri)
 
         return redirect(request_uri)
 
@@ -704,15 +704,15 @@ try:
         google_provider_cfg = get_google_provider_cfg()
         token_endpoint = google_provider_cfg["token_endpoint"]
 
-        print("Token endpoint: " + token_endpoint)
+        #print("Token endpoint: " + token_endpoint)
 
         auth_resp = request.url.replace('https', 'http').replace('http', 'https')
 
-        print("Callback auth_resp URI: " + auth_resp)
+        #print("Callback auth_resp URI: " + auth_resp)
 
         redir_uri = request.base_url.replace('https', 'http').replace('http', 'https')
 
-        print("Callback REDIR URI: " + redir_uri)
+        #print("Callback REDIR URI: " + redir_uri)
 
         # Prepare and send a request to get tokens! Yay tokens!
         token_url, headers, body = client.prepare_token_request(
@@ -722,7 +722,7 @@ try:
             code=code
         )
 
-        print("Token URL: " + token_url)
+        #print("Token URL: " + token_url)
 
         token_response = requests.post(
             token_url,
@@ -740,18 +740,18 @@ try:
         userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
         uri, headers, body = client.add_token(userinfo_endpoint)
 
-        print("userinfo endpoint: " + userinfo_endpoint)
-        print("userinfo uri: " + uri)
+        #print("userinfo endpoint: " + userinfo_endpoint)
+        #print("userinfo uri: " + uri)
 
         userinfo_response = requests.get(uri, headers=headers, data=body)
 
-        print("userinfo response: " + str(userinfo_response.json()))
+        #print("userinfo response: " + str(userinfo_response.json()))
 
         # You want to make sure their email is verified.
         # The user authenticated with Google, authorized your
         # app, and now you've verified their email through Google!
         if userinfo_response.json().get("email_verified"):
-            unique_id = userinfo_response.json()["sub"]
+            unique_id = str(userinfo_response.json()["sub"])
             users_email = userinfo_response.json()["email"]
             picture = userinfo_response.json()["picture"]
             # users_name = userinfo_response.json()["given_name"]
@@ -765,28 +765,28 @@ try:
             id_=unique_id, name=users_name, email=users_email, profile_pic=picture
         )
 
-        print("user id: " + user.id)
+        #print("user id: " + user.id)
 
         # Doesn't exist? Add it to the database.
         if not User.get(unique_id):
             User.create(unique_id, users_name, users_email, picture)
-            print("Created new user")
+            #print("Created new user")
         else:
             print("Existing User")
         # Begin user session by logging the user in
         login_user(user)
-        print("Logged in!!")
+        #print("Logged in!!")
 
         # Send user back to previous page
         try:
             if session['url']:
-                print("Session Redirect")
+                #print("Session Redirect")
                 return redirect(session['url'])
         except Exception as e:
-            print("index redirect - missing session url")
+            #print("index redirect - missing session url")
             return redirect(url_for("index"))
 
-        print("index Redirect")
+        #print("index Redirect")
         return redirect(url_for("index"))
 
 

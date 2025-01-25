@@ -1,76 +1,68 @@
 import os
-import mysql.connector
+import postgres
 
-def get_db():
-    mydb = mysql.connector.connect(
-      host=os.environ['DB_HOST'],
-      user=os.environ['DB_USER'],
-      password=os.environ['DB_PASS'],
-      database="rental_app_db"
-    )
 
-    return mydb
+
+def get_db2():
+    return postgres.Postgres(url=os.environ['POSTGRES_URL'])
+
 
 def add_id(user_id, filename):
-    print(user_id)
-    print(filename)
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `renter` SET license = %s WHERE id2 = %s;", (filename, user_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE renters SET license = '{filename}' WHERE id2 = '{user_id}';"
+        )
+
     return True
 
 
 def add_square_id(user_id, square_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `renter` SET squareid = %s WHERE id2 = %s;", (square_id, user_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE renters SET squareid = '{square_id}' WHERE id2 = '{user_id}';"
+        )
+
     return True
 
 
 def del_square_id(user_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `renter` SET squareid = NULL WHERE id2 = %s and id2 != %s;", (user_id, 'None')
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE renters SET squareid = NULL WHERE id2 = '{user_id}';"
+        )
+
     return True
 
 
 def set_complete_renter(user_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `renter` SET completed = 1 WHERE id2 = %s and id2 != %s;", (user_id, "None")
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE renters SET completed = True WHERE id2 = '{user_id}';"
+        )
+
     return True
 
 
 def get_res_info(res_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "SELECT * FROM reservations WHERE id = %s and id != %s", (res_id, 'None')
-    )
+    db = get_db2()
 
-    res = curs.fetchone()
-    curs.close()
-    db.close()
+    res = None
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"SELECT * FROM reservations WHERE id = '{res_id}' ;"
+        )
+
+        res = curs.fetchone()
 
     if not res:
         return None
@@ -86,42 +78,48 @@ def get_res_info(res_id):
 
 
 def last_booking_id():
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "SELECT MAX(ID) FROM reservations;"
-    )
-    last_id = curs.fetchone()
-    curs.close()
-    db.close()
+    db = get_db2()
 
+    last_id = None
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            "SELECT MAX(ID) FROM reservations;"
+        )
+        last_id = curs.fetchone()
+
+    if not last_id:
+        return None
     return last_id[0]
 
 
 def last_event_id():
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "SELECT MAX(ID) FROM events;"
-    )
-    last_id = curs.fetchone()
-    curs.close()
-    db.close()
+    db = get_db2()
 
+    last_id = None
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            "SELECT MAX(ID) FROM events;"
+        )
+        last_id = curs.fetchone()
+
+    if not last_id:
+        return None
     return last_id[0]
 
 
 def all_renter_profiles():
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "SELECT * FROM renter"
-    )
+    db = get_db2()
 
     ress = None
-    ress = curs.fetchall()
-    curs.close()
-    db.close()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            "SELECT * FROM renters"
+        )
+        ress = curs.fetchall()
+
 
     new_ress = []
 
@@ -147,15 +145,15 @@ def all_renter_profiles():
 
 
 def get_renter_profile(user_id, blanks=False):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "SELECT * FROM renter WHERE id2 = %s and id2 != %s", (user_id,'None')
-    )
+    db = get_db2()
 
-    profile = curs.fetchone()
-    curs.close()
-    db.close()
+    profile = None
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"SELECT * FROM renters WHERE id2 = '{user_id}' and id2 != 'None';"
+        )
+        profile = curs.fetchone()
+
 
     if not profile:
         if blanks == True:
@@ -190,119 +188,107 @@ def get_renter_profile(user_id, blanks=False):
 
 
 def add_esign(res_id, name, date):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `reservations` SET era_signed_date = %s, era_signed_name = %s WHERE id = %s;", (date, name, res_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE reservations SET era_signed_date = '{date}', era_signed_name = '{name}' WHERE id = '{res_id}';"
+        )
 
 
 def approve_reservation(res_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `reservations` SET status = %s WHERE id = %s;", (1, res_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE reservations SET status = 1 WHERE id = '{res_id}';"
+        )
+
     return True
 
-
 def deny_reservation(res_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `reservations` SET status = %s WHERE id = %s;", (-1, res_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE reservations SET status = -1 WHERE id = '{res_id}';"
+        )
+
     return True
 
 def update_reservation_status(res_id, status_int):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `reservations` SET status = %s WHERE id = %s;", (status_int, res_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE reservations SET status = '{status_int}' WHERE id = '{res_id}';"
+        )
+
     return True
 
 def add_dep_source(res_id, source_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `reservations` SET deposit_source_id = %s WHERE id = %s;", (source_id, res_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE reservations SET deposit_source_id = '{source_id}' WHERE id = '{res_id}';"
+        )
+
     return True
 
 
 def hide_cal_event(event_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `events` SET bg = %s WHERE id = %s;", (' ', int(event_id))
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE events SET bg = ' ' WHERE id = '{int(event_id)}';"
+        )
+
     return True
 
 
 def show_cal_event(event_id):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `events` SET bg='#FF5656' WHERE id = %s and id != %s;", (int(event_id), 0)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE events SET bg='#FF5656' WHERE id = '{int(event_id)}';"
+        )
+
     return True
 
 
 def add_dep_ide(res_id, ide):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "UPDATE `reservations` SET deposit_idempotency = %s WHERE id = %s;", (ide, res_id)
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE reservations SET deposit_idempotency = '{ide}' WHERE id = '{res_id}';"
+        )
+
     return True
 
 
 def add_renter_profile(id_, fname, lname, phone, email, contractor, license, completed):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "INSERT INTO renter (id2, fname, lname, phone, email, contractor, license, insurance, completed, squareid) "
-        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-        (id_, fname, lname, phone, email, contractor, license, None, completed, None),
+    db = get_db2()
+
+    db.run("INSERT INTO renters (id2, fname, lname, phone, email, contractor, license, insurance, completed, squareid) VALUES (%(id)s, %(fname)s, %(lname)s, %(phone)s, %(email)s, %(contractor)s, %(license)s, NULL, %(completed)s, NULL)",
+            {"id":id_, "fname":fname, "lname":lname, "phone":phone, "email":email, "contractor":contractor, "license":license, "completed":completed}
     )
-    db.commit()
-    curs.close()
-    db.close()
+
 
 
 def create_booking(event_id, renter_id, equipment, start, end, n_days, n_weeks,n_months,transport,renter_name,company,phone,invoice_email,job_desc, exp_level, address1,address2,city,state,zip,commerical_prop,text):
-    db = get_db()
-    curs = db.cursor()
-    curs.execute(
-        "INSERT INTO reservations (renter_id, equipment, start, end, n_days, n_weeks,n_months,transport,renter_name,company,phone,invoice_email,job_desc, exp_level, address1,address2,city,state,zip,commerical_prop,note,event_id, era_signed_date, era_signed_name, status, deposit_source_id, deposit_idempotency) "
-        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s , %s , %s, %s, %s)",
-        (renter_id, equipment, start, end, n_days, n_weeks,n_months,transport,renter_name,company,phone,invoice_email,job_desc,exp_level, address1,address2,city,state,zip,commerical_prop,text,event_id, None, None, 0, None, None),
-    )
-    db.commit()
-    curs.close()
-    db.close()
+    db = get_db2()
+
+    db.run(
+            "INSERT INTO reservations (renter_id, equipment, start, end_, n_days, n_weeks,n_months,transport,renter_name,company,phone,invoice_email,job_desc, exp_level, address1,address2,city,state,zip,commerical_prop,note,event_id, era_signed_date, era_signed_name, status, deposit_source_id, deposit_idempotency) "
+            "VALUES (%(renter_id)s, %(equipment)s, %(start)s, %(end)s, %(n_days)s, %(n_weeks)s, %(n_months)s, %(transport)s, %(renter_name)s, %(company)s, %(phone)s, %(invoice_email)s, %(job_desc)s, %(exp_level)s,"
+            "%(address1)s, %(address2)s, %(city)s, %(state)s, %(zip)s, %(commerical_prop)s, %(text)s, %(event_id)s, NULL , NULL , 0, NULL, NULL)",
+            {"event_id":event_id, "renter_id":renter_id, "equipment":equipment, "start":start, "end":end, "n_days":n_days, "n_weeks":n_weeks, "n_months":n_months, "transport":transport, "renter_name":renter_name,
+            "company":company, "phone":phone, "invoice_email":invoice_email, "job_desc":job_desc, "exp_level":exp_level, "address1":address1, "address2":address2, "city":city, "state":state,
+            "zip":zip, "commerical_prop":commerical_prop, "text":text}
+        )
+
+    return True

@@ -1,7 +1,7 @@
 from flask_login import UserMixin
-
-from db_lib import get_db, get_renter_profile, add_renter_profile
+from db_lib import get_db2, get_renter_profile, add_renter_profile
 from square_lib import get_cc
+
 
 class User(UserMixin):
     def __init__(self, id_, name, email, profile_pic, renter_profile=None):
@@ -13,6 +13,8 @@ class User(UserMixin):
 
 
     def profile_complete(self):
+        self.renter_profile = get_renter_profile(self.id)
+
         if self.renter_profile == None:
             return False
 
@@ -27,7 +29,7 @@ class User(UserMixin):
 
     def square_billing_c(self):
         if self.renter_profile == None:
-            self.refresh_renter_profile()
+            self.renter_profile = get_renter_profile(self.id)
 
         # no square profile
         if self.renter_profile['squareid'] is None:
@@ -40,7 +42,7 @@ class User(UserMixin):
 
     def square_billing_cc(self):
         if self.renter_profile == None:
-            self.refresh_renter_profile()
+            self.renter_profile = get_renter_profile(self.id)
 
         # no square profile
         if self.renter_profile['squareid'] is None:
@@ -59,22 +61,22 @@ class User(UserMixin):
 
 
     def reservations(self, allrecords=False):
-        db = get_db()
-        curs = db.cursor()
+        db = get_db2()
 
         ress = None
+
         if allrecords and self.is_admin():
 
-            curs.execute(
-                "SELECT * FROM reservations"
-            )
+            with db.get_cursor() as curs:
+                curs.execute("SELECT * FROM reservations")
+                ress = curs.fetchall()
 
         else:
-            curs.execute(
-                "SELECT * FROM reservations WHERE renter_id = %s and renter_id != %s;", (self.id, 'None')
-            )
 
-        ress = curs.fetchall()
+            with db.get_cursor() as curs:
+                curs.execute(f"SELECT * FROM reservations WHERE renter_id = '{self.id}';")
+                ress = curs.fetchall()
+
 
         new_ress = []
 
@@ -98,16 +100,18 @@ class User(UserMixin):
         self.renter_profile = get_renter_profile(self.id)
 
 
+
+
     @staticmethod
     def get(user_id):
-        db = get_db()
-        curs = db.cursor()
-        curs.execute(
-            "SELECT * FROM user WHERE id = %s and id != %s;", (user_id, 'None')
-        )
-        user = curs.fetchone()
-        curs.close()
-        db.close()
+
+        db = get_db2();
+
+        user = None
+
+        with db.get_cursor() as curs:
+            curs.execute(f"SELECT * FROM users WHERE id = '{user_id}' ;")
+            user = curs.fetchone()
 
         if not user:
             return None
@@ -115,17 +119,14 @@ class User(UserMixin):
         user = User(
             id_=user[0], name=user[1], email=user[2], profile_pic=user[3], renter_profile=get_renter_profile(user_id)
         )
+
         return user
 
 
     @staticmethod
     def create(id_, name, email, profile_pic):
-        db = get_db()
-        curs = db.cursor()
-        curs.execute(
-            "INSERT INTO user (id, name, email, profile_pic) VALUES (%s, %s, %s, %s)",
-            (id_, name, email, profile_pic),
-        )
-        db.commit()
-        curs.close()
-        db.close()
+        db = get_db2()
+        with db.get_cursor() as curs:
+            curs.execute(
+                f"INSERT INTO users (id, name, email, profile_pic) VALUES ('{id_}', '{name}', '{email}', '{profile_pic}')"
+            )
