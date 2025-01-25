@@ -790,23 +790,23 @@ try:
         return redirect(url_for("index"))
 
 
-    @app.route("/login/t123")
-    def lt():
-        user = User(
-            id_='103913063181484802819', name='users_name', email='users_email', profile_pic='picture'
-        )
-
-        # Begin user session by logging the user in
-        login_user(user)
-
-        # Send user back to previous page
-        try:
-            if session['url']:
-                return redirect(session['url'])
-        except Exception as e:
-            return redirect(url_for("index"))
-
-        return redirect(url_for("index"))
+    # @app.route("/login/t123")
+    # def lt():
+    #     user = User(
+    #         id_='103913063181484802819', name='users_name', email='users_email', profile_pic='picture'
+    #     )
+    #
+    #     # Begin user session by logging the user in
+    #     login_user(user)
+    #
+    #     # Send user back to previous page
+    #     try:
+    #         if session['url']:
+    #             return redirect(session['url'])
+    #     except Exception as e:
+    #         return redirect(url_for("index"))
+    #
+    #     return redirect(url_for("index"))
 
 
     @app.route("/logout")
