@@ -12,8 +12,13 @@ client = Client(
   environment=os.environ['SQUARE_ENV']
 )
 
-
-
+sq_app_id = os.environ['SQUARE_APP_ID']
+sq_loc = os.environ['SQUARE_LOC']
+sq_env = os.environ['SQUARE_ENV']
+prod = False
+if sq_env == 'production':
+    prod = True
+    
 def square_billing_c(id):
     c =  get_renter_profile(id)
 
@@ -120,12 +125,12 @@ def start_deposit(res_id, square_id, source_id):
         "source_id": source_id,
         "idempotency_key": i_key,
         "amount_money": {
-          "amount": 100,
+          "amount": 5,
           "currency": "USD"
         },
         "autocomplete": False,
         "customer_id": square_id,
-        "location_id": "LRBMFJC7X2GHK",
+        "location_id": sq_loc,
         "accept_partial_authorization": False
       }
     )
@@ -138,7 +143,10 @@ def start_deposit(res_id, square_id, source_id):
 
 
 def add_cc(cust_id, source_id):
-    source_id='cnon:card-nonce-ok'
+
+    if prod != True:
+        source_id='cnon:card-nonce-ok'
+
     result = client.cards.create_card(
             body = {
                 "idempotency_key": ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10)),

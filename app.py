@@ -74,6 +74,14 @@ try:
     def get_google_cl_id():
         return os.environ['GOOGLE_CLIENT_ID']
 
+
+    sq_app_id = os.environ['SQUARE_APP_ID']
+    sq_loc = os.environ['SQUARE_LOC']
+    sq_env = os.environ['SQUARE_ENV']
+    prod = False
+    if sq_env == 'production':
+        prod = True
+
     # admin endpoint wrapper
     # @login_required
 
@@ -376,7 +384,8 @@ try:
 
         depo = (res_info['deposit_source_id'] is not None)
 
-        return render_template('reservation_view.html', res=res_info, pro=profile_dict, esig=esig, depo=depo, billing_c=billing, billing_cc=billing_cc, last_4=last_4, ppd=equipment_dict)
+        return render_template('reservation_view.html', res=res_info, pro=profile_dict, esig=esig, depo=depo, billing_c=billing,
+        billing_cc=billing_cc, last_4=last_4, ppd=equipment_dict, sq_app_id=sq_app_id, sq_loc=sq_loc, prod=prod)
 
 
 

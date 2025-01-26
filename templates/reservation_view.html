@@ -326,7 +326,7 @@
 
 <script type="module">
 
-    const payments = Square.payments('sandbox-sq0idb-2FQo-Ofey_cs7TtECiMRAA', 'TC4Z3ZEBKRXRH');
+    const payments = Square.payments('{{ sq_app_id }}', '{{ sq_loc }}');
     const card = await payments.card();
     await card.attach('#card-container');
 

@@ -6,7 +6,11 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% if prod %}
+    <script src="https://web.squarecdn.com/v1/square.js"></script>
+    {% else %}
     <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+    {% endif %}
   </head>
 
 
