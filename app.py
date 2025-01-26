@@ -149,8 +149,8 @@ try:
 
     eq_d = equipment_dict
 
-    att_list = {'2024_Bobcat_E26':['16" Toothed Bucket','Hydraulic Thumb (Equiped Standard)'],
-                '2024_Bobcat_E42':['24" Toothed Bucket','Hydraulic Thumb (Equiped Standard)']}
+    att_list = {'2024_Bobcat_E26':['16" Toothed Bucket','Hydraulic Thumb (Equipped Standard)'],
+                '2024_Bobcat_E42':['24" Toothed Bucket','Hydraulic Thumb (Equipped Standard)']}
 
     def tuples(iterable, arity):
         return [iterable[i:i+arity] for i in range(0, len(iterable), arity)]
