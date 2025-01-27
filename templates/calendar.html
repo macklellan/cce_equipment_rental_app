@@ -25,7 +25,7 @@
     var profile = null;
     console.log(profile)
     function comPro() {
-      window.location.href = "{{ url_for('profile') }}";
+      window.location.href = "{{ url_for('profile', flow='cal_b') }}";
     }
     </script>
   {% endif %}
@@ -56,7 +56,7 @@
 
         {% if pro['completed'] != 1 %}
           <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
-          <a class="" href="{{ url_for('profile') }}"><h2>You must complete your profile before viewing </h2></a>
+          <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete your profile before viewing </h2></a>
         {% endif %}
       </div>
     </div>

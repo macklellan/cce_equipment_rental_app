@@ -52,6 +52,8 @@
         {% endif %}
         </form>
 
+        {% if current_user.renter_profile %}
+
         <form action="{{ url_for('profile') }}" method="post" enctype="multipart/form-data">
         <br>
         <div class="form-group">
@@ -77,6 +79,7 @@
         {% endif %}
         <br>
         <br>
+        {% if current_user.profile_complete() %}
         <div class="form-group">
           <label for="insur">Please upload a picture or scan of your insurance.</label>
           <input type="file" class="form-control-file form-control-file-lg" name="file" id="insur">
@@ -86,6 +89,10 @@
          <button type="submit" name="ibutton" class="btn btn-primary btn-lg" disabled>Upload Insurance</button>
         {% else %}
          <button type="submit" name="ibutton" class="btn btn-primary btn-lg">Upload Insurance</button>
+        {% endif %}
+
+        {% endif %}
+
         {% endif %}
       </form>
     </div>

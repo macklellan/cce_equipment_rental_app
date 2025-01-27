@@ -210,11 +210,14 @@ try:
     # PROFILE PAGE
     # view, add, or edit profile info for the current user
     @app.route('/profile', methods=["GET", "POST"])
+    @app.route('/profile/<flow>', methods=["GET"])
     @login_required
-    def profile():
+    def profile(flow=None):
         profile_dict = get_renter_profile(current_user.id, True)
 
-    # Submit New Profile Data
+        if flow is not None and flow == 'cal_b':
+            session['cal_b'] = True
+
         if request.method == 'POST':
             if 'pbutton' in request.form:
                 fname = request.form['fname']
@@ -243,6 +246,10 @@ try:
 
                 if not current_user.profile_complete():
                     db_lib.set_complete_renter(current_user.id)
+
+                if session.get('cal_b') == True:
+                    session.pop('cal_b')
+                    return redirect(session['url'])
 
                 return render_template('profile.html', success="Added ID Photo/Scan, Created Renter Profile! Admin will review for any issues.", pro=profile_dict)
 
@@ -822,6 +829,7 @@ try:
     @login_required
     def logout():
         logout_user()
+        [session.pop(key) for key in list(session.keys())]
         return redirect(url_for("index"))
 
 
