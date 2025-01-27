@@ -341,8 +341,11 @@
         if (result.status === 'OK') {
 
           console.log(`Payment token is ${result.token}`);
-          statusContainer.innerHTML = "Successfully attached card. PLEASE REFRESH PAGE.";
+          statusContainer.innerHTML = "Successfully attached card. Please wait for the page to refresh!";
           post("{{ url_for('card_update', res_id=res['res_id']) }}",result.token)
+
+          window.location.href = "{{ url_for('reservation', id=res['res_id']) }}";
+
         } else {
           let errorMessage = `Tokenization failed with status: ${result.status}`;
           if (result.errors) {
