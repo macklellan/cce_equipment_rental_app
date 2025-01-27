@@ -36,30 +36,32 @@
   <body>
 
 
-    <!-- (A) PERIOD SELECTOR -->
-    <div id="calHead" class="row">
-      <div id="calPeriod" class="col-xl-6">
-        <input id="calToday" type="button" value="&#9733;" hidden>
-        <input id="calBack" type="button" value="  &lt;  ">
-        <input id="calNext" type="button" value="  &gt;  ">
-        <br>
-        <select id="calMonth"></select>
-        <input id="calYear" type="number" disabled>
+  <!-- (A) PERIOD SELECTOR -->
+  <div id="calHead">
 
-      </div>
-      <div class="col-xl-6">
+        <h1 style="color:white;"><a class="" href="{{ url_for('rentals') }}">[Back]</a>  Booking Calendar for: {{ equip }}</h1>
 
-        <!-- Hidden CalAdd in js as well -->
-        <!-- <input id="calAdd" type="button" value="+"> -->
+        <div id="calPeriod">
+          <select id="calMonth"></select>
+          <input id="calYear" type="number" disabled>
+          <br>
+          <input id="calToday" type="button" value="&#9733;" hidden>
+          <input id="calBack" type="button" value="  &lt;  ">
+          <input id="calNext" type="button" value="  &gt;  ">
 
-        <h1 style="color:white;">Booking Calendar for: {{ equip }}</h1>
 
-        {% if pro['completed'] != 1 %}
-          <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
-          <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete your profile before viewing </h2></a>
-        {% endif %}
-      </div>
+          <!-- Hidden CalAdd in js as well -->
+          <!-- <input id="calAdd" type="button" value="+"> -->
+
+          {% if pro['completed'] != 1 %}
+            <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
+            <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete your profile before viewing calendar</h2></a>
+          {% endif %}
+
+        </div>
     </div>
+
+
 
     <!-- (B) CALENDAR WRAPPER -->
     <div id="calWrap">
