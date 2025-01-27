@@ -7,6 +7,6 @@ completed BOOLEAN NOT NULL, squareid VARCHAR(50), PRIMARY KEY (id2));
 CREATE TABLE reservations (id SERIAL PRIMARY KEY, renter_id VARCHAR(50) NOT NULL , equipment VARCHAR(50) NOT NULL, start TIMESTAMP NOT NULL, end_ TIMESTAMP NOT NULL, n_days INT NOT NULL, n_weeks INT NOT NULL, n_months INT NOT NULL, transport VARCHAR(50) NOT NULL,
 renter_name VARCHAR(50) NOT NULL, company VARCHAR(50), phone VARCHAR(10) NOT NULL, invoice_email VARCHAR(50) NOT NULL, job_desc VARCHAR(50) NOT NULL, exp_level VARCHAR(25) NOT NULL, address1 VARCHAR(50) NOT NULL, address2 VARCHAR(50) DEFAULT NULL,
 city VARCHAR(25) NOT NULL, state VARCHAR(25) NOT NULL, zip VARCHAR(5) NOT NULL, commerical_prop BOOLEAN NOT NULL, note VARCHAR(200) DEFAULT NULL, event_id INT NOT NULL, era_signed_date TIMESTAMP DEFAULT NULL, era_signed_name VARCHAR(50), status INT NOT NULL,
-deposit_source_id VARCHAR(29), deposit_idempotency VARCHAR(10), PRIMARY KEY (id), FOREIGN KEY (renter_id) REFERENCES renter(id2));
+deposit_source_id VARCHAR(29), deposit_idempotency VARCHAR(10), FOREIGN KEY (renter_id) REFERENCES renters(id2));
 
 CREATE TABLE events (id SERIAL PRIMARY KEY, start TIMESTAMP NOT NULL, end TIMESTAMP NOT NULL, text VARCHAR(50) NOT NULL, color VARCHAR(10) NOT NULL, bg VARCHAR(10) NOT NULL, eq VARCHAR(50) NOT NULL);
