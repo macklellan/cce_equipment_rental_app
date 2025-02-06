@@ -24,6 +24,8 @@ class User(UserMixin):
     def is_admin(self):
         if self.email == 'ryanmcclellan2@gmail.com':
             return True
+        if self.email == 'mackenziecranford0197@gmail.com':
+            return True
         return False
 
 
