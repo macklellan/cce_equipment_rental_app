@@ -1,0 +1,48 @@
+
+{% block content %}
+
+<div class="card rentals-card">
+    <!-- <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[equip]['img'] }}" /> -->
+  <div class= "dash-card2">
+  <h2 class="title3">{{ eq_dict[equip]['note'] }}</h2>
+  <h4>{{ eq_dict[equip]['note2'] }}</h4>
+
+  <!-- Equipment Info Table -->
+  <table class="table table-lg title3 table-font">
+    <thead>
+      <tr>
+        <th scope="col"><b>Brand</b></th>
+        <th scope="col"><b>Model</b></th>
+        <th scope="col"><b>Weight</b></th>
+      </tr>
+      <tbody>
+        <tr>
+          <!-- <th scope="row">1</th> -->
+          <td>{{ eq_dict[equip]['brand'] }}</td>
+          <td>{{ eq_dict[equip]['model'] }}</td>
+          <td>{{ eq_dict[equip]['wt'] }} Lbs</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Equipment Implemnt Table -->
+    <table class="table table-lg title3 table-font">
+      <thead>
+        <tr>
+          <th scope="col"><b>Attachments</b></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+        <tbody>
+          {% for att in att_list[equip] %}
+          <tr>
+            <td>{{ att }}</td>
+            <td></td>
+            <td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+{% endblock %}
