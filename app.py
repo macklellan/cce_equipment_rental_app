@@ -232,6 +232,8 @@ try:
                 if None in (fname, lname, phone, email):
                     return render_template('profile.html', error="An error occurred. Missing required information.", pro=profile_dict)
 
+                phone = ''.join(filter(str.isdigit, phone))
+
                 current_user.create_renter_profile(fname, lname, phone, email, contractor, "", False)
                 # includes blanks
                 profile_dict = get_renter_profile(current_user.id, True)
@@ -344,6 +346,11 @@ try:
             lname = request.form['lname']
             company = request.form['comp']
             phone = request.form['phone']
+            if sum(c.isdigit() for c in phone) == 10:
+                phone = ''.join(filter(str.isdigit, phone))
+            else:
+                return make_response("Error: Bad phone input. Please go back and correct.", 202)
+
             email = request.form['email']
             job_desc = request.form['job_desc']
             exp_level = request.form['exp_level']
