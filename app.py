@@ -582,12 +582,20 @@ try:
     @admin_required
     def getidpic(user_id=None):
         profile_dict = get_renter_profile(user_id, True)
+
         try:
             filename = profile_dict['license']
             file_path = TMP_DIR / filename
-            if os.path.isfile(file_path):
-                return send_file(file_path)
-            else:
+            tries = 2
+
+            for x in range(tries):
+
+                if not os.path.isfile(file_path):
+                    files.download_image(filename)
+
+                if os.path.isfile(file_path):
+                    return send_file(file_path)
+
                 return make_response(f"File '{filename}' not found.", 404)
         except Exception as e:
             return make_response(f"Error: {str(e)}", 500)
