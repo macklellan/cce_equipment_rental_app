@@ -45,6 +45,9 @@
             <label for="ndays">Rental Days</label>
             <input type="number" class="form-control form-control-lg" name="ndays" id="ndays" value="{{ n_days }}" readonly disabled>
             <input type="number" class="form-control form-control-lg" name="ndays" id="ndays" value="{{ n_days }}" hidden>
+            <label for="nweeks">Rental Weeks</label>
+            <input type="number" class="form-control form-control-lg" name="nweeks" id="nweeks" value="{{ n_weeks }}" readonly disabled>
+            <input type="number" class="form-control form-control-lg" name="nweeks" id="nweeks" value="{{ n_weeks }}" hidden>
             <label for="end">End Date</label>
             <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ end }}" readonly disabled>
             <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ end }}" hidden>
@@ -52,9 +55,11 @@
           <div class="form-group col-xl-6">
             <div class="submit-card card">
             {% if start %}
-            <h4>Estimate Total: <b>{{ (rate * n_days) + (ifee * n_days) + dfee }}$</b></h4>
+            <h4>Estimate Total: <b>{{ (rate * n_days) + (rate2 * n_weeks) + (ifee * n_days) + ((ifee * 3) * n_weeks) + dfee }}$</b></h4>
             <h5><b>{{ rate * n_days }}$</b> ({{ rate }}$ Rental Fee per day) x{{ n_days }} </h5>
             <h5><b>{{ ifee * n_days }}$</b> ({{ ifee }}$ Insurance Fee per day) x{{ n_days }}</h5>
+            <h5><b>{{ rate2 * n_weeks }}$</b> ({{ rate2 }}$ Rental Fee per week) x{{ n_weeks }} </h5>
+            <h5><b>{{ (ifee * 3) * n_weeks }}$</b> ({{ ifee * 3 }}$ Insurance Fee per week) x{{ n_weeks }}</h5>
             <h5><b>{{ dfee }}$</b> Delivery Fee (within 25 Miles, subject to change)</h5>
             {% endif %}
             </div>
@@ -222,7 +227,7 @@
 
         <h3>3. Reservation and Deposit</h3>
         <ul>
-            <li>A valid credit card is required to secure your reservation. You authorize <b>Caolina C&E, Inc</b> to charge your credit card
+            <li>A valid credit card is required to secure your reservation. You authorize <b>Carolina C&E, Inc</b> to charge your credit card
                      for agreed upon purchases. You understand that your information will be saved to file for future
                      transactions on your account.<br>
                    <b><i>All billing information is stored securely on <a href="https://squareup.com/us/en/payments/secure">Square Payment Processing System</a>. No billing information is stored on this website.</i></b>
@@ -240,16 +245,18 @@
 
         <h3>5. Equipment Use</h3>
         <ul>
+            <li>Equipment use limited to 8 hours per rental day, or 48 hours per rental week. Exceeding limit will result in an addional charge.</li>
+            <li>Equipment must be returned with same amount of fuel. Failure to comply will result in additional fuel charge.</li>
             <li>Renters are responsible for the equipment during the rental period.</li>
             <li>The equipment must be used according to the manufacturer’s guidelines and local regulations.</li>
             <li>Renters are liable for any damage or loss during the rental period.</li>
         </ul>
 
         <h3>6. Liability</h3>
-        <p>The renter agrees to indemnify and hold harmless <b>Caolina C&E, Inc</b> from any claims, damages, or liabilities arising from the use of the equipment. <b>Caolina C&E, Inc</b> is not responsible for any personal injury or property damage resulting from the rental equipment.</p>
+        <p>The renter agrees to indemnify and hold harmless <b>Carolina C&E, Inc</b> from any claims, damages, or liabilities arising from the use of the equipment. <b>Carolina C&E, Inc</b> is not responsible for any personal injury or property damage resulting from the rental equipment.</p>
 
         <h3>7. Payment</h3>
-        <p>Renters will receive an itemized invoice via email once their reservation is approved. Payment is due upon equipment delivery. By providing your credit card information, you authorize us to charge your card for the deposit and any applicable fees. All transactions are processed se curely.</p>
+        <p>Renters will receive an itemized invoice via email once their reservation is approved. Payment is due upon equipment delivery. By providing your credit card information, you authorize us to charge your card for the deposit and any applicable fees. All transactions are processed securely through <a href="https://squareup.com/us/en/payments/secure">Square Payment Processing System</a>.</p>
 
         <h3>8. Privacy Policy</h3>
         <p>Your personal information will be used in accordance with our Privacy Policy. Please review our Privacy Policy <a href="{{ url_for('terms') }}">here</a> for details on how we collect, use, and protect your information.</p>
@@ -261,7 +268,7 @@
         <p>We reserve the right to amend these Terms and Conditions at any time. Changes will be posted on our website, and your continued use of the site constitutes acceptance of the new terms.</p>
 
         <h3>Contact Information</h3>
-        <p>For any questions regarding these Terms and Conditions, please contact us at <b>westerncarolinarentals@gmail.com</b>.</p>
+        <p>For any questions regarding these Terms and Conditions, please contact us at <b>mackenzie@carolinac-e.com</b>.</p>
 
 
       <div class="modal-footer">

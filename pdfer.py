@@ -85,12 +85,13 @@ def gen(id, renter_name, eq_dict, signed=False):
 
     if n_weeks != 0:
          # add duration
-        gen.addText(str(n_weeks),(255, 480))
+        gen.addText(str(n_weeks),(255, 465))
          # add rental rate per article
-        gen.addText(str(eq_dict[res_info['equipment']]['ppw']),(335, 480))
+        gen.addText(str(eq_dict[res_info['equipment']]['ppw']),(335, 465))
         # add rental rate unit
-        gen.addText("Weekly",(425, 480))
-    elif n_days != 0:
+        gen.addText("Weekly",(425, 465))
+        
+    if n_days != 0:
          # add duration
         gen.addText(str(n_days),(255, 480))
          # add rental rate per article

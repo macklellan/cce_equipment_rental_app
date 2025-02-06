@@ -334,12 +334,16 @@ try:
                 return redirect(session['url'])
 
             n_days = int(request.form['evtDays'])
-            end = (sd + timedelta(days=n_days-1)).strftime('%Y-%m-%d')
-            return render_template('reservation_create.html', equip=equipment, pro=profile_dict, start=sd2, end=end, n_days=n_days, rate=eq_d[equipment]['ppd'], dfee=eq_d[equipment]['dfee'], ifee=eq_d[equipment]['ifee'])
+            n_weeks = int(request.form['evtWeeks'])
+            end = (sd + timedelta(days=n_days-1, weeks=n_weeks)).strftime('%Y-%m-%d')
+
+
+            return render_template('reservation_create.html', equip=equipment, eq_dict=eq_d, att_list=att_list, pro=profile_dict, start=sd2, end=end, n_days=n_days, n_weeks=n_weeks, rate=eq_d[equipment]['ppd'], rate2=eq_d[equipment]['ppw'],  dfee=eq_d[equipment]['dfee'], ifee=eq_d[equipment]['ifee'])
 
         if 'rbutton' in request.form:
             start = request.form['start']
             n_days = int(request.form['ndays'])
+            n_weeks = int(request.form['nweeks'])
             end = request.form['end']
             trans = request.form['trans']
             fname = request.form['fname']
@@ -362,7 +366,7 @@ try:
             residential = (request.form['residential'] != 'Residential')
             notes = request.form['notes']
             ok = evt.save(start, end, "RESERVED", '#FFFFFF', '#FF5656', equipment, None)
-            db_lib.create_booking(db_lib.last_event_id(), current_user.id, equipment, start, end, n_days, 0,0,trans,fname + ' ' + lname,company,phone,email,job_desc, exp_level, address1,address2,city,state,zip,residential,notes)
+            db_lib.create_booking(db_lib.last_event_id(), current_user.id, equipment, start, end, n_days, n_weeks ,0,trans,fname + ' ' + lname,company,phone,email,job_desc, exp_level, address1,address2,city,state,zip,residential,notes)
             return redirect(url_for("reservation", id=db_lib.last_booking_id()))
 
 

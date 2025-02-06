@@ -12,7 +12,16 @@
     </div>
     <div class="col-sm-2">
     </div>
-
+</div>
+<div class="row dash-card" >
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-10">
+      <b>For any questions about your reservation please contact us via email: <b>mackenzie@carolinac-e.com</b> or phone: <b>(336)310-6594</b>
+    </div>
+    <div class="col-sm-1">
+    </div>
+</div>
 <div class="row">
   <div class="col-xl-1">
   </div>
@@ -100,18 +109,21 @@
       <br>
     </div>
     <div class="submit-card card">
-    <h4>Estimate Total: <b>{{ (ppd[res['equipment']]['ppd'] * res['n_days']) + (ppd[res['equipment']]['ifee'] * res['n_days']) + (ppd[res['equipment']]['dfee'] * res['transport2']) }}$</b></h4>
+    <h4>Estimate Total: <b>{{ (ppd[res['equipment']]['ppd'] * res['n_days']) + (ppd[res['equipment']]['ppw'] * res['n_weeks']) + (ppd[res['equipment']]['ifee'] * res['n_days']) + (ppd[res['equipment']]['ifee'] * (3 * res['n_weeks'])) + (ppd[res['equipment']]['dfee'] * res['transport2']) }}$</b></h4>
     <h5><b>{{ ppd[res['equipment']]['ppd'] * res['n_days'] }}$</b> ({{ ppd[res['equipment']]['ppd'] }}$ Rental Fee per day) x{{ res['n_days'] }} </h5>
     <h5><b>{{ ppd[res['equipment']]['ifee'] * res['n_days'] }}$</b> ({{ ppd[res['equipment']]['ifee'] }}$ Insurance Fee per day) x{{ res['n_days'] }}</h5>
+    <h5><b>{{ ppd[res['equipment']]['ppw'] * res['n_weeks'] }}$</b> ({{ ppd[res['equipment']]['ppd'] }}$ Rental Fee per week) x{{ res['n_weeks'] }} </h5>
+    <h5><b>{{ ppd[res['equipment']]['ifee'] * ( 3 *res['n_weeks'] ) }}$</b> ({{ ppd[res['equipment']]['ifee'] * 3 }}$ Insurance Fee per week) x{{ res['n_weeks'] }}</h5>
     {% if res['transport2'] == 1 %}
     <h5><b> {{ ppd[res['equipment']]['dfee'] }} $</b> Delivery Fee (within 25 Miles, subject to change)</h5>
     {% endif %}
     </div>
-    <h5 class="title2">
       <br>
-      <a href="{{ url_for('terms_reserve') }}">Please read the terms and conditions of the reservation agreement.</a>
+      <h6 class="title3">
+
+        <a href="{{ url_for('terms_reserve') }}">Please read the terms and conditions of the reservation agreement. CLICK HERE</a>
+      </h6>
       <br>
-    </h5>
 
   </div>
   <div class="col-xl-5 align-items-center">
@@ -121,6 +133,8 @@
         <input type="date" class="form-control form-control-lg" name="start" id="start" value="{{ res['start'] }}" readonly disabled>
         <label for="ndays">Rental Days</label>
         <input type="number" class="form-control form-control-lg" name="ndays" id="ndays" value="{{ res['n_days'] }}" readonly disabled>
+        <label for="nweeks">Rental Weeks</label>
+        <input type="number" class="form-control form-control-lg" name="nweeks" id="nweeks" value="{{ res['n_weeks'] }}" readonly disabled>
         <label for="end">End Date</label>
         <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ res['end'] }}" readonly disabled>
       </div>
