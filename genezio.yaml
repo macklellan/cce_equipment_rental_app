@@ -7,6 +7,7 @@ backend:
           type: httpServer
     language:
         name: python
+        runtime: python3.11.x
         packageManager: pip
     path: ./
 name: cce-rentals
