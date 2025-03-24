@@ -625,6 +625,7 @@ try:
           data = dict(request.form)
           events = evt.get(int(data["month"]), int(data["year"]), str(data['equipment']))
           print(data)
+          print(events)
           return "{}" if events is None else events
 
 
