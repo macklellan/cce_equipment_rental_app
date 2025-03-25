@@ -213,7 +213,8 @@ var cal = {
     // (G2-6) DAYS OF THE MONTH
     for (let i=1; i<=cal.sDIM; i++) {
       rowMap[i] = { r : rowNum, c : cellNum };
-      console.log(rowMap[i]);
+      // console.log('ROWMAP[i]');
+      // console.log(rowMap[i]);
       celler(i);
       if (cellNum%7==0 && i!=cal.sDIM) { rowNum++; rower(); }
       cellNum++;
@@ -236,43 +237,72 @@ var cal = {
       sd2 = sd.toUTCString();
       ed2 = ed.toUTCString();
 
-      console.log("sd2");
-      console.log(sd2);
+      // console.log("sd2");
+      // console.log(sd2);
 
-      console.log("ED");
-      console.log(ed);
+      // console.log("ED2");
+      // console.log(ed2);
+
+      // console.log("sd");
+      // console.log(sd);
+
+      // console.log("sd fullyear");
+      // console.log(sd.getFullYear());
+
+      // console.log("cal syear");
+      // console.log(cal.sYear);
+
+      // console.log("cal smnth");
+      // console.log(cal.sMth);
+
+      // console.log("ed getmon");
+      // console.log(ed.getMonth()+1);
+
+      // console.log("ED");
+      // console.log(ed);
 
       if (sd.getFullYear() < cal.sYear) { sd = 1; }
-      else { sd = sd.getMonth()+1 < cal.sMth ? 1 : sd.getDate(); }
+      else { sd = sd.getUTCMonth()+1 < cal.sMth ? 1 : sd.getUTCDate(); }
       if (ed.getFullYear() > cal.sYear) { ed = cal.sDIM; }
-      else { ed = ed.getMonth()+1 > cal.sMth ? cal.sDIM : ed.getDate(); }
+      else { ed = ed.getUTCMonth()+1 > cal.sMth ? cal.sDIM : ed.getUTCDate(); }
 
       // (G3-2) "MAP" ONTO HTML CALENDAR
       cell = {}; rowNum = 0;
-      console.log("ROWMAP");
-      console.log(rowMap);
+      // console.log("ROWMAP");
+      // console.log(rowMap);
 
+      // console.log("SD");
+      // console.log(sd);
 
-      for (let i=sd+1; i<=ed+1; i++) {
-        console.log("ed");
-        console.log(ed);
-        console.log("i");
-        console.log(i);
+      // console.log("ED");
+      // console.log(ed);
+
+      for (let i=sd; i<=ed; i++) {
+        // console.log("sd+1");
+        // console.log(sd+1);
+        // console.log("ed");
+        // console.log(ed);
+        // console.log("i");
+        // console.log(i);
+        // console.log("rowNum");
+        // console.log(rowNum);
+        // console.log("rowmap[i][r]");
+        // console.log(rowMap[i]["r"]);
         if (rowNum!=rowMap[i]["r"]) {
           cell[rowMap[i]["r"]] = { s:rowMap[i]["c"], e:0 };
           rowNum = rowMap[i]["r"];
-          console.log("RN");
-          console.log(rowNum);
+          // console.log("RN");
+          // console.log(rowNum);
         }
         if (cell[rowNum]) { cell[rowNum]["e"] = rowMap[i]["c"]; }
       }
-      console.log("cell");
-      console.log(cell);
+      // console.log("cell");
+      // console.log(cell);
       // (G3-3) DRAW HTML EVENT ROW
       for (let [r,c] of Object.entries(cell)) {
-        console.log("r+c");
-        console.log(r);
-        console.log(c);
+        // console.log("r+c");
+        // console.log(r);
+        // console.log(c);
         let o = c.s - ((r-1) * 7) - 1, // event cell offset
             w = c.e - c.s + 1; // event cell width
         rowA = document.getElementById("calRow"+r);
