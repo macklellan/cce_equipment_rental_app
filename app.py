@@ -683,7 +683,10 @@ try:
                 return redirect(url_for("reservation_list_admin"))
 
         res_list = current_user.reservations(allrecords=True)
-        return render_template('reservation_list_admin.html', res_list=res_list)
+
+        res_list_sorted = sorted(res_list, key=lambda x: x["res_id"])
+
+        return render_template('reservation_list_admin.html', res_list=res_list_sorted)
 
 
     # View list of users/renters

@@ -47,7 +47,6 @@ def esign(id, renter_name, date):
     print('Hello')
 
 # generate new rental agreement for a given reservation/booking id
-# should only be done once... probably
 def gen(id, renter_name, eq_dict, signed=False):
 
     gen_date = datetime.today()
@@ -90,7 +89,7 @@ def gen(id, renter_name, eq_dict, signed=False):
         gen.addText(str(eq_dict[res_info['equipment']]['ppw']),(335, 465))
         # add rental rate unit
         gen.addText("Weekly",(425, 465))
-        
+
     if n_days != 0:
          # add duration
         gen.addText(str(n_days),(255, 480))
