@@ -11,7 +11,7 @@
 
     <!-- STYLESHEET + JAVASCRIPT -->
 
-  {% if pro['completed'] == 1 %}
+  {% if pro['completed'] == 1 or current_user.is_admin() %}
     <script>
     var profile = "True";
     var equip = "{{ equip }}";
@@ -56,10 +56,19 @@
           <!-- Hidden CalAdd in js as well -->
           <!-- <input id="calAdd" type="button" value="+"> -->
 
-          {% if pro['completed'] != 1 %}
+          {% if pro['completed'] != 1 and not current_user.is_admin() %}
             <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
             <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete your profile before viewing calendar</h2></a>
           {% endif %}
+
+          {% if current_user.is_admin() %}
+            <h2>Logged in as admin.</h2>
+          {% endif %}
+
+          {% if error_msg %}
+            <h2>ERROR: {{ error_msg }}</h2>
+          {% endif %}
+
 
         </div>
     </div>
