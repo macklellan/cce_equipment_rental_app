@@ -684,7 +684,7 @@ try:
 
         res_list = current_user.reservations(allrecords=True)
 
-        res_list_sorted = sorted(res_list, key=lambda x: x["res_id"])
+        res_list_sorted = sorted(res_list, key=lambda x: x["res_id"], reverse=True)
 
         return render_template('reservation_list_admin.html', res_list=res_list_sorted)
 
