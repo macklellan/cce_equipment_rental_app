@@ -1,64 +1,65 @@
 # CCE
 # Ryan McClellan 2025
 
+# Main application for equipment rental and reservation website.
 
+# initialization wrapped in try/catch
 try:
     from flask import Flask, abort, request, redirect, url_for, session, send_from_directory, render_template, jsonify, make_response, send_file
     from flask_login import LoginManager, current_user, login_required, login_user, logout_user
     from datetime import timedelta, datetime
     from oauthlib.oauth2 import WebApplicationClient
     from functools import wraps
-
     import os
     import requests
     import json
-    # import logging
     import sys
-    import calendar_lib as evt
     from pathlib import Path
+    import files
+    import random
+    import string
 
-    # local
+    # local imports
     from pdfer import gen, esign
     from user import User
     import db_lib
     from db_lib import get_renter_profile
+    import calendar_lib as evt
     import square_lib
-    import files
 
-    # fix working directory so hard links work correctly
-    # BASEDIR = os.path.abspath(os.path.dirname(__file__))
-    TMP_DIR = Path("/tmp")
-    # os.chdir(BASEDIR)
 
-    # logging.basicConfig(filename='log.log',
-    #                         filemode='a',
-    #                         format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-    #                         datefmt='%H:%M:%S',
-    #                         level=logging.DEBUG)
-    #
-    # logger = logging.getLogger(__name__)
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       APP CONFIGURATION           ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
+
 
     # app config
     app = Flask(__name__)
-
     app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
-
     app.config['SESSION_COOKIE_SECURE'] = True
-
     app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    # app.config['SERVER_NAME'] = 'rent.carolinac-e.com'
+
+    # temporary files, renter uploaded images stored in Azure
+    TMP_DIR = Path("/tmp")
 
     # User session management setup
     # https://flask-login.readthedocs.io/en/latest
     login_manager = LoginManager()
     login_manager.init_app(app)
 
-
     # Flask-Login helper to retrieve a user from our db
     @login_manager.user_loader
     def load_user(user_id):
         return User.get(user_id)
 
-    # Configuration
+    # Google Oauth Config
     GOOGLE_CLIENT_ID = gcid = os.environ['GOOGLE_CLIENT_ID']
     GOOGLE_CLIENT_SECRET = os.environ['GOOGLE_CLIENT_SECRET']
     GOOGLE_DISCOVERY_URL = (
@@ -74,13 +75,26 @@ try:
     def get_google_cl_id():
         return os.environ['GOOGLE_CLIENT_ID']
 
+    # Square payment processor config
+    SQ_APP_ID = os.environ['SQUARE_APP_ID']
+    SQ_LOC = os.environ['SQUARE_LOC']
+    SQ_ENV = os.environ['SQUARE_ENV']
+    PROD = False
 
-    sq_app_id = os.environ['SQUARE_APP_ID']
-    sq_loc = os.environ['SQUARE_LOC']
-    sq_env = os.environ['SQUARE_ENV']
-    prod = False
-    if sq_env == 'production':
-        prod = True
+    if SQ_ENV == 'production':
+        PROD = True
+
+
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       ACCESS CONTROL              ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
+
 
     # admin endpoint wrapper
     # @login_required
@@ -100,13 +114,17 @@ try:
 
         return decorated_function
 
-    #####
-    # # #
-    # # #
-    #####       EQUIPMENT DEFINTIONS
-    # # #
-    # # #
-    #####
+
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       EQUIPMENT DATA              ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
+
 
     category_dict = {'Compact Earth Moving':{'img':'bobcat-e42.webp'}, 'Generators':{'img':'generator.webp'}, 'Hand and Power Tools':{'img':'demohammer.jpg'}, 'Trailers':{'img':'trailer.webp'}}
 
@@ -155,13 +173,16 @@ try:
     def tuples(iterable, arity):
         return [iterable[i:i+arity] for i in range(0, len(iterable), arity)]
 
-    #####
-    # # #
-    # # #
-    #####       PUBLIC INFO ENDPOINTS
-    # # #
-    # # #
-    #####
+
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       PUBLIC ACCESS               ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
 
 
     # RE-ROUTE INDEX TO RENTAL
@@ -198,13 +219,16 @@ try:
             eq_list = list(res.keys())
             return render_template('rental_equipment_list.html', category=category, gcid=gcid, eq_list=tuples(eq_list, 3), eq_dict=res, att_list=att_list)
 
-    #####
-    # # #
-    # # #
-    #####       PRIVATE CUSTOMER ENDPOINTS
-    # # #
-    # # #
-    #####
+
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       RENTER "PROFILE"            ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
 
 
     # PROFILE PAGE
@@ -306,14 +330,14 @@ try:
         return render_template('reservation_list.html', res_list=res_list, pro=profile_dict)
 
 
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       RESERVATION CONTROL         ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
 
-    #####
-    # # #
-    # # #
-    #####       RESERVATION ENDPOINTS
-    # # #
-    # # #
-    #####
 
 
     # Reservation flow handler, initiated from calender view.
@@ -578,14 +602,13 @@ try:
 
 
 
-    # view id
-    # ADD LOGIN CHECK AGAIN
+    # endpoint for viewing a user license/id picture
+    # returns raw file, no error checking
     @app.route("/vid/<user_id>", methods=['GET'])
     @admin_required
     def getidpic(user_id=None):
-        profile_dict = get_renter_profile(user_id, True)
-
         try:
+
             filename = profile_dict['license']
             file_path = TMP_DIR / filename
             tries = 2
@@ -599,20 +622,23 @@ try:
                     return send_file(file_path)
 
                 return make_response(f"File '{filename}' not found.", 404)
+
         except Exception as e:
             return make_response(f"Error: {str(e)}", 500)
 
 
-    #####
-    # # #
-    # # #
-    #####       CALENDAR PAGES & LOGIC
-    # # #
-    # # #
-    #####
 
-    # (B) ROUTES
-    # (B1) CALENDAR PAGE
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       CALENDAR PAGES & LOGIC      ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
+
+
+    # endpoint for rental equipment calendar
     @app.route("/calendar/<equipment>", methods=["GET", "POST"])
     @login_required
     def calendar(equipment=None):
