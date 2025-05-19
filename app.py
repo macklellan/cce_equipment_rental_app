@@ -382,6 +382,7 @@ try:
         if current_user.id != res_info['renter_id'] and not current_user.is_admin():
             return abort(403)
 
+
         profile_dict = get_renter_profile(current_user.id, True)
         session['url'] = url_for("reservation", id=id)
 
@@ -403,7 +404,8 @@ try:
         depo = (res_info['deposit_source_id'] is not None)
 
         return render_template('reservation_view.html', res=res_info, pro=profile_dict, esig=esig, depo=depo, billing_c=billing,
-        billing_cc=billing_cc, last_4=last_4, ppd=equipment_dict, sq_app_id=sq_app_id, sq_loc=sq_loc, prod=prod)
+        billing_cc=billing_cc, last_4=last_4, ppd=equipment_dict, sq_app_id=SQ_APP_ID, sq_loc=SQ_LOC, prod=PROD, eq_dict=eq_d,
+        equip = res_info['equipment'], att_list=att_list)
 
 
 

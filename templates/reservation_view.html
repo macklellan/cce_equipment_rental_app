@@ -7,12 +7,13 @@
     <div class="col-sm-8 dash-card" style="background-color:white;">
       <h6 class="title3">
 
-        <a href="{{ url_for('terms_reserve') }}">Please read the terms and conditions of the reservation agreement. CLICK HERE</a>
+        <a href="{{ url_for('terms_reserve') }}">!!! &nbsp;&nbsp;&nbsp;&nbsp; Please read the terms and conditions of the reservation agreement. CLICK HERE &nbsp;&nbsp;&nbsp;&nbsp; !!!</a>
       </h6>
     </div>
     <div class="col-sm-2">
     </div>
 </div>
+
 <div class="row dash-card" >
     <div class="col-sm-1">
     </div>
@@ -22,13 +23,14 @@
     <div class="col-sm-1">
     </div>
 </div>
+
 <div class="row">
   <div class="col-xl-1">
   </div>
   <div class="col-xl-5">
     <div class="submit-card card">
       <h4>
-        Reservation for: {{ res['equipment'] }}
+        Reservation for: {{ res['equipment'] }} <a class="btn btn-secondary btn-lg float-end" onclick="toggle_eq_view()" role="button">Show Details</a>
       </h4><hr class="hr"/><h4>
         Reservation ID: {{ res['res_id'] }}
       </h4><hr class="hr"/><h4>
@@ -45,7 +47,7 @@
             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
           </svg>
           <div>
-            Thank you for completing the reservation. You will be contacted within 24 hours!  Contact us via email address <b>westerncarolinarentals@gmail.com</b> for immediate assistance. <br> <b>Carolina C&E, Inc</b> reserves the right to cancel or not accept this reservation.
+            Thank you for completing the reservation. You will be contacted within 24 hours!  Contact us via email address <b>westerncarolinarentals@gmail.com</b> for immediate assistance. <br> <b>Carolina C&E, Inc</b> reserves the right to not accept this reservation.
           </div>
         </div>
         {% elif res['status'] >= 1 %}
@@ -82,8 +84,8 @@
       </h4><hr class="hr"/><h4>
 
         Billing Info:
-        {% if billing_c == True %}
-        <span class="badge bg-success">Complete</span> <a href="{{ url_for('delete_billing') }}" class="btn btn-danger btn-lg float-end" role="button" onclick="return confirm('By clicking OK, You are removing the billing information associated with this account.')">Remove Billing Info</a>
+        {% if billing_c == True%}
+        <span class="badge bg-success">Complete</span> {% if not depo %} <a href="{{ url_for('delete_billing') }}" class="btn btn-danger btn-lg float-end" role="button" onclick="return confirm('By clicking OK, You are removing the billing information associated with this account.')">Remove Billing Info</a> {% endif %}
         {% elif billing_c == False %}
         <span class="badge bg-warning text-dark">Incomplete</span> <a href="#bstart" class="btn btn-success btn-lg float-end" role="button">Add Billing Address</a>
         {% endif %}
@@ -108,6 +110,17 @@
       <br>
       <br>
     </div>
+
+
+    <div class="submit-card card" id="eq_res_disp">
+        <div class="card rentals-card">
+          <div class= "dash-card2">
+            <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[equip]['img'] }}" />
+          </div>
+        </div>
+        {% include 'eq_card.html' %}
+    </div>
+
     <div class="submit-card card">
     <h4>Estimate Total: <b>{{ (ppd[res['equipment']]['ppd'] * res['n_days']) + (ppd[res['equipment']]['ppw'] * res['n_weeks']) + (ppd[res['equipment']]['ifee'] * res['n_days']) + (ppd[res['equipment']]['ifee'] * (3 * res['n_weeks'])) + (ppd[res['equipment']]['dfee'] * res['transport2']) }}$</b></h4>
     <h5><b>{{ ppd[res['equipment']]['ppd'] * res['n_days'] }}$</b> ({{ ppd[res['equipment']]['ppd'] }}$ Rental Fee per day) x{{ res['n_days'] }} </h5>
@@ -121,7 +134,7 @@
       <br>
       <h6 class="title3">
 
-        <a href="{{ url_for('terms_reserve') }}">Please read the terms and conditions of the reservation agreement. CLICK HERE</a>
+        <a style="color:#ff0000; font-weight:bold; " href="{{ url_for('terms_reserve') }}">Please read the terms and conditions of the reservation agreement. CLICK HERE</a>
       </h6>
       <br>
 
@@ -140,6 +153,10 @@
       </div>
     </div>
     <div class="submit-card card">
+      <div class="form-group">
+        <label for="inputAddress">Contact Email</label>
+        <input type="text" class="form-control form-control-lg" name="Contact Email" id="Contact Email" value="{{ res['invoice_email'] }}" readonly>
+      </div>
       <div class="form-group">
         <label for="inputAddress">Company Name</label>
         <input type="text" class="form-control form-control-lg" name="inputAddress" id="inputAddress" value="{{ res['company'] }}" readonly>

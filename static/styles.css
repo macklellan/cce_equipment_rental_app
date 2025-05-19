@@ -302,6 +302,11 @@ a {
 }
 
 
+#eq_res_disp {
+  display: none
+}
+
+
 input[type=text], select, textarea {
   width: 95%;
   padding: 12px;
