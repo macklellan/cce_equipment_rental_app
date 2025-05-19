@@ -481,9 +481,12 @@ try:
 
         depo = (res_info['deposit_source_id'] is not None)
 
+        equipment = res_info['equipment']
+
         return render_template('reservation_view.html', res=res_info, pro=profile_dict, esig=esig, depo=depo, billing_c=billing,
         billing_cc=billing_cc, last_4=last_4, ppd=equipment_dict, sq_app_id=SQ_APP_ID, sq_loc=SQ_LOC, prod=PROD, eq_dict=eq_d,
-        equip = res_info['equipment'], att_list=att_list)
+        equip = res_info['equipment'], att_list=att_list,
+        n_days=res_info['n_days'], n_weeks=res_info['n_weeks'], rate=eq_d[equipment]['ppd'], rate2=eq_d[equipment]['ppw'],  dfee=eq_d[equipment]['dfee'], ifee=eq_d[equipment]['ifee'])
 
 
 
