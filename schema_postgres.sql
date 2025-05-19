@@ -10,3 +10,5 @@ city VARCHAR(25) NOT NULL, state VARCHAR(25) NOT NULL, zip VARCHAR(5) NOT NULL, 
 deposit_source_id VARCHAR(29), deposit_idempotency VARCHAR(10), FOREIGN KEY (renter_id) REFERENCES renters(id2));
 
 CREATE TABLE events (id SERIAL PRIMARY KEY, start TIMESTAMP NOT NULL, end TIMESTAMP NOT NULL, text VARCHAR(50) NOT NULL, color VARCHAR(10) NOT NULL, bg VARCHAR(10) NOT NULL, eq VARCHAR(50) NOT NULL);
+
+CREATE TABLE accesslinks (res_id INT NOT NULL, link VARCHAR(50) NOT NULL, FOREIGN KEY (res_id) REFERENCES reservations(id));

@@ -96,21 +96,56 @@ try:
 
 
 
-    # admin endpoint wrapper
-    # @login_required
+    def user_only(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+
+            code = dict(session).get('login_token', None)
+            res_id = dict(session).get('res_id_access', None)
+
+            if current_user.is_authenticated and code is None:
+                return f(*args, **kwargs)
+            else:
+                return abort(401)
+
+        return decorated_function
+
 
     # admin endpoint wrapper
-    # @admin_required
     def admin_required(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            # logger.debug(request)
-            # logger.info("request: {}  from: {}".format(request.path, str(request.remote_addr)))
-            admin_list = ['ryanmcclellan2@gmail.com']
-            if current_user.email not in admin_list:
-                return abort(401)
-            else:
+
+            if current_user.is_admin:
                 return f(*args, **kwargs)
+
+            return abort(401)
+
+        return decorated_function
+
+
+    # simple access endpoint wrapper
+    # used in addition to
+    def simple_access(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+
+            # token vars
+            code = dict(session).get('login_token', None)
+            res_id = dict(session).get('res_id_access', None)
+
+            # no access token vars
+            if code is None or res_id is None:
+                # user is logged in
+                if current_user.is_authenticated:
+                    return f(*args, **kwargs)
+                return abort(401)
+
+            # access token vars check out
+            if db_lib.get_access_link_code(res_id) == code:
+                return f(*args, **kwargs)
+
+            return abort(401)
 
         return decorated_function
 
@@ -235,7 +270,7 @@ try:
     # view, add, or edit profile info for the current user
     @app.route('/profile', methods=["GET", "POST"])
     @app.route('/profile/<flow>', methods=["GET"])
-    @login_required
+    @user_only
     def profile(flow=None):
         profile_dict = get_renter_profile(current_user.id, True)
 
@@ -298,7 +333,7 @@ try:
 
 
     @app.route("/profile_pic", methods=['GET'])
-    @login_required
+    @user_only
     def view_profile_pic():
         profile_dict = get_renter_profile(current_user.id)
 
@@ -323,11 +358,11 @@ try:
 
     # View list of reservtions for the current user
     @app.route('/reservations', methods=["GET"])
-    @login_required
+    @user_only
     def reservation_list():
-        profile_dict = get_renter_profile(current_user.id, True)
         res_list = current_user.reservations()
-        return render_template('reservation_list.html', res_list=res_list, pro=profile_dict)
+        return render_template('reservation_list.html', res_list=res_list)
+
 
 
 #############################################
@@ -342,7 +377,7 @@ try:
 
     # Reservation flow handler, initiated from calender view.
     @app.route('/reserve/<equipment>', methods=["POST"])
-    @login_required
+    @user_only
     def reserve(equipment=None):
         profile_dict = get_renter_profile(current_user.id, True)
 
@@ -354,8 +389,12 @@ try:
             sd = datetime.strptime(start_date, '%Y-%m-%d').date()
             sd2 = sd.strftime('%Y-%m-%d')
 
+            # return error for reservation start times out of range
             if datetime.strptime(start_date, '%Y-%m-%d') <= datetime.today():
-                return redirect(session['url'])
+                error_msg = 'Selected date not available ({})'.format(sd2)
+                session['url'] = url_for('calendar', equipment=equipment)
+                session['cal_error_show'] = 'Selected date not available ({})'.format(sd2)
+                return redirect(url_for('calendar', equipment=equipment))
 
             n_days = int(request.form['evtDays'])
             n_weeks = int(request.form['evtWeeks'])
@@ -389,21 +428,36 @@ try:
             zip = request.form['inputZip']
             residential = (request.form['residential'] != 'Residential')
             notes = request.form['notes']
-            ok = evt.save(start, end, "RESERVED", '#FFFFFF', '#FF5656', equipment, None)
             db_lib.create_booking(db_lib.last_event_id(), current_user.id, equipment, start, end, n_days, n_weeks ,0,trans,fname + ' ' + lname,company,phone,email,job_desc, exp_level, address1,address2,city,state,zip,residential,notes)
+            ok = evt.save(start, end, "RESERVED", '#FFFFFF', '#FF5656', equipment, None)
             return redirect(url_for("reservation", id=db_lib.last_booking_id()))
 
+
+    def token_access(id):
+        access_to_res = dict(session).get('res_id_access', None)
+
+        # temp access code match
+        if access_to_res is not None:
+            if int(access_to_res) == int(id):
+                return True
+
+        return False
 
 
     # Reservation editor/ viewer
     @app.route('/reservation/<id>', methods=["GET"])
     @login_required
+    @simple_access
     def reservation(id=None):
+
         res_info = db_lib.get_res_info(id)
 
-        # validate user / view
-        # must be admin or match reservation id to view
-        if current_user.id != res_info['renter_id'] and not current_user.is_admin():
+        if res_info is None:
+            return abort(403)
+
+        # validate user
+        # must match renter id attatched to reservation, admin, or have access token that matches
+        if current_user.id != res_info['renter_id'] and not current_user.is_admin() and not token_access(id):
             return abort(403)
 
 
@@ -437,6 +491,7 @@ try:
     # initiated from reservation editor view
     @app.route('/billprofile', methods=["POST"])
     @login_required
+    @simple_access
     def billing_profile():
         profile_dict = get_renter_profile(current_user.id, True)
 
@@ -465,6 +520,7 @@ try:
     # initiated from reservation editor view
     @app.route('/billprofiledel', methods=["GET"])
     @login_required
+    @simple_access
     def delete_billing():
         profile_dict = db_lib.del_square_id(current_user.id)
         return redirect(session['url'])
@@ -474,12 +530,14 @@ try:
     # initiated from reservation editor view
     @app.route('/c_update/<res_id>', methods=["POST"])
     @login_required
+    @simple_access
     def card_update(res_id=None):
+
         res_info = db_lib.get_res_info(res_id)
 
         # validate user / view
-        # must match reservation
-        if current_user.id != res_info['renter_id']:
+        # must be admin or match reservation id to view
+        if current_user.id != res_info['renter_id'] and not current_user.is_admin() and not token_access(id):
             return abort(403)
 
         profile_dict = get_renter_profile(current_user.id, True)
@@ -495,12 +553,13 @@ try:
     # initiated from reservation editor view
     @app.route('/start_deposit/<res_id>', methods=["GET"])
     @login_required
+    @simple_access
     def start_deposit(res_id=None):
         res_info = db_lib.get_res_info(res_id)
 
         # validate user / view
-        # must match reservation
-        if current_user.id != res_info['renter_id']:
+        # must be admin or match reservation id to view
+        if current_user.id != res_info['renter_id'] and not current_user.is_admin() and not token_access(id):
             return abort(403)
 
         profile_dict = get_renter_profile(current_user.id, True)
@@ -518,12 +577,13 @@ try:
 
     @app.route("/vera/<res_id>", methods=['GET'])
     @login_required
+    @simple_access
     def vera(res_id=None):
         res_info = db_lib.get_res_info(res_id)
 
         # validate user / view
-        # must be admin or match reservation to view
-        if current_user.id != res_info['renter_id'] and not current_user.is_admin():
+        # must be admin or match reservation id to view
+        if current_user.id != res_info['renter_id'] and not current_user.is_admin() and not token_access(id):
             return abort(403)
 
         try:
@@ -576,11 +636,14 @@ try:
     # ADD LOGIN CHECK AGAIN
     @app.route("/sera/<res_id>", methods=['GET'])
     @login_required
+    @simple_access
     def sera(res_id=None):
+
         res_info = db_lib.get_res_info(res_id)
 
         # validate user / view
-        if current_user.id != res_info['renter_id']:
+        # must be admin or match reservation id to view
+        if current_user.id != res_info['renter_id'] and not current_user.is_admin() and not token_access(id):
             return abort(403)
 
         # if rental agreement exists
@@ -639,41 +702,47 @@ try:
 
 
     # endpoint for rental equipment calendar
+    # shows available / taken dates for specified equipment
     @app.route("/calendar/<equipment>", methods=["GET", "POST"])
-    @login_required
-    def calendar(equipment=None):
+    @user_only
+    def calendar(equipment=None, error=None):
         profile_dict = get_renter_profile(current_user.id, True)
         session['url'] = url_for('calendar', equipment=equipment)
-        return render_template("calendar.html", equip=equipment, note=equipment_dict[equipment]['note'], pro=profile_dict)
 
-    # (B2) ENDPOINT - GET EVENTS
+        # processing error
+        if session.get('cal_error_show'):
+            error = session.pop('cal_error_show')
+
+        return render_template("calendar.html", equip=equipment, note=equipment_dict[equipment]['note'], pro=profile_dict, error_msg=error)
+
+
+    # backend method for retreiving rental dates for calendar
     @app.route("/calendar/get/", methods=["POST"])
     @login_required
     def get():
           data = dict(request.form)
           events = evt.get(int(data["month"]), int(data["year"]), str(data['equipment']))
-          #print(data)
-          print(events)
           return "{}" if events is None else events
 
 
-    #####
-    # # #
-    # # #
-    #####       ADMIN ONLY ENDPOINTS
-    # # #
-    # # #
-    #####
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       ADMIN ONLY SECTION          ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
 
 
-    # View list of reservtions for the current user
+
+    # View list of all equipment reservtions
     @app.route('/admin2', methods=["GET"])
     @app.route('/admin2/approve_reservation/<approve>', methods=["GET"])
     @app.route('/admin2/deny_reservation/<deny>', methods=["GET"])
     @app.route('/admin2/start_fuf/<start>', methods=["GET"])
     @app.route('/admin2/complete_fuf/<complete>', methods=["GET"])
     @app.route('/admin2/pend_fuf/<pend>', methods=["GET"])
-    @login_required
     @admin_required
     def reservation_list_admin(approve=None, deny=None, start=None, complete=None, pend=None):
 
@@ -718,21 +787,67 @@ try:
 
 
     # View list of users/renters
-    @app.route('/admin3', methods=["GET"])
-    @login_required
+    @app.route('/admin/renters', methods=["GET"])
     @admin_required
     def renters_list_admin():
         r_list = db_lib.all_renter_profiles()
         return render_template('users_list_admin.html', user_list=r_list)
 
 
-    #####
-    # # #
-    # # #
-    #####       LOGIN & OAUTH ROUTES
-    # # #
-    # # #
-    #####
+    # create / get access link for reservation
+    @app.route('/admin5/<res_id>', methods=["GET"])
+    @admin_required
+    def get_access_link(res_id=None):
+        access_link_code = db_lib.get_access_link_code(res_id)
+        res_info = db_lib.get_res_info(res_id)
+
+        if access_link_code == None:
+            rs = ''.join(random.choices(string.ascii_letters + string.digits, k=36))
+            db_lib.add_access_link(res_id, rs)
+
+            # create new user and renter profile only used by this reservation....
+            if not User.get(rs):
+                User.create(rs, 'Temporary User', 'Temporary User', 'Temporary User')
+                User.static_create_renter_profile(rs, res_info['renter_name'], '', res_info['phone'], res_info['invoice_email'], True, "", True)
+                db_lib.update_reservation_renter(res_id, rs)
+
+            access_link_code = db_lib.get_access_link_code(res_id)
+
+
+        data = { "link" : url_for("logintoken", code=access_link_code, _external=True)}
+        return jsonify(data)
+
+
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       LOGIN AND OAUTH             ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
+
+
+    # Simple reservation access via link
+    @app.route("/logintoken/<code>", methods=["GET"])
+    def logintoken(code=None):
+        res_id = db_lib.check_access_link_code(code)
+        if res_id == None:
+            return abort(404)
+        else:
+            session['login_token'] = code
+            session['res_id_access'] = res_id
+
+            if not User.get(code):
+                return abort(401)
+
+            user = User.get(code)
+
+            login_user(user)
+
+            return redirect(url_for("reservation", id=res_id))
+
 
     @app.route("/login", methods=["GET", "POST"])
     def login():
@@ -766,19 +881,14 @@ try:
         # Get authorization code Google sent back to you
         code = request.args.get("code")
 
-        # Find out what URL to hit to get tokens that allow you to ask for
-        # things on behalf of a user
+        # Find out what URL to hit to get tokens that allow you to ask for things on behalf of a user
         google_provider_cfg = get_google_provider_cfg()
         token_endpoint = google_provider_cfg["token_endpoint"]
-
-        #print("Token endpoint: " + token_endpoint)
-
         auth_resp = request.url.replace('https', 'http').replace('http', 'https')
-
-        #print("Callback auth_resp URI: " + auth_resp)
-
         redir_uri = request.base_url.replace('https', 'http').replace('http', 'https')
 
+        #print("Token endpoint: " + token_endpoint)
+        #print("Callback auth_resp URI: " + auth_resp)
         #print("Callback REDIR URI: " + redir_uri)
 
         # Prepare and send a request to get tokens! Yay tokens!
@@ -857,24 +967,6 @@ try:
         return redirect(url_for("index"))
 
 
-    # @app.route("/login/t123")
-    # def lt():
-    #     user = User(
-    #         id_='103913063181484802819', name='users_name', email='users_email', profile_pic='picture'
-    #     )
-    #
-    #     # Begin user session by logging the user in
-    #     login_user(user)
-    #
-    #     # Send user back to previous page
-    #     try:
-    #         if session['url']:
-    #             return redirect(session['url'])
-    #     except Exception as e:
-    #         return redirect(url_for("index"))
-    #
-    #     return redirect(url_for("index"))
-
 
     @app.route("/logout")
     @login_required
@@ -884,13 +976,16 @@ try:
         return redirect(url_for("index"))
 
 
-#####
-# # #
-# # #
-#####       ERRORS
-# # #
-# # #
-#####
+
+#############################################
+# # #                                   # # # #
+# # #                                   # # # # #
+#####       ERRORS                     ###########
+# # #                                   # # # # #
+# # #                                   # # # #
+#############################################
+
+
 
     # 404 not found page
     @app.errorhandler(404)
@@ -909,8 +1004,9 @@ try:
 
     if __name__ == "__main__":
         # app.run(host='0.0.0.0', ssl_context="adhoc")
-        #app.run(ssl_context="adhoc", debug=True, port=5000)
-        app.run(host='0.0.0.0', port=5000, ssl_context='adhoc')
+        app.run(ssl_context="adhoc", debug=True, port=5000)
+        # app.run(host='0.0.0.0', port=5000, ssl_context='adhoc', debug=True)
+        # app.run(host='0.0.0.0', port=5000, ssl_context='adhoc')
 
 
 except Exception as e:

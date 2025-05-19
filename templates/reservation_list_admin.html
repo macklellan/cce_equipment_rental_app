@@ -34,6 +34,7 @@
                   <th>Reservation Status</th>
                   <th>Fufillment Status</th>
                   <th>View Reservation</th>
+                  <th>Simple Access Link</th>
                   <th>Update Status</th>
                 </tr>
             </thead>
@@ -67,9 +68,15 @@
                      <a href="{{ url_for('reservation', id=res['res_id']) }}" class="btn btn-success btn-lg" role="button">View</a>
                    </td>
                    <td>
+                     {{ res['renter_id'].len }}
+                     {% if res['renter_id'] ==  current_user.id or res['renter_id']|length == 36 %}
+                     <a class="btn btn-success btn-lg" role="button" onclick="copyLinkUrl( {{ res['res_id'] }} );">Copy</a>
+                     {% endif %}
+                   </td>
+                   <td>
                      <div class="dropdown">
                        <a class="btn btn-secondary dropdown-toggle btn-lg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         Action
+                         Status
                        </a>
 
                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">

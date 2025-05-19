@@ -22,10 +22,10 @@ class User(UserMixin):
 
 
     def is_admin(self):
-        if self.email == 'ryanmcclellan2@gmail.com':
+        admin_list = ['ryanmacklellan@gmail.com', 'mackenziecranford0197@gmail.com', 'ryanmcclellan2@gmail.com']
+        if self.email in admin_list:
             return True
-        if self.email == 'mackenziecranford0197@gmail.com':
-            return True
+
         return False
 
 
@@ -101,6 +101,11 @@ class User(UserMixin):
         add_renter_profile(self.id, fname, lname, phone, email, contractor, license, completed)
         self.renter_profile = get_renter_profile(self.id)
 
+
+    @staticmethod
+    def static_create_renter_profile(id, fname, lname, phone, email, contractor, license, completed):
+        add_renter_profile(id, fname, lname, phone, email, contractor, license, completed)
+        return True
 
 
 

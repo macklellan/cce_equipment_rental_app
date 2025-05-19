@@ -77,6 +77,38 @@ def get_res_info(res_id):
     return res
 
 
+def get_access_link_code(res_id):
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"SELECT * FROM accesslinks WHERE res_id = '{res_id}' ;"
+        )
+
+        res = curs.fetchone()
+
+    if not res:
+        return None
+
+    return res[1]
+
+
+def check_access_link_code(link):
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"SELECT * FROM accesslinks WHERE link = '{link}' ;"
+        )
+
+        res = curs.fetchone()
+
+    if not res:
+        return None
+
+    return res[0]
+
+
 def last_booking_id():
     db = get_db2()
 
@@ -196,6 +228,17 @@ def add_esign(res_id, name, date):
         )
 
 
+def update_reservation_renter(res_id, renter_id):
+    db = get_db2()
+
+    with db.get_cursor() as curs:
+        curs.execute(
+            f"UPDATE reservations SET renter_id = '{renter_id}' WHERE id = '{res_id}';"
+        )
+
+    return True
+
+
 def approve_reservation(res_id):
     db = get_db2()
 
@@ -268,6 +311,14 @@ def add_dep_ide(res_id, ide):
         )
 
     return True
+
+
+def add_access_link(id_, link):
+    db = get_db2()
+
+    db.run("INSERT INTO accesslinks (res_id, link) VALUES (%(res_id)s, %(link)s)",
+            {"res_id":id_, "link":link}
+    )
 
 
 def add_renter_profile(id_, fname, lname, phone, email, contractor, license, completed):
