@@ -270,8 +270,13 @@ try:
     # view, add, or edit profile info for the current user
     @app.route('/profile', methods=["GET", "POST"])
     @app.route('/profile/<flow>', methods=["GET"])
-    @user_only
     def profile(flow=None):
+
+        if current_user.is_anonymous:
+            session['url'] = url_for('profile')
+            pro = get_renter_profile(0, True)
+            return render_template('profile.html', gcid=gcid, pro=pro)
+
         profile_dict = get_renter_profile(current_user.id, True)
 
         if flow is not None and flow == 'cal_b':
@@ -456,7 +461,9 @@ try:
             return abort(403)
 
         # validate user
-        # must match renter id attatched to reservation, admin, or have access token that matches
+        # must match renter id attatched to reservation
+        # be admin
+        # or have access token that matches
         if current_user.id != res_info['renter_id'] and not current_user.is_admin() and not token_access(id):
             return abort(403)
 
@@ -707,9 +714,11 @@ try:
     # endpoint for rental equipment calendar
     # shows available / taken dates for specified equipment
     @app.route("/calendar/<equipment>", methods=["GET", "POST"])
-    @user_only
     def calendar(equipment=None, error=None):
-        profile_dict = get_renter_profile(current_user.id, True)
+        if current_user.is_anonymous:
+            profile_dict = {}
+        else:
+            profile_dict = get_renter_profile(current_user.id, True)
         session['url'] = url_for('calendar', equipment=equipment)
 
         # processing error
