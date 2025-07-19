@@ -22,7 +22,7 @@
 
       <!-- <a class="navbar-brand mx-auto" href="/"><img src="{{ url_for('static', filename='CCE-LOGO-WEBSITE-WHITE.png') }}" width="100" height="100" alt="">Carolina C&E, Inc</a> -->
 
-      <a class="navbar-brand p-0 me-0 me-lg-2" href="/"><img src="{{ url_for('static', filename='CCE-LOGO-WEBSITE-WHITE.png') }}" width="100" height="100" alt=""></a>
+      <a class="navbar-brand p-0 me-0 me-lg-2" href="/"><img src="{{ url_for('static', filename='CCE-LOGO-WEBSITE-WHITE.png') }}" width="80" height="80" alt=""></a>
 
       <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -50,13 +50,18 @@
               </li> -->
             <!-- </ul> -->
 
-              <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+            <hr class="d-lg-none">
 
-                <li class="nav-item col-8 col-xl-auto">
-                  <a class="nav-link" href="/rentals">Equipment</a>
+              <ul class="navbar-nav flex-row flex-wrap ms-auto">
+
+
+                <li class="nav-item col-8 col-xl-auto ">
+                  <a class="nav-link navb" href="/rentals">Equipment</a>
                 </li>
+              </ul>
 
-                <hr class="d-lg-none text-white-50">
+
+
 
                 <!-- <li class="nav-item col-6 col-lg-auto">
                   <a class="nav-link" href="/about">About Us</a>
@@ -64,40 +69,64 @@
 
                 {% if current_user.is_authenticated %}
 
+                <hr class="d-lg-none text-white-50">
+
+              <ul class="navbar-nav flex-row flex-wrap">
+
                 <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle-xl" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle-xl navb" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <!-- The Profile picture inserted via div class below, with shaping provided by Bootstrap -->
-                        {{ current_user.email }}
+                        User
                     </a>
                     <ul class="dropdown-menu">
 
                       <li class="nav-item">
-                          <a href="{{ url_for('profile') }}">Profile</a>
+                          <a href="{{ url_for('profile') }}">View Profile</a>
                       </li>
                       <li role="separator" class="divider"></li>
                       <li class="nav-item">
-                          <a href="/reservations">My Reservations</a>
+                          <a href="/reservations">View Reservations</a>
                       </li>
                       <li role="separator" class="divider"></li>
                       <li class="nav-item">
                           <a href="/logout">Log out</a>
                       </li>
+                    </ul>
+                </li>
+              </ul>
 
-                      {% if current_user.is_admin() %}
-                      <li role="separator" class="divider"></li>
+                {% if current_user.is_admin() %}
+
+                <hr class="d-lg-none text-white-50">
+
+              <ul class="navbar-nav flex-row flex-wrap">
+                <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle-xl navb" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <!-- The Profile picture inserted via div class below, with shaping provided by Bootstrap -->
+                        Admin
+                    </a>
+                    <ul class="dropdown-menu">
+
                         <li class="nav-item">
-                            <a href="{{ url_for('reservation_list_admin') }}">Admin: Reservations</a>
+                            <a href="{{ url_for('reservation_list_admin') }}">Reservations</a>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li class="nav-item">
-                            <a href="{{ url_for('renters_list_admin') }}">Admin: Renters</a>
+                            <a href="{{ url_for('renters_list_admin') }}">Renters</a>
                         </li>
-                        {% endif %}
 
                     </ul>
                 </li>
+              </ul>
+
+                {% endif %}
+
 
                 {% else %}
+
+                <hr class="d-lg-none text-white-50">
+
+              <ul class="navbar-nav flex-row flex-wrap">
                 <li class="nav-item col-8 col-xl-auto">
                   <script src="https://accounts.google.com/gsi/client" async></script>
                   <div id="g_id_onload"
@@ -114,8 +143,8 @@
                       data-logo_alignment="left">
                   </div>
                 </li>
+              </ul>
                {% endif %}
-           </ul>
 
         </div>
 

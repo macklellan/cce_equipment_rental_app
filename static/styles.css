@@ -58,12 +58,15 @@ body {
 .padd {
   /* Add shadows to create the "card" effect */
   margin: 40px auto;
-  padding: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .padd2 {
   padding: 15px;
   display: flex;
+  color: #000000;
+  text-align:center;
 }
 
 .title-padd {
@@ -108,7 +111,7 @@ body {
   padding: 25px;
   text-align: center;
   height: max-content;
-  margin: 5px;
+  margin: 15px;
 }
 
 .dash-card2 {
@@ -170,9 +173,6 @@ body {
   padding-right: 20px;
 }
 
-.flex-grow-1 .show .dropdown-menu .nav-item {
-  padding: 10px;
-}
 .rentals-card {
     height: calc(40vh + 2(1vw));
    /* padding-bottom: 10px; */
@@ -265,14 +265,19 @@ body {
 
 .nav-item {
   font-family: "Montserrat", sans-serif;
-  font-weight: 800;
-  padding-top: 5vh;
-  padding-bottom: 5vh;
-  padding-left: 4em;
-  padding-right: 4em;
+  font-weight: 600;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  padding-left: 2em;
+  padding-right: 2em;
   text-transform: uppercase;
   --bs-nav-link-padding-y: 0;
-  font-size: 33px;
+  font-size: 30px;
+}
+
+.navb {
+  color: #ffffff;
+
 }
 
 .footer-link {
