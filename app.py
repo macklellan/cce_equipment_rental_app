@@ -716,7 +716,7 @@ try:
     @app.route("/calendar/<equipment>", methods=["GET", "POST"])
     def calendar(equipment=None, error=None):
         if current_user.is_anonymous:
-            profile_dict = {}
+            profile_dict = get_renter_profile('-1', True)
         else:
             profile_dict = get_renter_profile(current_user.id, True)
         session['url'] = url_for('calendar', equipment=equipment)
@@ -730,7 +730,6 @@ try:
 
     # backend method for retreiving rental dates for calendar
     @app.route("/calendar/get/", methods=["POST"])
-    @login_required
     def get():
           data = dict(request.form)
           events = evt.get(int(data["month"]), int(data["year"]), str(data['equipment']))

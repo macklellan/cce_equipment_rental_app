@@ -11,6 +11,7 @@
 
     <!-- STYLESHEET + JAVASCRIPT -->
 
+  {% if not current_user.is_anonymous %}
   {% if pro['completed'] == 1 or current_user.is_admin() %}
     <script>
     var profile = "True";
@@ -30,6 +31,15 @@
       window.location.href = "{{ url_for('profile', flow='cal_b') }}";
     }
     </script>
+  {% endif %}
+  {% else %}
+  <script>
+  function comPro() {
+    window.location.href = "{{ url_for('profile') }}";
+  }
+  var equip = "{{ equip }}";
+  var profile = null;
+  </script>
   {% endif %}
 
     <script defer src="{{ url_for('static', filename='S4B_calendar.js') }}"></script>
@@ -55,10 +65,10 @@
 
           <!-- Hidden CalAdd in js as well -->
           <!-- <input id="calAdd" type="button" value="+"> -->
-
+          {% if not current_user.is_anonymous %}
           {% if pro['completed'] != 1 and not current_user.is_admin() %}
             <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
-            <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete your profile before viewing calendar</h2></a>
+            <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete a profile before making a reservation</h2></a>
           {% endif %}
 
           {% if current_user.is_admin() %}
@@ -68,7 +78,10 @@
           {% if error_msg %}
             <h2>ERROR: {{ error_msg }}</h2>
           {% endif %}
-
+          {% else %}
+            <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
+            <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete a profile before making a reservation</h2></a>
+          {% endif %}
 
         </div>
     </div>
