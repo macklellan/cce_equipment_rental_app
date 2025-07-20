@@ -108,12 +108,15 @@ body {
 .dash-card {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 10px 0 rgba(1, 1, 1, 0.4);
-  padding: 25px;
+  padding: 15px;
   text-align: center;
   height: max-content;
   margin: 15px;
 }
 
+.hmax {
+  height: fit-content;
+}
 .dash-card2 {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 10px 0 rgba(1, 1, 1, 0.4);
@@ -276,8 +279,8 @@ body {
 }
 
 .navb {
-  color: #ffffff;
-
+  color: #fbfbfb;
+  --bs-navbar-color: #fbfbfb;
 }
 
 .footer-link {
