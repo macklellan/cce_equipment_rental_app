@@ -1,24 +1,25 @@
 {% extends "template.html" %}
 {% block content %}
-<br>
-<div class="row">
-    <div class="col-sm-2">
-    </div>
-    <div class="col-sm-8 dash-card" style="background-color:white;">
-      <h6 class="title3">
 
-        <a href="{{ url_for('terms_reserve') }}">!!! &nbsp;&nbsp;&nbsp;&nbsp; Please read the terms and conditions of the reservation agreement. CLICK HERE &nbsp;&nbsp;&nbsp;&nbsp; !!!</a>
-      </h6>
-    </div>
-    <div class="col-sm-2">
-    </div>
+<br>
+
+<div class="alert alert-warning d-flex justify-content-center" role="alert">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  </svg>
+  <div>
+    <a href="#" data-toggle="modal" data-target="#termsmodal"><h5><b> Please <u>CLICK HERE</u> to read the terms and conditions. </b><h5></a>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  </svg>
 </div>
 
-<div class="row dash-card" >
+<div class="row dash-card" style="background-color:white;">
     <div class="col-sm-1">
     </div>
     <div class="col-sm-10">
-      <b>For any questions about your reservation please contact us via email: <b>mackenzie@carolinac-e.com</b> or phone: <b>(336)310-6594</b>
+      <b>For any questions about your reservation please contact us via email: <b><u>mackenzie@carolinac-e.com</u></b> or phone: <b><u>(336)310-6594</u></b>
     </div>
     <div class="col-sm-1">
     </div>
@@ -75,6 +76,9 @@
         Rental Agreement:
         {% if not esig and res['status'] >= 0 %}
         <span class="badge bg-warning text-dark">Not Signed</span>
+        <div class="spinner-grow text-warning float-end" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
         <a href="#" data-toggle="modal" data-target="#eramodal" class="btn btn-success btn-lg float-end" role="button">View & Sign</a>
         {% else %}
         <span class="badge bg-success">Signed</span>
@@ -85,9 +89,12 @@
 
         Billing Info:
         {% if billing_c == True%}
-        <span class="badge bg-success">Complete</span> {% if not depo %} <a href="{{ url_for('delete_billing') }}" class="btn btn-danger btn-lg float-end" role="button" onclick="return confirm('By clicking OK, You are removing the billing information associated with this account.')">Remove Billing Info</a> {% endif %}
+        <span class="badge bg-success">Complete</span> {% if not depo %} <a href="{{ url_for('delete_billing') }}" class="btn btn-danger btn-lg float-end" role="button" onclick="return confirm('By clicking OK, You are removing the billing information associated with this account.')">Remove</a> {% endif %}
         {% elif billing_c == False %}
-        <span class="badge bg-warning text-dark">Incomplete</span> <a href="#bstart" class="btn btn-success btn-lg float-end" role="button">Add Billing Address</a>
+        <div class="spinner-grow text-warning float-end" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="badge bg-warning text-dark">Incomplete</span> <a href="#bstart" class="btn btn-success btn-lg float-end" role="button">Add</a>
         {% endif %}
 
       </h4><hr class="hr"/><h4>
@@ -99,7 +106,10 @@
           {% else %}
           <span class="badge bg-warning text-dark">Incomplete</span>
           {% if billing_c %}
-          <a href="#pstart" class="btn btn-success btn-lg float-end" role="button">Add Payment Info</a>
+          <div class="spinner-grow text-warning float-end" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <a href="#pstart" class="btn btn-success btn-lg float-end" role="button">Add</a>
           {% endif %}
           {% endif %}
         {% else %}
@@ -206,20 +216,21 @@
 <!-- INPUT SECTION -->
 
 <div class="row">
-  <div class="col-sm-2">
+  <div class="col-sm-1">
   </div>
-  <div class="col-sm-8">
+  <div class="col-sm-10">
 
       <br>
 
       {% if not billing_c %}
 
+      <div class="submit-card card">
+
       <form action="{{ url_for('billing_profile') }}" method="post" id="bstart">
 
-        <hr class="hr"/>
         <br>
         <h4 style="text-align:center;">
-          Billing Info
+          Add Billing Info
         </h4>
         <div class="col-md-12 order-md-1">
         <div class="row">
@@ -254,7 +265,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-3 mb-3">
+          <div class="col-md-6 mb-6">
             <label for="country">Country</label>
             <select class="custom-select d-block w-100" name="country", id="country" required="">
               <option value="">Choose...</option>
@@ -264,7 +275,7 @@
               Please select a valid country.
             </div>
           </div>
-          <div class="col-md-3 mb-3">
+          <div class="col-md-6 mb-6">
             <label for="state">State</label>
             <select class="custom-select d-block w-100" name="state" id="state" required="">
               <option value="">Choose...</option>
@@ -277,14 +288,17 @@
               Please provide a valid state.
             </div>
           </div>
-          <div class="col-md-3 mb-3">
+        </div><br>
+
+        <div class="row">
+          <div class="col-md-6 mb-6">
             <label for="city">City</label>
             <input type="text" class="form-control form-control-lg" name="city" id="city" placeholder="" required="">
             <div class="invalid-feedback">
               City/Town required.
             </div>
           </div>
-          <div class="col-md-3 mb-3">
+          <div class="col-md-6 mb-6">
             <label for="zip">Zip</label>
             <input type="text" class="form-control form-control-lg" name="zip" id="zip" placeholder="" required="">
             <div class="invalid-feedback">
@@ -293,27 +307,37 @@
           </div>
         </div>
         <br>
-        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div>
       </form>
-        <hr class="mb-4">
+
+        </div>
 
         {% endif %}
 
 
         {% if billing_c %}
         {% if not billing_cc %}
-      <form action="" method="post" id="pstart">
-        <h4 style="text-align:center;" id="pstart">
-          Payment Info
-        </h4>
+        <br>
 
-        <div id="payment-form">
-          <div id="payment-status-container"></div>
-          <div id="card-container"></div>
-          <button id="card-button" type="button" type="submit" name="rbutton">Attach Card to Reservation</button>
+        <div class="submit-card card" style="font-size: 24px;">
+
+          <form action="" method="post" id="pstart">
+            <h4 style="text-align:center;" id="pstart">
+              Add Payment Info
+            </h4>
+
+            <div id="payment-form">
+              <div id="payment-status-container"></div>
+              <div id="card-container"></div>
+              <div class="d-grid gap-2 col-6 mx-auto">
+                <button id="card-button" type="button" type="submit" name="rbutton">Attach Card to Reservation</button>
+              </div>
+            </div>
+            </form>
+
         </div>
-        </form>
-        <hr class="mb-4">
         {% endif %}
         {% endif %}
     </div>
@@ -321,7 +345,7 @@
     </div>
 
 
-  <div class="col-sm-2">
+  <div class="col-sm-1">
   </div>
 </div>
 

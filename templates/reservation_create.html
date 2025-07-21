@@ -11,13 +11,16 @@
       <h2 class="title2">Create your reservation for: <b>{{ eq_dict[equip]['note'] }}</b> </h2>
       <br>
 
-      <div class="alert alert-warning d-flex align-items-center" role="alert">
+      <div class="alert alert-warning d-flex justify-content-center" role="alert">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
           <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
         </svg>
         <div>
-          <a href="#" data-toggle="modal" data-target="#termsmodal"><b>Please read the terms and conditions of the reservation agreement before proceeding. Click Here</b></a>
+          <a href="#" data-toggle="modal" data-target="#termsmodal"><h5><b> Please <u>CLICK HERE</u> to read the terms and conditions before proceeding. </b><h5></a>
         </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
       </div>
 
       <br>
@@ -97,19 +100,19 @@
           Contact Info
         </h4>
         <div class="form-group">
-          <label for="fname">First Name</label>
+          <label for="fname">First Name *</label>
           <input type="text" class="form-control form-control-lg" name="fname" id="fname" placeholder="" value="{{ pro['fname']}}" required>
           <br>
-          <label for="lname">Last Name</label>
+          <label for="lname">Last Name *</label>
           <input type="text" class="form-control form-control-lg" name="lname" id="lname" placeholder="" value="{{ pro['lname']}}" required>
           <br>
           <label for="comp">Company</label>
           <input type="text" class="form-control form-control-lg" name="comp" id="comp" placeholder="" value="">
           <br>
-          <label for="phone">Phone Number</label>
+          <label for="phone">Phone Number *</label>
           <input type="text" class="form-control form-control-lg" name="phone" id="phone" placeholder="555-555-5555" value="{{ pro['phone']}}" required>
           <br>
-          <label for="email">Email address (For Invoicing)</label>
+          <label for="email">Email address (For Invoicing) *</label>
           <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="name@example.com" value="{{ pro['email']}}" required>
         </div>
 
@@ -130,12 +133,12 @@
           </div>
         </div> -->
         <div class="form-group">
-          <label for="job_desc">Type of Job</label>
+          <label for="job_desc">Type of Job *</label>
           <input type="text" class="form-control form-control-lg" name="job_desc" id="job_desc" placeholder="Trenching, Demo, Landscaping, etc" required>
         </div>
         <br>
         <div class="form-group">
-          <label for="exp_level">Operator's Experience Level</label>
+          <label for="exp_level">Operator's Experience Level *</label>
           <select class="form-control form-control-lg" name="exp_level" id="exp_level" required>
             <option>Beginner</option>
             <option>Intermediate</option>
@@ -146,7 +149,7 @@
         <br>
 
         <div class="form-group">
-          <label for="inputAddress">Address of Job Site</label>
+          <label for="inputAddress">Address of Job Site *</label>
           <input type="text" class="form-control form-control-lg" name="inputAddress" id="inputAddress" placeholder="1234 Main St" required>
         </div>
         <div class="form-group">
@@ -155,11 +158,11 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputCity">City</label>
+            <label for="inputCity">City *</label>
             <input type="text" class="form-control form-control-lg" name="inputCity" id="inputCity" required>
           </div>
           <div class="form-group col-md-4">
-            <label for="inputState">State</label>
+            <label for="inputState">State *</label>
             <select name="inputState" id="inputState" class="form-control form-control-lg" required>
               <option selected>North Carolina</option>
               <option>Virgina</option>
@@ -168,7 +171,7 @@
             </select>
           </div>
           <div class="form-group col-md-2">
-            <label for="inputZip">Zip</label>
+            <label for="inputZip">Zip *</label>
             <input type="text" class="form-control form-control-lg" name="inputZip" id="inputZip" required>
           </div>
         </div>
@@ -182,7 +185,7 @@
         </div> -->
         <br>
         <div class="form-group">
-          <label for="residential">Residential or Commercial Property</label>
+          <label for="residential">Residential or Commercial Property *</label>
           <select class="form-control form-control-lg" name="residential" id="residential" required>
             <option>Residential</option>
             <option>Commercial</option>

@@ -23,7 +23,8 @@
 
   {% for eq in eq_list %}
 
-  <div class="col-xl-4 dash-card2">
+  <div class="col-xl-4">
+    <div class="dash-card2 h-100">
 
     {% if eq[0] %}
 
@@ -35,7 +36,7 @@
 
 
 
-        <div class="card rentals-card">
+        <div class="card rentals-card h-100">
             <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[eq[0]]['img'] }}" />
           <div class= "dash-card2">
           <h2 class="title3">{{ eq_dict[eq[0]]['note'] }}</h2>
@@ -84,8 +85,10 @@
       {% endif %}
 
   </div>
+  </div>
 
-  <div class="col-xl-4 dash-card2">
+  <div class="col-xl-4">
+  <div class="dash-card2 h-100">
 
     {% if eq[1] %}
 
@@ -97,7 +100,7 @@
       {% endif %}
 
 
-        <div class="card rentals-card">
+        <div class="card rentals-card h-100">
           <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[eq[1]]['img'] }}" />
           <div class= "dash-card2">
           <h2 class="title3">{{ eq_dict[eq[1]]['note'] }}</h2>
@@ -143,65 +146,77 @@
       {% endif %}
 
   </div>
+  </div>
 
-  <div class="col-xl-4 dash-card2">
+  <div class="col-xl-4">
+    <div class="dash-card2 h-100">
 
-    {% if eq[2] %}
+      {% if eq[2] %}
 
-    {% if eq_dict[eq[2]]['avl'] == True %}
-  <a class="link-dark" href="/calendar/{{ eq[2] }}">
-    {% else %}
-  <a class="link-dark" onclick="alert('EQUIPMENT IS NOT CURRENTLY AVAILABLE');">
-    {% endif %}
 
-        <div class="card rentals-card">
-          <img class="card-img-ico embed-responsive-item" src = "/static/{{ eq_dict[eq[2]]['img'] }}" />
-          <div class= "dash-card2">
-          <h2 class="title3">{{ eq_dict[eq[2]]['note'] }}</h2>
-          <h4>{{ eq_dict[eq[2]]['note2'] }}</h4>
-          <table class="table table-lg title3 table-font">
-            <thead>
-              <tr>
-                <th scope="col"><b>Brand</b></th>
-                <th scope="col"><b>Model</b></th>
-                <th scope="col"><b>Weight</b></th>
-              </tr>
-              <tbody>
-                <tr>
-                  <!-- <th scope="row">1</th> -->
-                  <td>{{ eq_dict[eq[2]]['brand'] }}</td>
-                  <td>{{ eq_dict[eq[2]]['model'] }}</td>
-                  <td>{{ eq_dict[eq[2]]['wt'] }} Lbs</td>
-                </tr>
-              </tbody>
-            </table>
+        {% if eq_dict[eq[2]]['avl'] == True %}
+      <a class="link-dark" href="/calendar/{{ eq[2] }}">
+        {% else %}
+      <a class="link-dark" onclick="alert('EQUIPMENT IS NOT CURRENTLY AVAILABLE');">
+        {% endif %}
 
+
+          <div class="card rentals-card h-100">
+            <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[eq[2]]['img'] }}" />
+            <div class= "dash-card2">
+            <h2 class="title3">{{ eq_dict[eq[2]]['note'] }}</h2>
+            <h4>{{ eq_dict[eq[2]]['note2'] }}</h4>
             <table class="table table-lg title3 table-font">
               <thead>
                 <tr>
-                  <th scope="col"><b>Attachments</b></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
+                  <th scope="col"><b>Brand</b></th>
+                  <th scope="col"><b>Model</b></th>
+                  <th scope="col"><b>Weight</b></th>
                 </tr>
                 <tbody>
-                  {% for att in att_list[eq[2]] %}
                   <tr>
-                    <td>{{ att }}</td>
-                    <td></td>
-                    <td></td>
+                    <!-- <th scope="row">1</th> -->
+                    <td>{{ eq_dict[eq[2]]['brand'] }}</td>
+                    <td>{{ eq_dict[eq[2]]['model'] }}</td>
+                    <td>{{ eq_dict[eq[2]]['wt'] }} Lbs</td>
                   </tr>
-                  {% endfor %}
                 </tbody>
               </table>
-          </div>
-          </div>
-          </a>
 
-      {% endif %}
+              <table class="table table-lg title3 table-font">
+                <thead>
+                  <tr>
+                    <th scope="col"><b>Attachments</b></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                  <tbody>
+                    {% for att in att_list[eq[2]] %}
+                    <tr>
+                      <td>{{ att }}</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+            </div>
+            </a>
 
-  </div>
+        {% endif %}
 
-  {% else %}
+    </div>
+    </div>
+
+  {% endfor %}
+
+
+
+  {% if not eq_list %}
+
+  <!-- No Items to view... -->
+
   <div class="alert alert-warning d-flex " role="alert" style="text-align:center;">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
       <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
@@ -210,8 +225,8 @@
       <h4><b>Nothing is listed in this category yet. Please check back later.</b></h4>
 
   </div>
-  {% endfor %}
 
+  {% endif %}
 
 
 </div>

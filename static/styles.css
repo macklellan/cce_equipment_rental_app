@@ -31,7 +31,7 @@ body {
 
 
 .g_id_signin {
-  transform: scale(1.2);
+  transform: scale(1.4);
 }
 
 /* .navbar-toggler{
@@ -51,8 +51,11 @@ body {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background-color: #ffffff;
-  margin: 20px auto;
+  margin: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   padding: 20px;
+  --bs-card-border-radius: 1px;
 }
 
 .padd {
