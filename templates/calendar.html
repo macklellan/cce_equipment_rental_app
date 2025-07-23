@@ -51,39 +51,38 @@
   <!-- (A) PERIOD SELECTOR -->
   <div id="calHead">
 
-        <h1 style="color:white;"><a class="" href="{{ url_for('rentals') }}">[Back]</a>  Booking Calendar for: {{ equip }}</h1>
+        <h1 style="color:white;"><a class="" href="{{ url_for('rentals') }}">[Back]</a>  -  {{ equip }} ({{ note }})</h1>
 
         <div id="calPeriod">
+          <input id="calBack" type="button" value="  &lt;  ">
           <select id="calMonth"></select>
           <input id="calYear" type="number" disabled>
-          <br>
-          <input id="calToday" type="button" value="&#9733;" hidden>
-          <input id="calBack" type="button" value="  &lt;  ">
           <input id="calNext" type="button" value="  &gt;  ">
-          <br>
+          <input id="calToday" type="button" value="&#9733;" hidden>
 
+        </div>
 
+        <div id="calProf">
           <!-- Hidden CalAdd in js as well -->
           <!-- <input id="calAdd" type="button" value="+"> -->
           {% if not current_user.is_anonymous %}
-          {% if pro['completed'] != 1 and not current_user.is_admin() %}
-            <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
-            <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete a profile before making a reservation</h2></a>
-          {% endif %}
+            {% if pro['completed'] != 1 and not current_user.is_admin() %}
+              <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
+            {% endif %}
 
-          {% if current_user.is_admin() %}
-            <h2>Logged in as admin.</h2>
-          {% endif %}
+            {% if current_user.is_admin() %}
+              <h2>Logged in as admin.</h2>
+            {% endif %}
 
-          {% if error_msg %}
-            <h2>ERROR: {{ error_msg }}</h2>
-          {% endif %}
-          {% else %}
-            <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
-            <a class="" href="{{ url_for('profile', flow='cal_b') }}"><h2>You must complete a profile before making a reservation</h2></a>
+            {% if error_msg %}
+              <h2>ERROR: {{ error_msg }}</h2>
+            {% endif %}
+            {% else %}
+              <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
           {% endif %}
 
         </div>
+
     </div>
 
 

@@ -27,9 +27,12 @@ body {
   padding: 15px;
   background: var(--bg-color-a);
 }
-#calPeriod { flex-grow: 1; }
+#calPeriod {
+  flex-grow: 1;
+  text-align: center;
+}
 #calHead input, #calHead select {
-  font-size: 35px;
+  font-size: 45px;
   border-radius: 1px;
   border: 0; outline: none;
   color: #fff; background: 0;
@@ -52,6 +55,11 @@ body {
   padding: 10px 30px;
   background: #4caf50;
 }
+
+#calProf{
+  text-align: center;
+}
+
 
 /* (C) CALENDAR */
 /* (C1) ROWS */
@@ -90,7 +98,7 @@ body {
   padding: 15px 0;
 }
 .calRowHead .calCell {
-  font-size: 36px;
+  font-size: 50px;
   font-weight: 700;
   color: #474747;
   padding: 5px;
