@@ -16,11 +16,16 @@ html {
   }
 }
 
+:root {
+  --primary-color: #fc3500; /* or try #0066ff for blue vibe */
+}
+
+
 body {
   font-family: 'Trebuchet MS', sans-serif;
   /* color: #01082f; */
   margin: auto;
-  background-color: #d8d9dd;
+  background: linear-gradient(to bottom, #f2f2f2, #d8d9dd);
   /* background-image: linear-gradient(#d8d9dd, rgba(37, 39, 44, 1)); */
   /* background-image: url('/static/img/gpt2.webp'); */
   background-repeat: repeat;
@@ -66,7 +71,7 @@ body {
 }
 
 .padd2 {
-  padding: 15px;
+  padding: 5px;
   display: flex;
   color: #000000;
   text-align:center;
@@ -92,6 +97,8 @@ body {
 .btn-c {
   gradient: none;
   --bs-border-radius-lg: 0.1rem;
+  --bs-btn-bg: var(--primary-color);
+  --bs-btn-color: #fff;
 }
 
 .error-card {
@@ -122,6 +129,14 @@ body {
   margin: 15px;
 }
 
+.category-card {
+  box-shadow: 0 4px 10px 0 rgba(1, 1, 1, 0.4);
+  padding: 15px;
+  text-align: center;
+  height: max-content;
+  margin: 15px;
+}
+
 .hmax {
   height: fit-content;
 }
@@ -133,7 +148,22 @@ body {
   margin: 5px;
 }
 
+.dash-card3 {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.05),
+    0 8px 16px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin: 15px;
+  transition: transform 0.2s ease-in-out;
+  text-align: center;
+}
 
+.category-card:hover {
+  transform: translateY(-4px);
+}
 
 .terms-card {
   /* Add shadows to create the "card" effect */
@@ -226,6 +256,7 @@ body {
   padding-top: 0;
   padding-left: 20px;
   box-shadow: 0 0 100px hsla(0,0%,0%,.3);
+
 }
 
 .navbar2 {
@@ -266,12 +297,16 @@ body {
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
 }
 
 
 .title4 {
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
 }
 
 
@@ -282,13 +317,31 @@ body {
   padding-bottom: 1vh;
   padding-left: 2em;
   padding-right: 2em;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   --bs-nav-link-padding-y: 0;
-  font-size: 30px;
+  font-size: 31px;
+}
+
+.nav-link {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+
+  /* text-transform: uppercase; */
+  --bs-nav-link-padding-y: 0;
+  font-size: 31px;
+}
+
+.nav-link:hover {
+  transform: translateY(1px);
+
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: rgb(255 255 255);
 }
 
 .navb {
-  color: #fbfbfb;
+  color: rgb(251 251 251 / 84%);
   --bs-navbar-color: #fbfbfb;
 }
 

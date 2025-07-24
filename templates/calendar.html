@@ -51,7 +51,44 @@
   <!-- (A) PERIOD SELECTOR -->
   <div id="calHead">
 
-        <h1 style="color:white;"><a class="" href="{{ url_for('rentals') }}">[Back]</a>  -  {{ equip }} ({{ note }})</h1>
+    <div id="calBanner" style="text-align: center;">
+
+        <form action="{{ url_for('rentals') }}">
+
+
+          <div style="float: left; padding:2em;">
+
+            <input type="submit" id="goBack" type="button" value="Go Back">
+
+            <!-- Hidden CalAdd in js as well -->
+            <!-- <input id="calAdd" type="button" value="+"> -->
+            {% if not current_user.is_anonymous %}
+              {% if pro['completed'] != 1 and not current_user.is_admin() %}
+                <input style="float: left;" id="comPro" type="button" value="Complete Profile" href="{{ url_for('rentals') }}">
+              {% endif %}
+
+              {% if current_user.is_admin() %}
+                <h2>Logged in as admin.</h2>
+              {% endif %}
+
+              {% if error_msg %}
+                <h2>ERROR: {{ error_msg }}</h2>
+              {% endif %}
+              {% else %}
+                <input style="float: left;" id="comPro" type="button" value="Complete Profile" onclick="comPro()">
+            {% endif %}
+          </div>
+
+          <b style="font-size: 32px;"> {{ equip }} ({{ note }}) </b>
+
+
+        </form>
+
+        <br>
+
+
+
+    </div>
 
         <div id="calPeriod">
           <input id="calBack" type="button" value="  &lt;  ">
@@ -59,27 +96,6 @@
           <input id="calYear" type="number" disabled>
           <input id="calNext" type="button" value="  &gt;  ">
           <input id="calToday" type="button" value="&#9733;" hidden>
-
-        </div>
-
-        <div id="calProf">
-          <!-- Hidden CalAdd in js as well -->
-          <!-- <input id="calAdd" type="button" value="+"> -->
-          {% if not current_user.is_anonymous %}
-            {% if pro['completed'] != 1 and not current_user.is_admin() %}
-              <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
-            {% endif %}
-
-            {% if current_user.is_admin() %}
-              <h2>Logged in as admin.</h2>
-            {% endif %}
-
-            {% if error_msg %}
-              <h2>ERROR: {{ error_msg }}</h2>
-            {% endif %}
-            {% else %}
-              <input id="comPro" type="button" value="Complete Profile" onclick="comPro()"><br>
-          {% endif %}
 
         </div>
 

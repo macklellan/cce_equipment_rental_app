@@ -31,6 +31,12 @@ body {
   flex-grow: 1;
   text-align: center;
 }
+
+#calBanner {
+  background: #bdbdbd;
+  padding: 2em;
+  margin: 1em;
+}
 #calHead input, #calHead select {
   font-size: 45px;
   border-radius: 1px;
@@ -54,6 +60,13 @@ body {
 #calHead #comPro {
   padding: 10px 30px;
   background: #4caf50;
+  font-size: 24px;
+}
+
+#calHead #goBack {
+  padding: 10px 30px;
+  background: #fc3500;
+  font-size: 24px;
 }
 
 #calProf{
