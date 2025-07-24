@@ -56,7 +56,7 @@
         <form action="{{ url_for('rentals') }}">
 
 
-          <div style="float: left; padding:2em;">
+          <div style="">
 
             <input type="submit" id="goBack" type="button" value="Go Back">
 
@@ -64,7 +64,7 @@
             <!-- <input id="calAdd" type="button" value="+"> -->
             {% if not current_user.is_anonymous %}
               {% if pro['completed'] != 1 and not current_user.is_admin() %}
-                <input style="float: left;" id="comPro" type="button" value="Complete Profile" href="{{ url_for('rentals') }}">
+                <input style="" id="comPro" type="button" value="Complete Profile" href="{{ url_for('rentals') }}">
               {% endif %}
 
               {% if current_user.is_admin() %}
@@ -75,11 +75,11 @@
                 <h2>ERROR: {{ error_msg }}</h2>
               {% endif %}
               {% else %}
-                <input style="float: left;" id="comPro" type="button" value="Complete Profile" onclick="comPro()">
+                <input style="" id="comPro" type="button" value="Complete Profile" onclick="comPro()">
             {% endif %}
-          </div>
+          </div><br>
 
-          <b style="font-size: 32px;"> {{ equip }} ({{ note }}) </b>
+          <b style="font-size: 24px;"> {{ equip }} ({{ note }}) </b>
 
 
         </form>
