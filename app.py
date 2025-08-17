@@ -272,15 +272,16 @@ try:
     @app.route('/profile/<flow>', methods=["GET"])
     def profile(flow=None):
 
+        if flow is not None and flow == 'cal_b':
+            session['cal_b'] = True
+            session['cal_b_L'] = session['url']
+
         if current_user.is_anonymous:
             session['url'] = url_for('profile')
             pro = get_renter_profile(0, True)
             return render_template('profile.html', gcid=gcid, pro=pro)
 
         profile_dict = get_renter_profile(current_user.id, True)
-
-        if flow is not None and flow == 'cal_b':
-            session['cal_b'] = True
 
         if request.method == 'POST':
             if 'pbutton' in request.form:
@@ -315,7 +316,7 @@ try:
 
                 if session.get('cal_b') == True:
                     session.pop('cal_b')
-                    return redirect(session['url'])
+                    return redirect(session['cal_b_L'])
 
                 return render_template('profile.html', success="Added ID Photo/Scan, Created Renter Profile! Admin will review for any issues.", pro=profile_dict)
 

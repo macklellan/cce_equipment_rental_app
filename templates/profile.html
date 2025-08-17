@@ -14,6 +14,7 @@
       var delayMs = 250; // delay in milliseconds
 
       setTimeout(function(){
+          $('#calandarLoginModal').modal({backdrop: 'static', keyboard: false});
           $('#calandarLoginModal').modal('show');
       }, delayMs);
   });
@@ -62,16 +63,16 @@
         <form action="{{ url_for('profile') }}" method="post">
         <div class="form-group">
           <label for="fname">First Name</label>
-          <input type="text" class="form-control form-control-lg" name="fname" id="fname" placeholder="" value="{{ pro['fname']}}">
+          <input type="text" class="form-control form-control-lg" name="fname" id="fname" placeholder="" value="{{ pro['fname']}}" required>
           <br>
           <label for="lname">Last Name</label>
-          <input type="text" class="form-control form-control-lg" name="lname" id="lname" placeholder="" value="{{ pro['lname']}}">
+          <input type="text" class="form-control form-control-lg" name="lname" id="lname" placeholder="" value="{{ pro['lname']}}" required>
           <br>
           <label for="phone">Phone Number</label>
-          <input type="text" class="form-control form-control-lg" name="phone" id="phone" placeholder="555-555-5555" value="{{ pro['phone']}}">
+          <input type="text" class="form-control form-control-lg" name="phone" id="phone" placeholder="555-555-5555" value="{{ pro['phone']}}" required>
           <br>
           <label for="email">Email address (For Invoicing)</label>
-          <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="name@example.com" value="{{ pro['email']}}">
+          <input type="email" class="form-control form-control-lg" name="email" id="email" placeholder="name@example.com" value="{{ pro['email']}}" required>
         </div>
         <br>
         <div class="form-group">
@@ -85,6 +86,9 @@
         {% if not current_user.is_anonymous %}
         {% if not current_user.renter_profile %}
          <button type="submit" name="pbutton" class="btn btn-primary btn-lg">Submit Contact Info</button>
+         <div class="spinner-grow text-warning" role="status">
+           <span class="visually-hidden">Loading...</span>
+         </div>
         {% else %}
          <button type="submit" name="ubutton" class="btn btn-primary btn-lg">Update Profile</button>
          <button type="submit" name="dbutton" class="btn btn-danger btn-lg">Delete Profile</button>
@@ -97,12 +101,15 @@
         <br>
         <div class="form-group">
           <label for="license">Please upload a picture of the front of your drivers license or ID.</label>
-          <input type="file" class="form-control-file form-control-file-lg" name="file" id="license">
+          <input type="file" class="form-control-file form-control-file-lg" name="file" id="license" required>
         </div>
         <br>
         {% if not current_user.renter_profile['license'] %}
         {% if current_user.renter_profile %}
          <button type="submit" name="lbutton" class="btn btn-primary btn-lg">Upload ID</button>
+         <div class="spinner-grow text-warning" role="status">
+           <span class="visually-hidden">Loading...</span>
+         </div>
          {% else %}
          <button type="submit" name="lbutton" class="btn btn-primary btn-lg" disabled>Upload ID</button>
          {% endif %}
