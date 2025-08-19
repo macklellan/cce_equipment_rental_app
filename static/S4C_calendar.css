@@ -55,7 +55,7 @@ body {
   color: #fff;
   background: 0;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 5px;
   outline-style: solid;
   /* margin: 10px; */
 }
@@ -70,8 +70,8 @@ body {
 }
 #calHead option { color: #fff; }
 #calHead #calYear {
-  width: 5em;
-  margin-left: 10px;
+  width: 3em;
+  margin-left: 5px;
   background: #353535;
 }
 #calHead #calMonth {
