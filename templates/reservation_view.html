@@ -38,24 +38,26 @@
 
         Reservation Status:
 
-        {% if esig and depo %}
-        {% if res['status'] == 0 %}
-        <span class="badge bg-secondary">In Progress</span>
-        </h4>
-        <br>
-        <div class="alert alert-success d-flex align-items-center" role="alert">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
-            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-          </svg>
-          <div>
-            Thank you for completing the reservation. You will be contacted within 24 hours!  Contact us via email address <b>westerncarolinarentals@gmail.com</b> for immediate assistance. <br> <b>Carolina C&E, Inc</b> reserves the right to not accept this reservation.
-          </div>
-        </div>
-        {% elif res['status'] >= 1 %}
-        <span class="badge bg-success">Complete</span>
-        {% elif res['status'] <= -1 %}
+        {% if res['status'] <= -1 %}
         <span class="badge bg-danger">Cancelled</span>
-        {% endif %}
+        {% elif esig and depo %}
+
+          {% if res['status'] == 0 %}
+          <span class="badge bg-secondary">In Progress</span>
+          </h4>
+          <br>
+          <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <div>
+              Thank you for completing the reservation. You will be contacted within 24 hours!  Contact us via email address <b>westerncarolinarentals@gmail.com</b> for immediate assistance. <br> <b>Carolina C&E, Inc</b> reserves the right to not accept this reservation.
+            </div>
+          </div>
+          {% elif res['status'] >= 1 %}
+          <span class="badge bg-success">Complete</span>
+          {% endif %}
+
         {% else %}
         <span class="badge bg-danger">Incomplete Reservation</span>
         </h4>
@@ -74,12 +76,17 @@
       <hr class="hr"/><h4>
 
         Rental Agreement:
-        {% if not esig and res['status'] >= 0 %}
+
+        {% if not esig %}
         <span class="badge bg-warning text-dark">Not Signed</span>
-        <div class="spinner-grow text-warning float-end" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <a href="#" data-toggle="modal" data-target="#eramodal" class="btn btn-success btn-lg float-end" role="button">View & Sign</a>
+
+          {% if res['status'] >= 0 %}
+          <div class="spinner-grow text-warning float-end" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <a href="#" data-toggle="modal" data-target="#eramodal" class="btn btn-success btn-lg float-end" role="button">View & Sign</a>
+          {% endif %}
+
         {% else %}
         <span class="badge bg-success">Signed</span>
         <a href="#" data-toggle="modal" data-target="#eramodal" class="btn btn-secondary btn-lg float-end" role="button">View</a>
@@ -90,7 +97,7 @@
         Billing Info:
         {% if billing_c == True%}
         <span class="badge bg-success">Complete</span> {% if not depo %} <a href="{{ url_for('delete_billing') }}" class="btn btn-danger btn-lg float-end" role="button" onclick="return confirm('By clicking OK, You are removing the billing information associated with this account.')">Remove</a> {% endif %}
-        {% elif billing_c == False %}
+        {% elif billing_c == False and res['status'] >= 0 %}
         <div class="spinner-grow text-warning float-end" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -101,11 +108,11 @@
 
         Deposit:
         {% if not depo %}
-          {% if billing_cc and res['status'] >= 0%}
+          {% if billing_cc and res['status'] >= 0 %}
           <span class="badge bg-warning text-dark">Incomplete</span> <span class="badge bg-success">Card on File x{{ last_4 }}</span> <a href="{{ url_for('start_deposit', res_id=res['res_id']) }}" class="btn btn-primary btn-lg float-end" role="button" onclick="return confirm('By clicking OK, $100 will be temporariliy charged to your card as a deposit on this reservation. Are you sure?')">Submit Deposit</a>
           {% else %}
           <span class="badge bg-warning text-dark">Incomplete</span>
-          {% if billing_c %}
+          {% if billing_c and res['status'] >= 0 %}
           <div class="spinner-grow text-warning float-end" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
@@ -121,15 +128,6 @@
       <br>
     </div>
 
-
-    <div class="submit-card card" id="eq_res_disp">
-        <div class="card rentals-card">
-          <div class= "dash-card2">
-            <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[equip]['img'] }}" />
-          </div>
-        </div>
-        {% include 'eq_card.html' %}
-    </div>
 
     <div class="submit-card card">
       <h4>Estimate Total: <b>{{ (rate * n_days) + (rate2 * n_weeks) + (ifee * n_days) + ((ifee * 3) * n_weeks) + dfee }}$</b></h4>
@@ -152,6 +150,14 @@
 
   </div>
   <div class="col-xl-5 align-items-center">
+    <div class="submit-card card" id="eq_res_disp">
+      <div class="card rentals-card">
+        <div class= "dash-card2">
+          <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[equip]['img'] }}" />
+        </div>
+      </div>
+      {% include 'eq_card.html' %}
+    </div>
     <div class="submit-card card">
       <div class="form-group col-sm-6">
         <label for="start">Start Date</label>
@@ -380,6 +386,7 @@
   </div>
 </div>
 
+{% include 'terms_reserve_modal.html' %}
 
 <script type="module">
 
