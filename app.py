@@ -116,9 +116,9 @@ try:
         @wraps(f)
         def decorated_function(*args, **kwargs):
 
-            if current_user.is_admin:
+            if current_user.is_authenticated and current_user.is_admin:
                 return f(*args, **kwargs)
-
+            
             return abort(401)
 
         return decorated_function
@@ -272,10 +272,13 @@ try:
     @app.route('/profile/<flow>', methods=["GET"])
     def profile(flow=None):
 
+        # calendar link-back
+        # when user selects "complete profile" from a specific calendar page
         if flow is not None and flow == 'cal_b':
             session['cal_b'] = True
             session['cal_b_L'] = session['url']
 
+        # blank page, blocking modal forces users to login via google
         if current_user.is_anonymous:
             session['url'] = url_for('profile')
             pro = get_renter_profile(0, True)
@@ -638,7 +641,6 @@ try:
         except Exception as e:
             raise e
             return make_response(f"Error: {str(e)}", 500)
-
 
 
 
