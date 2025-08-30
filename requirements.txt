@@ -7,3 +7,4 @@ pypdf
 reportlab
 squareup==39.0.0.20241120
 azure-storage-file-share
+mailersend

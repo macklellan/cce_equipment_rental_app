@@ -26,6 +26,7 @@ try:
     from db_lib import get_renter_profile
     import calendar_lib as evt
     import square_lib
+    from email_lib import new_res_notification
 
 
 
@@ -118,7 +119,7 @@ try:
 
             if current_user.is_authenticated and current_user.is_admin:
                 return f(*args, **kwargs)
-            
+
             return abort(401)
 
         return decorated_function
@@ -317,6 +318,7 @@ try:
                 if not current_user.profile_complete():
                     db_lib.set_complete_renter(current_user.id)
 
+                # user completed profile after link from calendar
                 if session.get('cal_b') == True:
                     session.pop('cal_b')
                     return redirect(session['cal_b_L'])
@@ -336,6 +338,11 @@ try:
 
             if not current_user.renter_profile:
                 return render_template('profile.html', pro=profile_dict, notice="Please complete your renter profile.")
+
+            # user logged in after link from calendar
+            if session.get('cal_b') == True:
+                session.pop('cal_b')
+                return redirect(session['cal_b_L'])
 
             return render_template('profile.html', pro=profile_dict)
 
@@ -437,8 +444,16 @@ try:
             zip = request.form['inputZip']
             residential = (request.form['residential'] != 'Residential')
             notes = request.form['notes']
+
+            # save reservation in db
             db_lib.create_booking(db_lib.last_event_id(), current_user.id, equipment, start, end, n_days, n_weeks ,0,trans,fname + ' ' + lname,company,phone,email,job_desc, exp_level, address1,address2,city,state,zip,residential,notes)
+
+            # save event for calendar
             ok = evt.save(start, end, "RESERVED", '#FFFFFF', '#FF5656', equipment, None)
+
+            # send email notification to admin
+            new_res_notification(1, equipment, start + ' - ' + end, fname + ' ' + lname, email)
+
             return redirect(url_for("reservation", id=db_lib.last_booking_id()))
 
 
@@ -722,6 +737,7 @@ try:
             profile_dict = get_renter_profile('-1', True)
         else:
             profile_dict = get_renter_profile(current_user.id, True)
+
         session['url'] = url_for('calendar', equipment=equipment)
 
         # processing error

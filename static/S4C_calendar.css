@@ -70,7 +70,7 @@ body {
 }
 #calHead option { color: #fff; }
 #calHead #calYear {
-  width: 3em;
+  width: 3.25em;
   margin-left: 5px;
   background: #353535;
 }
