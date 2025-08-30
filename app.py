@@ -1,6 +1,7 @@
 # CCE
 # Ryan McClellan 2025
 
+
 # Main application for equipment rental and reservation website.
 
 # initialization wrapped in try/catch
