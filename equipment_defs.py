@@ -23,21 +23,6 @@ equipment_dict = {'2024_Bobcat_E26': {
         'note':'7500 Lb Mini Excavator',
         'note2':'Long Arm, X-change',
         'avl': True
-    },'2024_Bobcat_E42': {
-            'brand': 'Bobcat',
-            'model': 'E-42',
-            'yr': '2024',
-            'img': 'bobcat-e42.webp',
-            'sn': '2024E42',
-            'wt': '10000',
-            'ppd': 400,
-            'ppw': 1500,
-            'dfee': 200,
-            'ifee': 25,
-            'category': 'Compact Earth Moving',
-            'note':'10000 Lb Mini Excavator',
-            'note2':'X-change',
-            'avl': False
     },'2024_Bobcat_T595': {
             'brand': 'Bobcat',
             'model': 'T595',
