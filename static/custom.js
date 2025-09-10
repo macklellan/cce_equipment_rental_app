@@ -47,3 +47,21 @@ function toggle_eq_view() {
     x.style.display = "none";
   }
 }
+
+function minTable(ele) {
+  var divsToHide = document.getElementsByClassName(ele); //divsToHide is an array
+  for(var i = 0; i < divsToHide.length; i++){
+      divsToHide[i].classList.add("d-none")
+  }
+}
+
+function maxTable(ele) {
+  var divsToHide = document.getElementsByClassName(ele); //divsToHide is an array
+  for(var i = 0; i < divsToHide.length; i++){
+      divsToHide[i].classList.remove("d-none")
+  }
+}
+
+function showGenre(item) {
+  document.getElementById("dropdownMenu1").innerHTML = item.innerHTML;
+}
