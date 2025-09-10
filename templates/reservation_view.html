@@ -130,7 +130,13 @@
 
 
     <div class="submit-card card">
-      <h4>Estimate Total: <b>{{ (rate * n_days) + (rate2 * n_weeks) + (ifee * n_days) + ((ifee * 3) * n_weeks) + dfee }}$</b></h4>
+
+      {% if res['transport'] == 'C&E Provided' %}
+        <h4>Estimate Total: <b>{{ (rate * n_days) + (rate2 * n_weeks) + (ifee * n_days) + ((ifee * 3) * n_weeks) + dfee }}$</b></h4>
+      {% else %}
+        <h4>Estimate Total: <b>{{ (rate * n_days) + (rate2 * n_weeks) + (ifee * n_days) + ((ifee * 3) * n_weeks) }}$</b></h4>
+      {% endif %}
+
       {% if n_days > 0 %}
         <h5><b>{{ rate * n_days }}$</b> ({{ rate }}$ Rental Fee per day) x{{ n_days }} </h5>
         <h5><b>{{ ifee * n_days }}$</b> ({{ ifee }}$ Insurance Fee per day) x{{ n_days }}</h5>
@@ -139,7 +145,10 @@
         <h5><b>{{ rate2 * n_weeks }}$</b> ({{ rate2 }}$ Rental Fee per week) x{{ n_weeks }} </h5>
         <h5><b>{{ (ifee * 3) * n_weeks }}$</b> ({{ ifee * 3 }}$ Insurance Fee per week) x{{ n_weeks }}</h5>
       {% endif %}
-      <h5><b>{{ dfee }}$</b> Delivery Fee (within 25 Miles, subject to change)</h5>
+
+      {% if res['transport'] == 'C&E Provided' %}
+        <h5><b>{{ dfee }}$</b> Delivery Fee (within 25 Miles, subject to change)</h5>
+      {% endif %}
     </div>
       <br>
       <h6 class="title3">
