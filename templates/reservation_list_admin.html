@@ -8,6 +8,8 @@
     <div class="submit-card card">
       <h4>
         All Reservations:
+        <button type="button" class="btn btn-sm btn-secondary minT" role="button" style="float: right; padding: 5px; margin:5px;" onclick="minTable('minT'); maxTable('maxT');">Min.</button>
+        <button type="button" class="btn btn-sm btn-secondary maxT d-none" role="button" style="float: right; padding: 5px; margin:5px;" onclick="maxTable('minT'); minTable('maxT');">Max.</button>
       </h4>
 
       {% if not res_list %}
@@ -25,11 +27,11 @@
           <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                  <th>Reservation ID</th>
+                  <th class="minT">Reservation ID</th>
                   <th>Renter Name</th>
-                  <th>Equipment</th>
+                  <th class="minT">Equipment</th>
                   <th>Start Date</th>
-                  <th>End Date</th>
+                  <th class="minT">End Date</th>
                   <th>Rental Days</th>
                   <th>Reservation Status</th>
                   <th>Fufillment Status</th>
@@ -40,11 +42,11 @@
             </thead>
             {% for res in res_list %}
                 <tr>
-                   <td>{{ res['res_id'] }}</td>
+                   <td class="minT">{{ res['res_id'] }}</td>
                    <td>{{ res['renter_name'] }}</td>
-                   <td>{{ res['equipment'] }}</td>
+                   <td class="minT">{{ res['equipment'] }}</td>
                    <td>{{ res['start'] }}</td>
-                   <td>{{ res['end'] }}</td>
+                   <td class="minT" >{{ res['end'] }}</td>
                    <td>{{ res['n_days'] }}</td>
                    <td>
                      {% if res['status'] >= 1 %}
@@ -65,19 +67,19 @@
                      {% endif %}
                    </td>
                    <td>
-                     <a href="{{ url_for('reservation', id=res['res_id']) }}" class="btn btn-success btn-lg" role="button">View</a>
+                     <a type="button" class="btn btn-sm btn-success" href="{{ url_for('reservation', id=res['res_id']) }}" role="button">View</a>
                    </td>
                    <td>
                      {{ res['renter_id'].len }}
                      {% if res['renter_id'] ==  current_user.id or res['renter_id']|length == 36 %}
-                     <a class="btn btn-success btn-lg" role="button" onclick="copyLinkUrl( {{ res['res_id'] }} );">Copy</a>
+                     <a type="button" class="btn btn-sm btn-success" role="button" onclick="copyLinkUrl( {{ res['res_id'] }} );">Copy</a>
                      {% endif %}
                    </td>
                    <td>
                      <div class="dropdown">
-                       <a class="btn btn-secondary dropdown-toggle btn-lg" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <button class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border: 2px solid black;">
                          Status
-                       </a>
+                       </button>
 
                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                          <a class="dropdown-item" href="{{ url_for('reservation_list_admin', pend=res['res_id']) }}" onclick="return confirm('Are you sure you want to reset this reservation to pending?')">Set to Pending</a>

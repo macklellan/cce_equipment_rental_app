@@ -253,6 +253,18 @@ body {
   font-size: calc(1em + .2vw);
 }
 
+.tableFixHead2 .form-control-sm input[type=text], select, textarea {
+  width: 10%;
+  padding: none;
+  margin: none;
+}
+
+.tableFixHead2 table {
+
+  padding: .1rem;
+
+}
+
 .bd-navbar .offcanvas-xl {
     background-color: #3a3a3a;
     border-left: 0;
