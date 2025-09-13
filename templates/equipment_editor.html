@@ -1,0 +1,106 @@
+{% extends "template.html" %}
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-1">
+  </div>
+  <div class="col-sm-10">
+    <div class="submit-card card">
+      <h4>
+        All Reservations:
+        <button type="button" class="btn btn-sm btn-secondary minT" role="button" style="float: right; padding: 5px; margin:5px;" onclick="minTable('minT'); maxTable('maxT');">Min.</button>
+        <button type="button" class="btn btn-sm btn-secondary maxT d-none" role="button" style="float: right; padding: 5px; margin:5px;" onclick="maxTable('minT'); minTable('maxT');">Max.</button>
+      </h4>
+
+      {% if not res_list %}
+      <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
+        <div>
+          No reservations to view
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="card tableFixHead2">
+          <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                  <th>Eq ID</th>
+                  <th>Brand</th>
+                  <th>Model</th>
+                  <th>SN</th>
+                  <th>Img.</th>
+                  <th>Wt.</th>
+                  <th>PPD</th>
+                  <th>PPW</th>
+                  <th>DFEE</th>
+                  <th>IFEE</th>
+                  <th>Note</th>
+                  <th>Note2</th>
+                  <th>Category</th>
+                  <th>Avl</th>
+                </tr>
+            </thead>
+            {% for equipment in equipment_list %}
+                <tr>
+                    <td>{{ equipment['id'] }}</td>
+                    <td>{{ equipment['brand'] }}</td>
+                    <td>{{ equipment['md'] }}</td>
+                    <td>{{ equipment['sn'] }}</td>
+                    <td>{{ equipment['wt'] }}</td>
+                    <td>{{ equipment['ppd'] }}</td>
+                    <td>{{ equipment['ppw'] }}</td>
+                    <td>{{ equipment['dfee'] }}</td>
+                    <td>{{ equipment['ifee'] }}</td>
+                    <td>{{ equipment['category'] }}</td>
+                    <td>{{ equipment['eq_desc'] }}</td>
+                    <td>{{ equipment['eq_desc2'] }}</td>
+                    <td>{{ equipment['avl'] }}</td>
+                    <td>
+                        {% if equipment['img'] %}
+                            <img src="{{ equipment['img'] }}" alt="Equipment Image" style="max-width: 100px;">
+                        {% else %}
+                            No Image
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+            <tr>
+              <td><input type="text" class="form-control-sm" name="id" id="id" placeholder="Equipment ID"></td>
+              <td><input type="text" class="form-control-sm" name="brand" id="brand" placeholder="Brand"></td>
+              <td><input type="text" class="form-control-sm" name="md" id="md" placeholder="Model"></td>
+              <td><input type="text" class="form-control-sm" name="sn" id="sn" placeholder="Serial Number"></td>
+              <td><input type="text" class="form-control-sm" name="img" id="img" placeholder="Image URL"></td>
+              <td><input type="text" class="form-control-sm" name="wt" id="wt" placeholder="Weight"></td>
+              <td><input type="text" class="form-control-sm" name="ppd" id="ppd" placeholder="Price per Day"></td>
+              <td><input type="text" class="form-control-sm" name="ppw" id="ppw" placeholder="Price per Week"></td>
+              <td><input type="text" class="form-control-sm" name="dfee" id="dfee" placeholder="Delivery Fee"></td>
+              <td><input type="text" class="form-control-sm" name="ifee" id="ifee" placeholder="Insurance Fee"></td>
+              <td><input type="text" class="form-control-sm" name="eq_desc" id="eq_desc" placeholder="Description"></td>
+              <td><input type="text" class="form-control-sm" name="eq_desc" id="eq_desc" placeholder="Description2"></td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border: 2px solid black;">
+                    Button
+                  </button>
+
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" class="dropdown-item" type="button" onclick="showGenre(this)" value="TEST">TEST</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          </table>
+          <button type="button" class="btn btn-sm btn-secondary minT" role="button" style="float: right; padding: 5px; margin:5px;" onclick="minTable('minT'); maxTable('maxT');">Min.</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-1">
+  </div>
+</div>
+
+{% endblock %}
