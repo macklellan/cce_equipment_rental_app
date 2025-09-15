@@ -313,7 +313,7 @@ var cal = {
         rowB.style.backgroundColor  = cal.events[id]["b"];
         rowB.classList.add("w"+w);
         if (o!=0) { rowB.classList.add("o"+o); }
-        rowB.onclick = () => cal.show(id);
+        //rowB.onclick = () => cal.show(id);
         rowA.appendChild(rowB);
       }
     }}

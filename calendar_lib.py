@@ -49,9 +49,17 @@ def get(month, year, eq):
     data = {}
     for r in rows:
         if str(r[6]) == eq:
-            data[r[0]] = {
-              "s" : r[1], "e" : r[2],
-              "c" : r[4], "b" : r[5],
-              "t" : r[3], "e2": r[6]
-            }
+            if str(r[5]) != ' ':
+                data[r[0]] = {
+                  "s" : r[1], "e" : r[2],
+                  "c" : r[4], "b" : r[5],
+                  "t" : r[3], "e2": r[6]
+                }
+
+
     return data
+
+
+
+
+    return filtered_dict
