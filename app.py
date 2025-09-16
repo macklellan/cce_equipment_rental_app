@@ -414,7 +414,7 @@ try:
             ok = evt.save(start, end, "RESERVED", '#FFFFFF', '#FF5656', equipment, None)
 
             # send email notification to admin
-            # new_res_notification(1, equipment, start + ' - ' + end, fname + ' ' + lname, email)
+            new_res_notification(1, equipment, start + ' - ' + end, fname + ' ' + lname, email)
 
             return redirect(url_for("reservation", id=db_lib.last_booking_id()))
 

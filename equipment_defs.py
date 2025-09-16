@@ -12,7 +12,7 @@ equipment_dict = {'2024_Bobcat_E26': {
         'brand': 'Bobcat',
         'model': 'E-26',
         'yr': '2024',
-        'img': 'E26.jpg',
+        'img': 'bobcat-e26.webp',
         'sn': '2024E26',
         'wt': '7500',
         'ppd': 225,

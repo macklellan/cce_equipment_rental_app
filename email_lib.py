@@ -1,28 +1,40 @@
-from mailersend import MailerSendClient, EmailBuilder
+import smtplib
+from email.mime.text import MIMEText
 import os
 
-admin_email_list = ['ryanmacklellan@gmail.com', 'ryanmcclellan2@gmail.com']
+smtp_host = os.environ['SMTP_SSL']
+smtp_sender = os.environ['SMTP_SENDER']
+smtp_pw = os.environ['SMTP_PW']
 
 def new_res_notification(res_n, equipment, dates, name, email):
 
-    ms = MailerSendClient(api_key=os.environ['MAILER_API'])
+    # Email details
+    sender = smtp_sender
+    receiver = "ryan@carolinac-e.com, mackenzie@carolinac-e.com, aaron@carolinac-e.com"
+    subject = "New Reservation: " + str(res_n)
 
-    txt = "Please review the latest equipment reservation scheduled on the website. <br>"
-    txt += "If reservation was created by an admin, please give access to renter/leasee. <br>"
-    txt += "<br> \n Name: " + name
-    txt += "<br> \n Email: " + email
-    txt += "<br> \n Dates: " + dates
-    txt += "<br> \n Equipment: " + equipment
+    # body of email
+    txt = "Please review the latest equipment reservation scheduled on the website."
+    txt += "If reservation was created by an admin, please give access to renter/leasee."
+    txt += "\n\n Name: " + name
+    txt += "\n Email: " + email
+    txt += "\n Dates: " + dates
+    txt += "\n Equipment: " + equipment
 
-    emails = []
+    # Create message
+    msg = MIMEText(txt)
+    msg["Subject"] = subject
+    msg["From"] = sender
+    msg["To"] = receiver
 
-    for admin_email in admin_email_list:
-        emails.append(EmailBuilder()
-                 .from_email("admin@test-z0vklo6r8d1l7qrx.mlsender.net", "CCE RENTALS")
-                 .to_many([{"email": admin_email, "name": "Admin"}])
-                 .subject("CCE RENTALS: NEW RESERVATION #" + str(res_n))
-                 .text(txt)
-                 .html("<h3>" + txt + "</h3>")
-                 .build())
+    # Connect to SMTP server (e.g., Gmail)
+    try:
+        with smtplib.SMTP_SSL(smtp_host, 465) as server:
+            server.login(smtp_sender, smtp_pw)
+            server.sendmail(smtp_sender, receiver, msg.as_string())
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
 
-    response = ms.emails.send_bulk(emails)
+
+# new_res_notification(4, "2024_Bobcat_E26", "date1-date2", "Test Name", "testemail.com")
