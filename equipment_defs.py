@@ -38,6 +38,66 @@ equipment_dict = {'2024_Bobcat_E26': {
             'note':'8000 Lb Track Loader',
             'note2':'Two-speed',
             'avl': True
+    },'POWERMATE_3500': {
+            'brand': 'Coleman',
+            'model': 'Powermate Vantage 3500',
+            'yr': '',
+            'img': 'powermate5.jpg',
+            'sn': 'POWERMATE35001',
+            'wt': '60',
+            'ppd': 60,
+            'ppw': 250,
+            'dfee': 50,
+            'ifee': 0,
+            'category': 'Generators',
+            'note':'3500 Watt Generator',
+            'note2':'Briggs & Stratton Engine',
+            'avl': True
+    },'BAUER_DEMO_HAMMER': {
+            'brand': 'BAUER',
+            'model': 'Demo Hammer',
+            'yr': '',
+            'img': 'demohammer.jpg',
+            'sn': 'DEMOHAMMER1',
+            'wt': '20',
+            'ppd': 60,
+            'ppw': 200,
+            'dfee': 50,
+            'ifee': 0,
+            'category': 'Hand and Power Tools',
+            'note':'Corded Demo Hammer',
+            'note2':'12.5 Amp, SDS Max Type',
+            'avl': True
+    },'STIHL_025_SAW': {
+            'brand': 'STIHL',
+            'model': '025 Chainsaw',
+            'yr': '',
+            'img': 'stihl-ms-250.jpg',
+            'sn': 'STIHL_025',
+            'wt': '10',
+            'ppd': 55,
+            'ppw': 200,
+            'dfee': 50,
+            'ifee': 0,
+            'category': 'Hand and Power Tools',
+            'note':'16in Pro Chainsaw',
+            'note2':'44cc, 16in Bar',
+            'avl': True
+    },'ECHO_CS450_SAW': {
+            'brand': 'ECHO',
+            'model': 'CS-450 Chainsaw',
+            'yr': '',
+            'img': 'Echo_CS-450.jpg',
+            'sn': 'ECHO_CS450',
+            'wt': '11',
+            'ppd': 65,
+            'ppw': 225,
+            'dfee': 50,
+            'ifee': 0,
+            'category': 'Hand and Power Tools',
+            'note':'20in Pro Chainsaw',
+            'note2':'45cc, 20in Bar',
+            'avl': True
     }}
 
 eq_d = equipment_dict
