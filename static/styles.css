@@ -227,6 +227,10 @@ body {
   padding-right: 20px;
 }
 
+.modal-lg, .modal-xl {
+    --bs-modal-width: 1200px;
+}
+
 .rentals-card {
     height: calc(40vh + 2(1vw));
    /* padding-bottom: 10px; */
@@ -384,6 +388,9 @@ body {
   text-decoration: underline;
 }
 
+.modal-footer {
+    margin: calc(var(--bs-modal-footer-gap) * 2);
+}
 
 a {
   color: #000000;

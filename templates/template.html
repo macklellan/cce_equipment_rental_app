@@ -114,6 +114,10 @@
                         <li class="nav-item">
                             <a href="{{ url_for('renters_list_admin') }}">Renters</a>
                         </li>
+                        <li role="separator" class="divider"></li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('eq_editor') }}">Equipment</a>
+                        </li>
 
                     </ul>
                 </li>
@@ -202,11 +206,11 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header" style="display: block;">
-            <h3 class="modal-title title3">Please Sign In
+            <h2 class="modal-title title3">Please Sign In
             <button type="button" class="close float-end" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </h3>
+          </h2>
           </div>
           <div class="modal-body">
             <p><b>Before booking online, you are required to create a renter profile.</b></p>
@@ -232,7 +236,12 @@
                   data-logo_alignment="center">
               </div>
             </h3>
-            <a class="btn btn-primary btn-lg" href="/login" role="button">Sign In</a>
+
+            <!-- <a class="btn btn-primary btn-lg" href="/login" role="button">Sign In</a> -->
+            <h3> </h3>
+            <h3> </h3>
+            <h3> </h3>
+
             <!-- <button type="button" class="btn btn-primary">Sign In</button> -->
             <button type="button" class="btn btn-secondary close2 btn-lg" data-dismiss="modal" >Close</button>
           </div>
