@@ -355,10 +355,10 @@ body {
   font-size: 31px;
 }
 
-.nav-link:hover {
+/* .nav-link:hover {
   transform: translateY(1px);
 
-}
+} */
 
 .nav-link:focus, .nav-link:hover {
     color: rgb(255 255 255);
@@ -372,6 +372,16 @@ body {
 .footer-link {
   padding: 20px;
   font-size: 24px;
+}
+
+.footer-link2 {
+  padding: 20px;
+  font-size: 24px;
+}
+
+
+.footer-link .nav-link:hover {
+  text-decoration: underline;
 }
 
 
