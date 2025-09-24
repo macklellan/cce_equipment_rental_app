@@ -55,7 +55,7 @@ equipment_dict = {'2024_Bobcat_E26': {
             'avl': True
     },'BAUER_DEMO_HAMMER': {
             'brand': 'BAUER',
-            'model': 'Demo Hammer',
+            'model': 'Demolition Hammer',
             'yr': '',
             'img': 'demohammer.jpg',
             'sn': 'DEMOHAMMER1',
@@ -65,8 +65,8 @@ equipment_dict = {'2024_Bobcat_E26': {
             'dfee': 50,
             'ifee': 0,
             'category': 'Hand and Power Tools',
-            'note':'Corded Demo Hammer',
-            'note2':'12.5 Amp, SDS Max Type',
+            'note':'Demolition Hammer',
+            'note2':'12.5 Amp, Corded, SDS Max Type',
             'avl': True
     },'STIHL_025_SAW': {
             'brand': 'STIHL',
@@ -80,7 +80,7 @@ equipment_dict = {'2024_Bobcat_E26': {
             'dfee': 50,
             'ifee': 0,
             'category': 'Hand and Power Tools',
-            'note':'16in Pro Chainsaw',
+            'note':'16" Professional Chainsaw',
             'note2':'44cc, 16in Bar',
             'avl': True
     },'ECHO_CS450_SAW': {
@@ -95,7 +95,7 @@ equipment_dict = {'2024_Bobcat_E26': {
             'dfee': 50,
             'ifee': 0,
             'category': 'Hand and Power Tools',
-            'note':'20in Pro Chainsaw',
+            'note':'20" Professional Chainsaw',
             'note2':'45cc, 20in Bar',
             'avl': True
     }}

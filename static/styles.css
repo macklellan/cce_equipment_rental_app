@@ -71,7 +71,7 @@ body {
 }
 
 .padd2 {
-  padding: 5px;
+  /* padding: 5px; */
   display: flex;
   color: #000000;
   text-align:center;
@@ -131,10 +131,11 @@ body {
 
 .category-card {
   box-shadow: 0 4px 10px 0 rgba(1, 1, 1, 0.4);
-  padding: 15px;
+  padding: 5px;
   text-align: center;
   height: max-content;
-  margin: 15px;
+  margin: 10px;
+  background-color: #1e1e1e;
 }
 
 .hmax {
@@ -146,23 +147,30 @@ body {
   box-shadow: 0 4px 10px 0 rgba(1, 1, 1, 0.4);
   padding: 25px;
   height: inherit;
-  margin: 5px;
+  margin: 15px;
   background-color: #f5f5f5;
 }
 
+.col-xl-4 {
+  margin-top: 15px;
+}
+
+.col-xl-3 {
+  margin-top: 15px;
+}
 
 .dash-card2 {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 10px 0 rgba(1, 1, 1, 0.4);
-  padding: 25px;
-  height: inherit;
+  padding: 15px;
+  /* height: inherit; */
   margin: 5px;
   /*background-color: #efefef;*/
 }
 
 .dash-card3 {
   background: #fff;
-  border-radius: 16px;
+  border-radius: 1px;
   border: 1px solid #eee;
   box-shadow:
     0 2px 4px rgba(0,0,0,0.05),
@@ -233,6 +241,7 @@ body {
 
 .rentals-card {
     height: calc(40vh + 2(1vw));
+    border-radius: 1px;
    /* padding-bottom: 10px; */
 
 }
