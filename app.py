@@ -967,6 +967,10 @@ try:
         [session.pop(key) for key in list(session.keys())]
         return redirect(url_for("index"))
 
+    # needed for cloud deployment?
+    @app.route('/favicon.ico')
+    def favicon():
+        return url_for('static', filename='favicon.ico')
 
 
 #############################################
