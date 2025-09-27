@@ -168,6 +168,15 @@ body {
   /*background-color: #efefef;*/
 }
 
+.dash-card22 {
+  /* Add shadows to create the "card" effect */
+  padding: 15px;
+  /* height: inherit; */
+  margin: 5px;
+  /*background-color: #efefef;*/
+}
+
+
 .dash-card3 {
   background: #fff;
   border-radius: 1px;
@@ -263,8 +272,10 @@ body {
 }
 
 .table-font {
-  font-size: calc(1em + .2vw);
+    font-size: calc(1em + .2vw);
+    --bs-table-border-color: #707274;
 }
+
 
 .tableFixHead2 .form-control-sm input[type=text], select, textarea {
   width: 10%;

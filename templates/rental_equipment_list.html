@@ -18,7 +18,7 @@
 </div>
 
 <div class="dash-card">
-  <i>For any questions please contact us via email: <b>mackenzie@carolinac-e.com</b> or phone: <b>(336)769-6505</b></i>
+  <i>For any questions please contact us via email: <b>ryan@carolinac-e.com</b> or phone: <b>(336)769-6505</b></i>
 </div>
 
 <div class="row padd2">
@@ -40,16 +40,15 @@
 
         <div class="card rentals-card h-100">
             <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[eq[0]]['img'] }}" />
-          <div class= "dash-card2">
+          <div class= "dash-card22">
           <h2 class="title3">{{ eq_dict[eq[0]]['note'] }}</h2>
-          <h4>{{ eq_dict[eq[0]]['note2'] }}</h4>
 
           <!-- Equipment Price Table -->
           <table class="table table-lg table-font table-bordered">
               <tbody>
                 <tr>
-                  <td class="text-center"><h3 class="title3">${{ eq_dict[eq[0]]['ppd'] }}</h3>Per Day</td>
-                  <td class="text-center"><h3 class="title3">${{ eq_dict[eq[0]]['ppw'] }}</h3>Per Week</td>
+                  <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[eq[0]]['ppd'] }}</h3>Per Day</td>
+                  <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[eq[0]]['ppw'] }}</h3>Per Week</td>
                 </tr>
               </tbody>
             </table>
@@ -92,6 +91,10 @@
                 </tbody>
               </table>
               {% endif %}
+
+              <br>
+              <h4>{{ eq_dict[eq[0]]['note2'] }}</h4>
+
           </div>
         </div>
       </a>
@@ -116,16 +119,15 @@
 
         <div class="card rentals-card h-100">
           <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[eq[1]]['img'] }}" />
-          <div class= "dash-card2">
+          <div class= "dash-card22">
           <h2 class="title3">{{ eq_dict[eq[1]]['note'] }}</h2>
-          <h4>{{ eq_dict[eq[1]]['note2'] }}</h4>
 
           <!-- Equipment Price Table -->
           <table class="table table-lg table-font table-bordered">
               <tbody>
                 <tr>
-                  <td class="text-center"><h3 class="title3">${{ eq_dict[eq[1]]['ppd'] }}</h3>Per Day</td>
-                  <td class="text-center"><h3 class="title3">${{ eq_dict[eq[1]]['ppw'] }}</h3>Per Week</td>
+                  <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[eq[1]]['ppd'] }}</h3>Per Day</td>
+                  <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[eq[1]]['ppw'] }}</h3>Per Week</td>
                 </tr>
               </tbody>
             </table>
@@ -167,6 +169,10 @@
               </table>
               {% endif %}
 
+              <br>
+
+            <h4>{{ eq_dict[eq[1]]['note2'] }}</h4>
+
           </div>
           </div>
           </a>
@@ -191,16 +197,15 @@
 
           <div class="card rentals-card h-100">
             <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[eq[2]]['img'] }}" />
-            <div class= "dash-card2">
+            <div class= "dash-card22">
             <h2 class="title3">{{ eq_dict[eq[2]]['note'] }}</h2>
-            <h4>{{ eq_dict[eq[2]]['note2'] }}</h4>
 
             <!-- Equipment Price Table -->
             <table class="table table-lg table-font table-bordered">
                 <tbody>
                   <tr>
-                    <td class="text-center"><h3 class="title3">${{ eq_dict[eq[2]]['ppd'] }}</h3>Per Day</td>
-                    <td class="text-center"><h3 class="title3">${{ eq_dict[eq[2]]['ppw'] }}</h3>Per Week</td>
+                    <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[eq[2]]['ppd'] }}</h3>Per Day</td>
+                    <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[eq[2]]['ppw'] }}</h3>Per Week</td>
                   </tr>
                 </tbody>
               </table>
@@ -241,6 +246,9 @@
                   </tbody>
                 </table>
                 {% endif %}
+
+                <br>
+                <h4>{{ eq_dict[eq[2]]['note2'] }}</h4>
 
             </div>
             </div>

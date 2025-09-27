@@ -21,7 +21,7 @@ equipment_dict = {'2024_Bobcat_E26': {
         'ifee': 25,
         'category': 'Compact Earth Moving',
         'note':'7500 Lb Mini Excavator',
-        'note2':'Long Arm, X-change',
+        'note2':'61" Wide, Long Arm, Zero-Tailswing',
         'avl': True
     },'2024_Bobcat_T595': {
             'brand': 'Bobcat',
@@ -36,7 +36,7 @@ equipment_dict = {'2024_Bobcat_E26': {
             'ifee': 25,
             'category': 'Compact Earth Moving',
             'note':'8000 Lb Track Loader',
-            'note2':'Two-speed',
+            'note2':'68" Wide, Two-speed',
             'avl': True
     },'POWERMATE_3500': {
             'brand': 'Coleman',
