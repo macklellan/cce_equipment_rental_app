@@ -5,7 +5,16 @@
     <!-- <img class="card-img-top2 embed-responsive-item" src = "/static/{{ eq_dict[equip]['img'] }}" /> -->
   <div class= "dash-card2">
   <h2 class="title3">{{ eq_dict[equip]['note'] }}</h2>
-  <h4>{{ eq_dict[equip]['note2'] }}</h4>
+
+  <!-- Equipment Price Table -->
+  <table class="table table-lg table-font table-bordered">
+      <tbody>
+        <tr>
+          <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[equip]['ppd'] }}</h3>Per Day</td>
+          <td class="text-center" style="border-width: 3px;"><h3 class="title3">${{ eq_dict[equip]['ppw'] }}</h3>Per Week</td>
+        </tr>
+      </tbody>
+    </table>
 
   <!-- Equipment Info Table -->
   <table class="table table-lg title3 table-font">
@@ -43,6 +52,9 @@
           {% endfor %}
         </tbody>
       </table>
+
+      <h4>{{ eq_dict[equip]['note2'] }}</h4>
+      
   </div>
 </div>
 {% endblock %}

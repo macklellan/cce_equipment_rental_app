@@ -2,6 +2,8 @@
 {% block content %}
 
 
+
+
 <div class="row">
   <div class="col-sm-1">
   </div>
@@ -56,7 +58,8 @@
             <input type="date" class="form-control form-control-lg" name="end" id="end" value="{{ end }}" hidden>
           </div>
           <div class="form-group col-xl-6">
-            <div class="submit-card card">
+
+            <div class="submit-card card" id='delivery'>
             {% if start %}
               <h4>Estimate Total: <b>{{ (rate * n_days) + (rate2 * n_weeks) + (ifee * n_days) + ((ifee * 3) * n_weeks) + dfee }}$</b></h4>
               {% if n_days > 0 %}
@@ -70,6 +73,23 @@
               <h5><b>{{ dfee }}$</b> Delivery Fee (within 25 Miles, subject to change)</h5>
             {% endif %}
             </div>
+
+            <div class="submit-card card" id='ndelivery' style="display: none;">
+            {% if start %}
+              <h4>Estimate Total: <b>{{ (rate * n_days) + (rate2 * n_weeks) + (ifee * n_days) + ((ifee * 3) * n_weeks) }}$</b></h4>
+              {% if n_days > 0 %}
+                <h5><b>{{ rate * n_days }}$</b> ({{ rate }}$ Rental Fee per day) x{{ n_days }} </h5>
+                <h5><b>{{ ifee * n_days }}$</b> ({{ ifee }}$ Insurance Fee per day) x{{ n_days }}</h5>
+              {% endif %}
+              {% if n_weeks > 0 %}
+                <h5><b>{{ rate2 * n_weeks }}$</b> ({{ rate2 }}$ Rental Fee per week) x{{ n_weeks }} </h5>
+                <h5><b>{{ (ifee * 3) * n_weeks }}$</b> ({{ ifee * 3 }}$ Insurance Fee per week) x{{ n_weeks }}</h5>
+              {% endif %}
+            {% endif %}
+            </div>
+
+
+
           </div>
         </div>
         <!-- <div class="form-row">
@@ -88,7 +108,7 @@
         <br>
         <div class="form-group">
           <label for="trans">Transportation</label>
-          <select class="form-control form-control-lg" name="trans" id="trans" required>
+          <select class="form-control form-control-lg transselect" name="trans" id="trans" onchange="toggle_del_charge();" required >
             <option value="C&E Provided">Delivery & Pickup Provided by Carolina C&E</option>
             <option value="Customer Provided">Customer Pickup and Delivery (Must provide proof of insurace, and capability to transport safely and legally)</option>
           </select>

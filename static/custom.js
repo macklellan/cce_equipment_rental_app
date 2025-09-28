@@ -65,3 +65,19 @@ function maxTable(ele) {
 function showGenre(item) {
   document.getElementById("dropdownMenu1").innerHTML = item.innerHTML;
 }
+
+function toggle_del_charge() {
+  var selectBox = document.getElementById("trans");
+  var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+  var x1 = document.getElementById("delivery");
+  var x2 = document.getElementById("ndelivery");
+
+  if (selectedValue === "C&E Provided") {
+    x1.style.display = "block";
+    x2.style.display = "none";
+  } else {
+    x2.style.display = "block";
+    x1.style.display = "none";
+  }
+}
