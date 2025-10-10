@@ -47,6 +47,7 @@ try:
     app.config['SESSION_COOKIE_SECURE'] = True
     app.config['SESSION_COOKIE_SAMESITE'] = 'None'
     # app.config['SERVER_NAME'] = 'rent.carolinac-e.com'
+    app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=60)
 
     # temporary files, renter uploaded images stored in Azure
     TMP_DIR = Path("/tmp")
@@ -67,6 +68,8 @@ try:
     GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
     )
+
+    app.config['GCID'] =  gcid
 
     # OAuth 2 client setup
     client = WebApplicationClient(GOOGLE_CLIENT_ID)
@@ -186,36 +189,36 @@ try:
     # RE-ROUTE INDEX TO RENTAL
     @app.route('/')
     def index():
-        return render_template('index.html', gcid=gcid)
+        return render_template('index.html')
 
     # ABOUT PAGE *NEED TO REVIEW*
     @app.route('/about')
     def about():
-        return render_template('about.html', gcid=gcid)
+        return render_template('about.html')
 
     # WEBSITE TERMS OF USE
     @app.route('/terms')
     def terms():
-        return render_template('terms.html', gcid=gcid)
+        return render_template('terms.html')
 
     # RESERVATION TERMS
     @app.route('/terms/reserve')
     def terms_reserve():
-        return render_template('terms_reserve.html', gcid=gcid)
+        return render_template('terms_reserve.html')
 
     # FOR DISPLAYING EQUIPMENT CATEGORIES & SELECTING EQUIPMENT -> LINK TO CALENDAR
     @app.route('/rentals')
     @app.route('/rentals/<category>')
     def rentals(category=None):
         if category == None:
-            return render_template('rental_categories.html', gcid=gcid, cat_list=tuples(cat_list,4), cat_dict=category_dict)
+            return render_template('rental_categories.html', cat_list=tuples(cat_list,4), cat_dict=category_dict)
         else:
             category = category.replace('%20', ' ')
             session['url'] = url_for('rentals', category=category)
             res = {key : val for key, val in equipment_dict.items()
                    if val['category'] == category}
             eq_list = list(res.keys())
-            return render_template('rental_equipment_list.html', category=category, gcid=gcid, eq_list=tuples(eq_list, 3), eq_dict=res, att_list=att_list)
+            return render_template('rental_equipment_list.html', category=category, eq_list=tuples(eq_list, 3), eq_dict=res, att_list=att_list)
 
 
 
@@ -245,7 +248,7 @@ try:
         if current_user.is_anonymous:
             session['url'] = url_for('profile')
             pro = get_renter_profile(0, True)
-            return render_template('profile.html', gcid=gcid, pro=pro)
+            return render_template('profile.html', pro=pro)
 
         profile_dict = get_renter_profile(current_user.id, True)
 
@@ -309,7 +312,7 @@ try:
             return render_template('profile.html', pro=profile_dict)
 
 
-
+    # View Profile Picture
     @app.route("/profile_pic", methods=['GET'])
     @user_only
     def view_profile_pic():
@@ -359,9 +362,11 @@ try:
     def reserve(equipment=None):
         profile_dict = get_renter_profile(current_user.id, True)
 
+        # unavailable
         if equipment_dict[equipment] is None or equipment_dict[equipment]['avl'] == False:
             return abort(404)
 
+        # user submitted "requested" date range
         if 'evtSave2' in request.form:
             start_date = request.form['evtStart']
             sd = datetime.strptime(start_date, '%Y-%m-%d').date()
@@ -381,6 +386,7 @@ try:
 
             return render_template('reservation_create.html', equip=equipment, eq_dict=eq_d, att_list=att_list, pro=profile_dict, start=sd2, end=end, n_days=n_days, n_weeks=n_weeks, rate=eq_d[equipment]['ppd'], rate2=eq_d[equipment]['ppw'],  dfee=eq_d[equipment]['dfee'], ifee=eq_d[equipment]['ifee'])
 
+        # user submitted initial reservation form
         if 'rbutton' in request.form:
             start = request.form['start']
             n_days = int(request.form['ndays'])
@@ -808,8 +814,6 @@ try:
 
         data = { "link" : url_for("logintoken", code=access_link_code, _external=True)}
         return jsonify(data)
-
-
 
 #############################################
 # # #                                   # # # #

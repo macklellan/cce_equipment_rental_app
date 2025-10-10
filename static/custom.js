@@ -39,6 +39,7 @@ function copyLinkUrl(id) {
 
 };
 
+
 function toggle_eq_view() {
   var x = document.getElementById("eq_res_disp");
   if (x.style.display === "none") {
