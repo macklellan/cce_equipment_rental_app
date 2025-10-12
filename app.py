@@ -1,7 +1,6 @@
 # CCE
 # Ryan McClellan 2025
 
-
 # Main application for equipment rental and reservation website.
 
 # initialization wrapped in try/catch
@@ -68,7 +67,6 @@ try:
     GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
     )
-
     app.config['GCID'] =  gcid
 
     # OAuth 2 client setup
@@ -100,7 +98,7 @@ try:
 #############################################
 
 
-
+    # wraps pages accessible to standard users (logged in)
     def user_only(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -116,7 +114,7 @@ try:
         return decorated_function
 
 
-    # admin endpoint wrapper
+    # wraps pages accessible to admins
     def admin_required(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -129,8 +127,7 @@ try:
         return decorated_function
 
 
-    # simple access endpoint wrapper
-    # used in addition to
+    # wraps pages accessible via special login link
     def simple_access(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -164,7 +161,7 @@ try:
 # # #                                   # # # #
 #############################################
 
-
+    # equipment data is hard coded
     from equipment_defs import category_dict, category_dict_all, equipment_dict, att_list
 
     eq_d = equipment_dict
@@ -569,9 +566,8 @@ try:
     ID_PIC_FOLDER = 'tmp/'
 
 
-    # view rental agreement
+    # view rental agreement pdf
     # generate rental agreement if not already
-
     @app.route("/vera/<res_id>", methods=['GET'])
     @login_required
     @simple_access
@@ -1011,5 +1007,5 @@ try:
 
 except Exception as e:
     print(e)
-    print("\nThere was a problem starting the program:\n\t *Check readme.txt*\n")
+    print("\nThere was a problem starting the program:\n\t *Check README.md*\n")
     raise e
