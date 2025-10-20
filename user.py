@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from db_lib import get_db2, get_renter_profile, add_renter_profile
 from square_lib import get_cc
+import os
 
 
 class User(UserMixin):
@@ -22,7 +23,7 @@ class User(UserMixin):
 
 
     def is_admin(self):
-        admin_list = ['ryanmacklellan@gmail.com', 'mackenziecranford0197@gmail.com', 'ryanmcclellan2@gmail.com']
+        admin_list = os.environ['ADMIN_EMAILS'].split()
         if self.email in admin_list:
             return True
 
