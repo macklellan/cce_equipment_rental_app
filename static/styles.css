@@ -406,6 +406,7 @@ background-color: #ffffff;
 
 .nav-link:focus, .nav-link:hover {
     color: rgb(255 255 255);
+    text-decoration:underline;
 }
 
 .navb {
