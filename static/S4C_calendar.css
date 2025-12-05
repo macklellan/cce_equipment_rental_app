@@ -122,7 +122,7 @@ body {
 }
 .calRowEvt {
   padding: 15px;
-  /* font-size: 24px; */
+  font-size: 1vW;
   font-weight: 700;
   white-space: nowrap; text-overflow: ellipsis;
   overflow: hidden; cursor: pointer;
