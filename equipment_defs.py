@@ -53,6 +53,21 @@ equipment_dict = {'2024_Bobcat_E26': {
             'note':'3500 Watt Generator',
             'note2':'Briggs & Stratton Engine',
             'avl': True
+    },'NorthStar_8000': {
+            'brand': 'Northstar',
+            'model': '8kW Generator',
+            'yr': '',
+            'img': 'northstar8kw.webm',
+            'sn': 'NORTHSTAR8KW001',
+            'wt': '200',
+            'ppd': 100,
+            'ppw': 400,
+            'dfee': 50,
+            'ifee': 0,
+            'category': 'Generators',
+            'note':'8,000 Surge Watts, Recoil Start With Wheel Kit',
+            'note2':'Honda 390cc Engine',
+            'avl': True
     },'BAUER_DEMO_HAMMER': {
             'brand': 'BAUER',
             'model': 'Demolition Hammer',
