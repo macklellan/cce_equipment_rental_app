@@ -57,7 +57,7 @@ equipment_dict = {'2024_Bobcat_E26': {
             'brand': 'Northstar',
             'model': '8kW Generator',
             'yr': '',
-            'img': 'northstar8kw.webm',
+            'img': 'northstar8kw.webp',
             'sn': 'NORTHSTAR8KW001',
             'wt': '200',
             'ppd': 100,
@@ -65,8 +65,8 @@ equipment_dict = {'2024_Bobcat_E26': {
             'dfee': 50,
             'ifee': 0,
             'category': 'Generators',
-            'note':'8,000 Surge Watts, Recoil Start With Wheel Kit',
-            'note2':'Honda 390cc Engine',
+            'note':'8000 Watt Generator',
+            'note2':'Wheel Kit, Honda 390cc Engine',
             'avl': True
     },'BAUER_DEMO_HAMMER': {
             'brand': 'BAUER',
